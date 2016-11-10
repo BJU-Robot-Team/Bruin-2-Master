@@ -1,0 +1,1 @@
+/usr/bin/c++      CMakeFiles/serial-test.dir/unix_serial_tests.cc.o  -o ../devel/lib/serial/serial-test  -L/home/robot-team/bruin_2_code/src/libraries/serial/gtest -rdynamic ../gtest/libgtest.so ../devel/lib/libserial.so -lutil -lpthread -lrt -lpthread -Wl,-rpath,/home/robot-team/bruin_2_code/src/libraries/serial/gtest:/home/robot-team/bruin_2_code/src/libraries/serial/devel/lib 
