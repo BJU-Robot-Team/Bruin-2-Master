@@ -20,14 +20,14 @@ WaypointMap::WaypointMap(std::string map_folder_path) {
 //  takes a folder path string
 //  returns bool. true means success
 bool WaypointMap::loadCSVMapFormat(std::string map_folder_path) {
-    /*bool parse_success;    
+    bool parse_success;    
 
     //parse the stations file first
     parse_success = parseCSVData(map_folder_path+"/stations.csv", false);
 
     //if we cannot parse the stations file we cannot go on.
     if (parse_success == false) {
-        return false; //TODO handle error.
+        return parse_success; //TODO handle error.
     }
 
     //list files in the map directory and load them
@@ -61,8 +61,9 @@ bool WaypointMap::loadCSVMapFormat(std::string map_folder_path) {
 
     closedir(dpdf);
 
-    return true;*/
+    return parse_success;
 }
+
 
 //parses a given CSV file's contents.
 //  takes a filepath string and a bool indicating which file type this is
@@ -74,7 +75,7 @@ bool WaypointMap::loadCSVMapFormat(std::string map_folder_path) {
 //     * maybe make sure path is a valid file path
 //  TODO: we also need debug messages when something fails like file opening.
 bool WaypointMap::parseCSVData(std::string file_path, bool file_type_waypoints) {
-/*
+
     std::filebuf file;
 
     //open file and add it to a stream object
@@ -84,7 +85,7 @@ bool WaypointMap::parseCSVData(std::string file_path, bool file_type_waypoints) 
         //handle stations.csv file format
         if (file_type_waypoints = false) {
             //setup csv parser reads 1 column
-            io::CSVReader<1> csv_reader("map.csv", filestream);
+            io::CSVReader<1> csv_reader(file_path, filestream);
 
             //staion name
             std::string station;
@@ -96,24 +97,35 @@ bool WaypointMap::parseCSVData(std::string file_path, bool file_type_waypoints) 
 
         //normal waypoints path file format
         } else {
-            //setup csv parser reads 3 columns
-            io::CSVReader<6> csv_reader("map.csv", filestream);
+            //setup csv parser
+            //first line has only 2 columns
+            io::CSVReader<2> station_reader(file_path, filestream);
+            //rest of the file has 6 columns
+            io::CSVReader<6> waypoint_reader(file_path, filestream);
+            waypoint_reader.set_file_line(2);
 
             //read first line which describes source and destination stations
             std::string start_station, end_station;
-            csv_reader.read_row(start_station, end_station);
+            station_reader.read_row(start_station, end_station);
             
             //read the rest of the lines which are each waypoints
             std::string comment;
-            float latitude, longitude, curvature, precision;
-            bool stop_sign=false; //value is optional so we pre initialize it 
+            double latitude, longitude, curvature, precision;
+            int stop_sign_value=0; //value is optional so we pre initialize it 
 
             std::vector<Waypoint> waypoints;
 
             //read each line and get the first column's info then add it to the
             //  station index
-            while(csv_reader.read_row(comment, latitude, longitude, curvature, 
-                              precision, stop_sign)){
+            while(waypoint_reader.read_row(comment, latitude, longitude, curvature, precision, stop_sign_value)) {
+
+                bool stop_sign;
+                if (stop_sign_value >= 1) {
+                    stop_sign = true;
+                } else {
+                    stop_sign = false;
+                }
+
                 //make a waypoint object from the read data
                 Waypoint point(comment, latitude, longitude, curvature, 
                               precision, stop_sign);
@@ -152,12 +164,13 @@ bool WaypointMap::parseCSVData(std::string file_path, bool file_type_waypoints) 
         file.close();
         return true;
     }   
-    return false;*/
+    return false;
 }
+
 
 //returns a waypoint path given two stations
 WaypointPath *WaypointMap::getWaypointList(std::string start_station, std::string end_station) {
-/*    //starting and ending station's indexes 
+    //starting and ending station's indexes 
     int start_station_index = -1;
     int end_station_index = -1;
 
@@ -170,15 +183,13 @@ WaypointPath *WaypointMap::getWaypointList(std::string start_station, std::strin
          return nullptr; 
      } else {
          //we found the index's so we can now add the path to the matrix
-         return station_matrix[start_station_index][end_station_index];
-     }*/
+         return nullptr;//station_matrix[start_station_index][end_station_index];
+     }
 }
 
-//Function that searches for the index associated with a station name
-//    recives the start and end station name strings
-//    returns by reference the start and end station index's
-void WaypointMap::findStationIndexes(){
-    /*
+
+void WaypointMap::findStationIndexes(std::string start_station, std::string end_station,
+                            int& start_station_index, int& end_station_index){
     //go through the station index list and find what index the start
     //  and end stations have
     int i = 0;
@@ -195,7 +206,6 @@ void WaypointMap::findStationIndexes(){
         if (start_station_index != -1 && end_station_index != -1) {
             break;
         }
-    } //end for loop*/
+    } //end for loop
 
 }
-

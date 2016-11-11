@@ -7,7 +7,7 @@
 #include <string>
 
 //evil way to gain access to private members but useful for testing purpose 
-//#define private public
+#define private public
 #include "state_machine/waypoint_map.h"
 
 //create test csv files
@@ -55,7 +55,7 @@ int main(void) {
     lines.push_back("\"Test station 1\",34,34");
     lines.push_back("\"Test station 2\",60,34");
     
-    //creatCSVFile("stations.csv", lines);
+    creatCSVFile("stations.csv", lines);
     
     lines.clear();
 
@@ -63,7 +63,7 @@ int main(void) {
     lines.push_back("start,86.2234, 32.2233, 1, 1.5");
     lines.push_back("end, 86.2434, 32.2233, 1, 1.5, false");
     
-    //creatCSVFile("test1 to test2.csv", lines);
+    creatCSVFile("test1 to test2.csv", lines);
     
     lines.clear();
 
@@ -71,7 +71,7 @@ int main(void) {
     lines.push_back("start, 86.2434, 32.2233, 1, 1.5, false");
     lines.push_back("end,86.2234, 32.2233, 1, 1.5, true");
     
-    //creatCSVFile("test2 to test1.csv", lines);
+    creatCSVFile("test2 to test1.csv", lines);
 
     //-test parsing the csv files 'mannually'
     //  (remember these are private members but we have a hack at the 

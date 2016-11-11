@@ -7,8 +7,14 @@ project(state_machine)
 find_package(catkin REQUIRED)
 
 
-set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-std=c++0x -defCSV_IO_NO_THREAD ${CMAKE_CXX_FLAGS}")
 
+
+OPTION(CSV_THREADS "Option description" ON)
+
+IF(CSV_THREADS)
+    ADD_DEFINITIONS(-DCSV_IO_NO_THREAD)
+ENDIF(CSV_THREADS)
 
 ## System dependencies are found with CMake's conventions
 ##find_package(Boost REQUIRED COMPONENTS system)

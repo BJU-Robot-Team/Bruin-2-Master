@@ -1,5 +1,4 @@
-//code source: https://github.com/ben-strasser/fast-cpp-csv-parser/blob/master/csv.h
-
+//Source: https://github.com/ben-strasser/fast-cpp-csv-parser
 
 // Copyright: (2012-2015) Ben Strasser <code@ben-strasser.net>
 // License: BSD-3
@@ -1256,5 +1255,6 @@ namespace io{
                         return true;
                 }
         };
+}
+#endif
 
-#endif 
