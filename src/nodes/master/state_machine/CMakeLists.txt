@@ -135,7 +135,21 @@ include_directories(
 # add_dependencies(state_machine ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-add_executable(state_machine_node src/main.cpp src/waypoint_map.cpp)
+add_executable(state_machine_node 
+    src/main.cpp
+    src/state_initalize.cpp
+    src/state_release_break.cpp
+    src/state_check_destination.cpp
+    src/state_initial_obstacle_detect.cpp  
+    src/state_wait_for_command.cpp
+    src/state_check_stop_sign.cpp    
+    src/state_machine.cpp
+    src/state_detect_station.cpp     
+    src/state_park.cpp
+    src/waypoint_map.cpp
+    src/state_drive_path.cpp
+    src/state_performing_taxi_stop.cpp
+)
 
 #Unit Tests
 add_executable(waypoint_map_tests src/unit_tests/waypoint_map_tests.cpp 
