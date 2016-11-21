@@ -36,5 +36,5 @@ bool DrivePathState::debugState(StateMachine* state_machine) {
     line_desc.push_back("PATH FINISHED");
     event_lines.push_back(PATH_FINISHED);
 
-    return queryUserForTransition(state_machine, line_desc,  event_lines);
+    return queryUserForTransition("DRIVE_PATH", state_machine, line_desc,  event_lines);
 }

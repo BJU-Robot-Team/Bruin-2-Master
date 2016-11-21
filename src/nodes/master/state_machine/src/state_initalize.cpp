@@ -4,7 +4,11 @@
 
 #include <string>
 
+#include <iostream>
+
 void InitilizeState::tick(StateMachine* state_machine, VehicleData* vehicle_data) {
+
+
 
     //call the state's debug function if we are in debug mode.
     if (state_machine->debug_mode) {
@@ -36,5 +40,5 @@ bool InitilizeState::debugState(StateMachine* state_machine) {
     line_desc.push_back("INITIALIZE_FINISHED");
     event_lines.push_back(INITIALIZE_FINISHED);
 
-    return queryUserForTransition(state_machine, line_desc,  event_lines);
+    return queryUserForTransition("INITIALIZE", state_machine, line_desc,  event_lines);
 }

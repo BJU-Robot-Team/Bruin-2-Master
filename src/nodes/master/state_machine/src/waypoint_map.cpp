@@ -42,7 +42,8 @@ bool WaypointMap::loadCSVMapFormat(std::string map_folder_path) {
     dpdf = opendir(map_folder_path.c_str());
 
     if (dpdf != NULL){
-        while (epdf = readdir(dpdf)){
+        epdf = readdir(dpdf);
+        while (epdf){
             std::string filename = epdf->d_name;
 
             //we already parsed the stations.csv file so we skip it
@@ -56,6 +57,7 @@ bool WaypointMap::loadCSVMapFormat(std::string map_folder_path) {
             } else { //skip all other files
                 continue;
             }
+            epdf = readdir(dpdf);
         }
     }
 
@@ -83,7 +85,7 @@ bool WaypointMap::parseCSVData(std::string file_path, bool file_type_waypoints) 
         std::istream filestream(&file);
 
         //handle stations.csv file format
-        if (file_type_waypoints = false) {
+        if (file_type_waypoints == false) {
             //setup csv parser reads 1 column
             io::CSVReader<1> csv_reader(file_path, filestream);
 

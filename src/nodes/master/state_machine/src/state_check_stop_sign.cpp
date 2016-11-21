@@ -34,5 +34,5 @@ bool CheckStopSignState::debugState(StateMachine* state_machine) {
     line_desc.push_back("STOP_SIGN");
     event_lines.push_back(STOP_SIGN);
 
-    return queryUserForTransition(state_machine, line_desc,  event_lines);
+    return queryUserForTransition("CHECK_STOP_SIGN", state_machine, line_desc,  event_lines);
 }

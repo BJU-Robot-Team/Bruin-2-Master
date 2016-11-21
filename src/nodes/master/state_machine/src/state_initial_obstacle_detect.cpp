@@ -34,5 +34,5 @@ bool InitialObstacleDetectState::debugState(StateMachine* state_machine) {
     line_desc.push_back("INITIAL OBSTICAL DETECTED");
     event_lines.push_back(INITIAL_OBSTICAL_DETECTED);
 
-    return queryUserForTransition(state_machine, line_desc,  event_lines);
+    return queryUserForTransition("INITIAL_OBSTACLE_DETECT", state_machine, line_desc,  event_lines);
 }

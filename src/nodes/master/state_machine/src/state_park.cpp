@@ -30,5 +30,5 @@ bool ParkState::debugState(StateMachine* state_machine) {
     line_desc.push_back("BREAK_LOCKED");
     event_lines.push_back(BREAK_LOCKED);
 
-    return queryUserForTransition(state_machine, line_desc,  event_lines);
+    return queryUserForTransition("PARK", state_machine, line_desc,  event_lines);
 }

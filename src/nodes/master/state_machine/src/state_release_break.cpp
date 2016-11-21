@@ -31,5 +31,5 @@ bool ReleaseBrakeState::debugState(StateMachine* state_machine) {
     line_desc.push_back("BREAK_RELEASED");
     event_lines.push_back(BREAK_RELEASED);
 
-    return queryUserForTransition(state_machine, line_desc,  event_lines);
+    return queryUserForTransition("RELEASE_BRAKE", state_machine, line_desc,  event_lines);
 }

@@ -8,7 +8,8 @@
 class AbstractState {
   public:
     AbstractState() {};
-
+    virtual ~AbstractState() {};
+    
     virtual void tick(StateMachine* state_machine, VehicleData* vehicle_data) = 0;
 };
 
@@ -17,74 +18,79 @@ class AbstractState {
 //All state interfaces are defined here
 
 //Initialize 
-class InitilizeState : AbstractState {
+class InitilizeState : public AbstractState {
   public:
+    ~InitilizeState() {};
     void tick(StateMachine* state_machine, VehicleData* vehicle_data);
     bool debugState(StateMachine* state_machine);
 };
 
-class ShutdownState : AbstractState {
+class ShutdownState : public AbstractState {
   public:
+    ~ShutdownState() {};
     void tick(StateMachine* state_machine, VehicleData* vehicle_data);
     bool debugState(StateMachine* state_machine);
 };
 
-class DetectStationState : AbstractState {
+class DetectStationState : public AbstractState {
   public:
+    ~DetectStationState() {};
     void tick(StateMachine* state_machine, VehicleData* vehicle_data);
     bool debugState(StateMachine* state_machine);
 };
 
-class WaitForCommandState : AbstractState {
+class WaitForCommandState : public AbstractState {
   public:
+    ~WaitForCommandState() {};
     void tick(StateMachine* state_machine, VehicleData* vehicle_data);
     bool debugState(StateMachine* state_machine);
 };
 
-class InitialObstacleDetectState : AbstractState {
+class InitialObstacleDetectState : public AbstractState {
   public:
+    ~InitialObstacleDetectState() {};
     void tick(StateMachine* state_machine, VehicleData* vehicle_data);
     bool debugState(StateMachine* state_machine);
 };
 
-class ReleaseBrakeState : AbstractState {
+class ReleaseBrakeState : public AbstractState {
   public:
+    ~ReleaseBrakeState() {};
     void tick(StateMachine* state_machine, VehicleData* vehicle_data);
     bool debugState(StateMachine* state_machine);
 };
 
-class ParkState : AbstractState {
+class ParkState : public AbstractState {
   public:
+    ~ParkState() {};
     void tick(StateMachine* state_machine, VehicleData* vehicle_data);
     bool debugState(StateMachine* state_machine);
 };
 
-class CheckDestinationState : AbstractState {
+class CheckDestinationState : public AbstractState {
   public:
+    ~CheckDestinationState() {};
     void tick(StateMachine* state_machine, VehicleData* vehicle_data);
     bool debugState(StateMachine* state_machine);
 };
 
-class CheckStopSignState : AbstractState {
+class CheckStopSignState : public AbstractState {
   public:
+    ~CheckStopSignState() {};
     void tick(StateMachine* state_machine, VehicleData* vehicle_data);
     bool debugState(StateMachine* state_machine);
 };
 
-class PerformingTaxiStopState : AbstractState {
+class PerformingTaxiStopState : public AbstractState {
   public:
+    ~PerformingTaxiStopState() {};
     void tick(StateMachine* state_machine, VehicleData* vehicle_data);
     bool debugState(StateMachine* state_machine);
 };
 
-class DrivePathState : AbstractState {
+class DrivePathState : public AbstractState {
   public:
-    void tick(StateMachine* state_machine, VehicleData* vehicle_data);
-    bool debugState(StateMachine* state_machine);
-};
-
-class WaitingForObstacleState : AbstractState {
-  public:
+    ~DrivePathState() {};
     void tick(StateMachine* state_machine, VehicleData* vehicle_data);
     bool debugState(StateMachine* state_machine);
 };

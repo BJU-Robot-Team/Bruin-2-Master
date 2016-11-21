@@ -5,6 +5,10 @@
 
 #include "state_machine/vehicle_data.h"
 
+
+//If you change the states or events you need to change the state machine 
+//   constructor which builds the state table transition
+
 //list of possible machine states
 enum VehicleStates {
     INVALID_STATE,
@@ -61,7 +65,7 @@ class StateMachine {
   private:
 
     //table describing what states an event can trigger 
-    std::vector< StateTableRow > state_transition_table;
+    std::vector< StateTableRow > state_transition_table {};
     bool lock_transition_table = false; //table can only be added to at the beginning 
 
     //the current state
@@ -82,6 +86,7 @@ class StateMachine {
     bool debug_mode = false;
 
     StateMachine();
+    ~StateMachine();
 
     //called to trigger a transition by a state
     void internalEvent(VehicleEvents event);

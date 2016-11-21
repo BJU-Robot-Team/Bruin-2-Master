@@ -4,7 +4,7 @@
 
 #include <string>
 
-void WaitForCommandState::tick(StateMachine* state_machine, VehicleData* vehicle_data) {
+void ShutdownState::tick(StateMachine* state_machine, VehicleData* vehicle_data) {
 
     //call the state's debug function if we are in debug mode.
     if (state_machine->debug_mode) {
@@ -21,16 +21,11 @@ void WaitForCommandState::tick(StateMachine* state_machine, VehicleData* vehicle
 
 
 
-bool WaitForCommandState::debugState(StateMachine* state_machine) {
+bool ShutdownState::debugState(StateMachine* state_machine) {
 
     std::vector<std::string> line_desc;
     std::vector<VehicleEvents> event_lines;
 
-    line_desc.push_back("SHUTDOWN_REQUESTED");
-    event_lines.push_back(SHUTDOWN_REQUESTED);
 
-    line_desc.push_back("STATION_REQUESTED");
-    event_lines.push_back(STATION_REQUESTED);
-
-    return queryUserForTransition("WAIT_FOR_COMMAND", state_machine, line_desc,  event_lines);
+    return queryUserForTransition("SHUTDOWN", state_machine, line_desc,  event_lines);
 }

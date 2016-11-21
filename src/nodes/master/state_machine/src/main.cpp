@@ -4,7 +4,6 @@
 #include "state_machine/vehicle_data.h"
 
 
-
 #include <vector>
 #include <string>
 
@@ -21,6 +20,7 @@ int main(void) {
     //start main loop
     bool running = true;
     while (running) {
+
         //check all ROS topics and update vehicle data object
         //ros_interface.pollTopics(vehicle_data);
 

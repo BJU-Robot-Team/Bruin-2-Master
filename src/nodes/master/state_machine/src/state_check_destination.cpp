@@ -34,5 +34,5 @@ bool CheckDestinationState::debugState(StateMachine* state_machine) {
     line_desc.push_back("AT_DESTINATION");
     event_lines.push_back(AT_DESTINATION);
 
-    return queryUserForTransition(state_machine, line_desc,  event_lines);
+    return queryUserForTransition("DETECT_STATION", state_machine, line_desc,  event_lines);
 }

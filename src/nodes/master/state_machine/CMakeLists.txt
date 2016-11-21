@@ -7,7 +7,7 @@ project(state_machine)
 find_package(catkin REQUIRED)
 
 
-set(CMAKE_CXX_FLAGS "-std=c++0x -defCSV_IO_NO_THREAD ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-std=c++11 -DCSV_IO_NO_THREAD -ggdb -Wall ${CMAKE_CXX_FLAGS}")
 
 
 OPTION(CSV_THREADS "Option description" ON)
@@ -137,17 +137,18 @@ include_directories(
 ## Declare a C++ executable
 add_executable(state_machine_node 
     src/main.cpp
+    src/state_machine.cpp
     src/state_initalize.cpp
+    src/state_shutdown.cpp
     src/state_release_break.cpp
     src/state_check_destination.cpp
     src/state_initial_obstacle_detect.cpp  
     src/state_wait_for_command.cpp
     src/state_check_stop_sign.cpp    
-    src/state_machine.cpp
     src/state_detect_station.cpp     
     src/state_park.cpp
-    src/waypoint_map.cpp
     src/state_drive_path.cpp
+    src/waypoint_map.cpp
     src/state_performing_taxi_stop.cpp
 )
 
