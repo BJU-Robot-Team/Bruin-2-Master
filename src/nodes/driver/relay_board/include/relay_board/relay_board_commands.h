@@ -17,8 +17,16 @@ class RelayBoardCommands {
 
   public:
 
+    bool debug_mode = true;
+
 
     RelayBoardCommands();
+
+    //print out debuginfo for a serial transaction
+    void debugPrint(std::string command_str, size_t bytes_wrote, std::string result);
+
+    //write the given command to serial then read the next message
+    std::string serialTransaction(serial::Serial& my_serial, std::string command_str);
 
     //gets the relay board software version
     std::string version(serial::Serial& my_serial);

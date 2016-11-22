@@ -4,6 +4,7 @@
 #include <serial/serial.h>
 #include <serial/utils/serial_listener.h>
 
+#include <iostream>
 #include <string>
 
 
@@ -17,16 +18,44 @@ RelayBoardCommands::RelayBoardCommands() { //std::string port){
 }
 
 
+//some helper functions
+
+//print out debuginfo for a serial transaction
+void RelayBoardCommands::debugPrint(std::string command_str, size_t bytes_wrote, std::string result) {
+
+    if (debug_mode) {
+        //report
+        std::cout << "Bytes written: " << bytes_wrote;
+        //std::cout << ", Command written: " << command_str; //TODO: only send the string that was actually written
+        std::cout << ", Bytes read: " << result.length();
+        std::cout << ", String read: " << result << std::endl;
+    }
+}
+
+
+//write the given command to serial then read the next message
+std::string RelayBoardCommands::serialTransaction(serial::Serial& my_serial, std::string command_str) {
+
+    size_t bytes_wrote = my_serial.write(command_str);
+
+    //read response
+    std::string result = my_serial.read(command_str.length()+1);
+
+    debugPrint(command_str, bytes_wrote, result);
+
+    return result;
+}
+
+
 //define valid commands
 
 //gets the relay board software version
 std::string RelayBoardCommands::version(serial::Serial& my_serial) {
     //send command
     std::string command_str = "ver";
-    size_t bytes_wrote = my_serial.write(command_str);
 
-    //read response
-    std::string result = my_serial.read(command_str.length()+1);
+    //send command and recive the response
+    std::string result = serialTransaction(my_serial, command_str);
 
     return result;
 }
@@ -36,10 +65,9 @@ std::string RelayBoardCommands::version(serial::Serial& my_serial) {
 std::string RelayBoardCommands::relayOn(serial::Serial& my_serial, unsigned int relay_id) {
     //send command
     std::string command_str = "relay on "+relay_id;
-    size_t bytes_wrote = my_serial.write(command_str);
-
-    //read response
-    std::string result = my_serial.read(command_str.length()+1);
+    
+    //send command and recive the response
+    std::string result = serialTransaction(my_serial, command_str);
 
     return result;
 }
@@ -49,10 +77,9 @@ std::string RelayBoardCommands::relayOn(serial::Serial& my_serial, unsigned int 
 std::string RelayBoardCommands::relayOff(serial::Serial& my_serial, unsigned int relay_id) {
     //send command
     std::string command_str = "relay off "+relay_id;
-    size_t bytes_wrote = my_serial.write(command_str);
-
-    //read response
-    std::string result = my_serial.read(command_str.length()+1);
+    
+    //send command and recive the response
+    std::string result = serialTransaction(my_serial, command_str);
 
     return result;
 }
@@ -61,10 +88,9 @@ std::string RelayBoardCommands::relayOff(serial::Serial& my_serial, unsigned int
 std::string RelayBoardCommands::relayRead(serial::Serial& my_serial, unsigned int relay_id) {
     //send command
     std::string command_str = "relay read "+relay_id;
-    size_t bytes_wrote = my_serial.write(command_str);
-
-    //read response
-    std::string result = my_serial.read(command_str.length()+1);
+    
+    //send command and recive the response
+    std::string result = serialTransaction(my_serial, command_str);
 
     return result;
 }
@@ -74,10 +100,9 @@ std::string RelayBoardCommands::relayRead(serial::Serial& my_serial, unsigned in
 std::string RelayBoardCommands::gpioRead(serial::Serial& my_serial, unsigned int gpio_id) {
     //send command
     std::string command_str = "gpio read "+gpio_id;
-    size_t bytes_wrote = my_serial.write(command_str);
-
-    //read response
-    std::string result = my_serial.read(command_str.length()+1);
+    
+    //send command and recive the response
+    std::string result = serialTransaction(my_serial, command_str);
 
     return result;
 }
