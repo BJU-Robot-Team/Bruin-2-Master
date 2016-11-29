@@ -20,7 +20,7 @@ class RelayBoardCommands {
     bool debug_mode = true;
 
 
-    RelayBoardCommands();
+    RelayBoardCommands(serial::Serial& my_serial);
 
     //print out debuginfo for a serial transaction
     void debugPrint(std::string command_str, size_t bytes_wrote, std::string result);

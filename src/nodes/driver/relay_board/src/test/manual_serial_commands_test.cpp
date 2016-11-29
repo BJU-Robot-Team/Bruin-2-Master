@@ -8,11 +8,12 @@
 
 int main(void) {
 
-    std::string port = "";
+    std::string port = "/dev/ttyACM0";
     unsigned long baud = 9600;
 
     serial::Serial my_serial(port, baud, serial::Timeout::simpleTimeout(1000));
-    RelayBoardCommands relay_command_interface;
+    RelayBoardCommands relay_command_interface(my_serial);
+    my_serial.setFlowcontrol(serial::flowcontrol_none);
 
     std::string answer_str;
     int answer_int;
