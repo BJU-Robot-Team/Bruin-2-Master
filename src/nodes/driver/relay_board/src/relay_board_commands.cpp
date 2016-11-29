@@ -10,6 +10,11 @@
 
 //setup constructor
 RelayBoardCommands::RelayBoardCommands() { //std::string port){
+
+    //TODO: for some reason we cannot use operator= with the Serial class so we 
+    //  have to pass it to each function instead of having it in a member variable
+    //  Fix/"get around" this issue and remove passing Serial class by referance
+    
     //set variables
     //unsigned long baud = 9600;
 
