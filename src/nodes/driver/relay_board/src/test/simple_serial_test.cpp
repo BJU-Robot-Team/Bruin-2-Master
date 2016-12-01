@@ -30,7 +30,7 @@ int main(void) {
 
     //send command
     command_str = "ver";
-    bytes_wrote = my_serial.write(command_str);
+    bytes_wrote = my_serial.write(command_str+"\r\n");
 
     usleep(10000);
 
