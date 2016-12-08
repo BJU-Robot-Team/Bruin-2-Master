@@ -163,7 +163,7 @@ int main(int argc, char **argv)
     ROSInterface ros_interface;
 
     //setup serial connection
-    string port = "";
+    string port = "/dev/ttyAMC1";
     unsigned long baud = 19200;
 
     serial::Serial my_serial(port, baud, serial::Timeout::simpleTimeout(1000));
@@ -184,7 +184,7 @@ int main(int argc, char **argv)
 		
 	    //send data out to main program.
 	    //tester.SendData(compData);
-        
+        ros_interface.publishMessages(compData);
 
     }    
 
