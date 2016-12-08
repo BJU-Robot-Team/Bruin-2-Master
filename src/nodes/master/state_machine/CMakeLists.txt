@@ -4,7 +4,10 @@ project(state_machine)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED)
+find_package(catkin REQUIRED COMPONENTS
+  relay_board
+  roscpp
+)
 
 
 set(CMAKE_CXX_FLAGS "-std=c++11 -DCSV_IO_NO_THREAD -ggdb -Wall ${CMAKE_CXX_FLAGS}")
@@ -50,11 +53,11 @@ ENDIF(CSV_THREADS)
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+#add_message_files(
+#  FILES
+#  RelayCommandMsg.msg
+#  RelayDataMsg.msg
+#)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -109,7 +112,6 @@ catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES state_machine
 #  CATKIN_DEPENDS other_catkin_pkg
-#  DEPENDS system_lib
 )
 
 ###########
@@ -161,9 +163,9 @@ src/waypoint_map.cpp)
 #add_dependencies(state_machine_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(state_machine_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(state_machine_node
+  ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##
@@ -180,11 +182,9 @@ src/waypoint_map.cpp)
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS state_machine state_machine_node
-#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+install(TARGETS state_machine_node
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 ## Mark cpp header files for installation
 install(DIRECTORY include/${PROJECT_NAME}/

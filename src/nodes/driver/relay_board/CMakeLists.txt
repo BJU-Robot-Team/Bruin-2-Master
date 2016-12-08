@@ -7,6 +7,9 @@ project(relay_board)
 find_package(catkin REQUIRED COMPONENTS
   serial
   serial_utils
+  roscpp
+  std_msgs
+  message_generation
 )
 
 
@@ -47,11 +50,11 @@ set(CMAKE_CXX_FLAGS "-std=c++11 -ggdb -Wall ${CMAKE_CXX_FLAGS}")
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+  FILES
+  RelayCommandMsg.msg
+  RelayDataMsg.msg
+)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -68,10 +71,10 @@ set(CMAKE_CXX_FLAGS "-std=c++11 -ggdb -Wall ${CMAKE_CXX_FLAGS}")
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  std_msgs  # Or other packages containing msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -107,6 +110,7 @@ catkin_package(
 #  LIBRARIES serial_driver
   CATKIN_DEPENDS serial
   CATKIN_DEPENDS serial_utils
+  CATKIN_DEPENDS message_runtime
 #  DEPENDS system_lib
 )
 
@@ -139,6 +143,10 @@ add_executable(relay_board_manual_serial_commands_test
     src/test/manual_serial_commands_test.cpp 
     src/relay_board_commands.cpp)
 
+add_executable(relay_board_node
+    src/main.cpp 
+    src/relay_board_commands.cpp)
+
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(serial_driver_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
@@ -149,6 +157,10 @@ target_link_libraries(relay_board_simple_serial_test
 )
 
 target_link_libraries(relay_board_manual_serial_commands_test
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(relay_board_node
   ${catkin_LIBRARIES}
 )
 
@@ -167,11 +179,9 @@ target_link_libraries(relay_board_manual_serial_commands_test
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS serial_driver serial_driver_node
-#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+install(TARGETS relay_board_node
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 ## Mark cpp header files for installation
 install(DIRECTORY include/${PROJECT_NAME}/
