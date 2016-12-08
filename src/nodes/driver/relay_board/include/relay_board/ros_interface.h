@@ -39,6 +39,9 @@ class ROSInterface {
          auto relay_msg = 
             ros::topic::waitForMessage<relay_board::RelayCommandMsg>("RelayControl", InterfaceHandle, ros::Duration(.01));
 
+        //updates ROS (if this isn't here ROS doesn't know this node is subcribed)
+        ros::spinOnce();
+
         if (relay_msg != NULL) {
 
             publishMessages("relay", 0, "ON");
@@ -50,9 +53,7 @@ class ROSInterface {
             return false;
         }
 
-        //updates ROS (if this isn't here ROS doesn't know this node is subcribed)
-        ros::spinOnce();
-
+        
     }
 
     //push data to listeners

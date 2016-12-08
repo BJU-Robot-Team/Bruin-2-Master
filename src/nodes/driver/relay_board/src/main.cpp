@@ -16,8 +16,8 @@ int main(int argc, char **argv) {
     std::string port = "/dev/ttyAMC0";
     unsigned long baud = 9600;
 
-    //serial::Serial my_serial(port, baud, serial::Timeout::simpleTimeout(1000));
-    RelayBoardCommands relay_command_interface;
+    serial::Serial my_serial(port, baud, serial::Timeout::simpleTimeout(1000));
+    RelayBoardCommands relay_command_interface(my_serial);
 
     //setup main loop
     std::string device_type = "";
