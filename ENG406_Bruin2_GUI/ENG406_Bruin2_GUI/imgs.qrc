@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/imgs">
+        <file>OFFICIAL_GUI_MAP.png</file>
+        <file>location.png</file>
+        <file>c_loc.png</file>
+        <file>close-button.png</file>
+    </qresource>
+</RCC>

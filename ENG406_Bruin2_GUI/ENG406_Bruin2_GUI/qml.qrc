@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Map.qml</file>
+        <file>Locations.qml</file>
+        <file>DebugPopUp.qml</file>
+        <file>menu_items.qml</file>
+    </qresource>
+</RCC>
