@@ -1,5 +1,6 @@
 <launch>
 
+    <node name="compass_driver" pkg="compass" type="compass_node" />    
     <node name="relay_board_driver" pkg="relay_board" type="relay_board_node" />    
 
     <node name="state_machine_program" pkg="state_machine" type="state_machine_node" output="screen" />
