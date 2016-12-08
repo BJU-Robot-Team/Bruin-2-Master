@@ -6,6 +6,7 @@ project(state_machine)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   relay_board
+  compass
   roscpp
 )
 

@@ -1,9 +1,48 @@
-#ifndef VEHICLE_H 
-#define VEHICLE_H
+#ifndef VEHICLE_DATA_H 
+#define VEHICLE_DATA_H
 
+#include <string>
+#include <vector>
+#include <iostream>
+
+
+//state for a single relay board device
+struct RelayDeviceStateData {
+    std::string device_type;
+    int device_number;
+    std::string device_state;
+
+    RelayDeviceStateData(std::string device_type, int device_number) 
+      : device_type(device_type), device_number(device_number) {
+        device_state = "unknown";
+    }
+};
 
 struct VehicleData {
 
+    std::vector<RelayDeviceStateData> relay_states;
+    std::vector<RelayDeviceStateData> gpio_states;
+
+    //gps data for current location
+    double position_latitude  = 0;
+    double position_longitude = 0;
+
+    //Vehicle heading
+    double position_heading = 0;
+
+    VehicleData() {
+
+        const int number_of_relays = 16;
+        for (int i = 0; i < number_of_relays; i++) {
+            relay_states.push_back(RelayDeviceStateData("relay", i));
+        }
+
+        const int number_of_gpios = 6;
+        for (int i = 0; i < number_of_gpios; i++) {
+            gpio_states.push_back(RelayDeviceStateData("gpio", i));
+        }
+
+    }
 
 };
 

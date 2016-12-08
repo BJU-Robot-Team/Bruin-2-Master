@@ -6,8 +6,12 @@
 #include "ros/ros.h"
 #include "relay_board/RelayCommandMsg.h"
 #include "relay_board/RelayDataMsg.h"
+#include "compass/CompassDataMsg.h"
 
 #include <iostream>
+#include <string>
+#include <locale>
+
 
 void startROS(int argc, char **argv){
     //initilize ROS and the Node
@@ -39,16 +43,39 @@ class ROSInterface {
     //poll data from listeners
     void pollMessages(VehicleData* vehicle_data) {
 
+        //get relay data
         auto relay_msg = 
             ros::topic::waitForMessage<relay_board::RelayDataMsg>("RelayData", InterfaceHandle, ros::Duration(.01));
 
         if (relay_msg != NULL) {
 
             std::cout << relay_msg->device_type << " - #: " << relay_msg->device_number << "; State: " <<  relay_msg->state << std::endl;
+            if ( relay_msg->device_type == "relay" ) {
+                vehicle_data->relay_states[relay_msg->device_number].device_state = relay_msg->state;
+            } else if ( relay_msg->device_type == "gpio" ) {
+                vehicle_data->gpio_states[relay_msg->device_number].device_state = relay_msg->state;
+            } else {
+                //print debug
+            }
 
         } else {
             std::cout << "no message" << std::endl;
         }
+
+        //get compass data
+        auto compass_msg = 
+            ros::topic::waitForMessage<compass::CompassDataMsg>("CompassData", InterfaceHandle, ros::Duration(.01));
+
+        if (compass_msg != NULL) {
+
+            std::cout << "Compass heading: " << compass_msg->heading << std::endl;
+            vehicle_data->position_heading = compass_msg->heading;
+            
+
+        } else {
+            std::cout << "no message" << std::endl;
+        }
+
 
         //updates ROS (if this isn't here ROS doesn't know this node is subcribed)
         ros::spinOnce();
