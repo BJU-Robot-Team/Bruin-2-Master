@@ -44,7 +44,9 @@ class ROSInterface {
 
         if (relay_msg != NULL) {
 
-            publishMessages("relay", 0, "ON");
+            device_type = relay_msg->device_type;
+            device_num = relay_msg->device_number;
+            command = relay_msg->command;
 
             return true;
 

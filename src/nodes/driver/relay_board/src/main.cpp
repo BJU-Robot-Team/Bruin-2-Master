@@ -33,26 +33,42 @@ int main(int argc, char **argv) {
             //device is a relay
             if (device_type == "relay") {
 
+                //TODO: we should probebly read the state to make sure it actually changed
+                //   since a normal command to the relay board returns nothing
+
                 if (command == "on") {
-                    //state = relay_command_interface.relayOn(my_serial, device_num);
+                    relay_command_interface.relayOn(my_serial, device_num);
+                    state = "on";
 
                 } else if (command == "off") {
-                    //state = relay_command_interface.relayOff(my_serial, device_num);
+                    relay_command_interface.relayOff(my_serial, device_num);
+                    state = "off"; 
+                } else if (command == "read") {
+                    state = relay_command_interface.relayRead(my_serial, device_num);
+                    state = state.substr(state.find(" ") + 1); 
                 }
-
-                //ros_interface.publishMessages(device_type, device_num, state);
- 
-                //reset values
-                device_type = "";
-                device_num = -1;
-                command = "";
-                state = "";
 
 
             //device is a gpio command
             } else {
 
+                 if (command == "read") {
+                    state = relay_command_interface.gpioRead(my_serial, device_num);
+                    state = state.substr(state.find(" ") + 1); 
+
+                }
+
             }
+
+            //send message to anyone listening so they know the sate has changed
+            ros_interface.publishMessages(device_type, device_num, state);
+ 
+            //reset values
+            device_type = "";
+            device_num = -1;
+            command = "";
+            state = "";
+
         }
 
     }
