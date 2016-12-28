@@ -4,7 +4,8 @@
 
 #we need to be sudo so the driver nodes can access /dev and the serial devices
 #   that get mounted there
-su
+# We need a way to do this without resorting to running as root!
+# su
 
 #build the system
 #$(catkin_make clean)
