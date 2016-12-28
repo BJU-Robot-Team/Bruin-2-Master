@@ -20,28 +20,28 @@ class RelayBoardCommands {
     bool debug_mode = true;
 
 
-    RelayBoardCommands(serial::Serial& my_serial);
+    RelayBoardCommands(serial::Serial *my_serial);
 
     //print out debuginfo for a serial transaction
     void debugPrint(std::string command_str, size_t bytes_wrote, std::string result);
 
     //write the given command to serial then read the next message
-    std::string serialTransaction(serial::Serial& my_serial, std::string command_str);
+    std::string serialTransaction(serial::Serial *my_serial, std::string command_str);
 
     //gets the relay board software version
-    std::string version(serial::Serial& my_serial);
+    std::string version(serial::Serial *my_serial);
 
     //turn on a specified relay on the board
-    std::string relayOn(serial::Serial& my_serial, unsigned int relay_id);
+    std::string relayOn(serial::Serial *my_serial, unsigned int relay_id);
 
     //turn off a specified relay on the board
-    std::string relayOff(serial::Serial& my_serial, unsigned int relay_id);
+    std::string relayOff(serial::Serial *my_serial, unsigned int relay_id);
 
     //get the current status of a specified relay on the board
-    std::string relayRead(serial::Serial& my_serial, unsigned int relay_id);
+    std::string relayRead(serial::Serial *my_serial, unsigned int relay_id);
 
     //get the current status of a specified relay on the board
-    std::string gpioRead(serial::Serial& my_serial, unsigned int gpio_id);
+    std::string gpioRead(serial::Serial *my_serial, unsigned int gpio_id);
 
 };
 

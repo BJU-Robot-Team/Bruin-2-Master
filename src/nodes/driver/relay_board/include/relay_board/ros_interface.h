@@ -51,7 +51,7 @@ class ROSInterface {
             return true;
 
         } else {
-            std::cout << "no message" << std::endl;
+            // std::cout << "no message" << std::endl;
             return false;
         }
 
