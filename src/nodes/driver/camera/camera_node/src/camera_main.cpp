@@ -1,16 +1,21 @@
 // camera_main
 // V1.0 by Bill Lovegrove modified from Michael Boye's beta code
 // added integration with ROS
+// V1.1 added green/blue target tracking
 using namespace std;
 
 // Factors when searching for green/blue tracking target
-// saaume green square above blue square
-#define TARGET_WIDTH 0.1 // in meters
-#define WIDTH_MIN 15     // squares must be at least this many pixels
-#define SQUARE_TEST 10   // Difference between height and width bust be less than this many pixels
-#define WIDTH_TOLERANCE 10 // Difference between green and blue width
-#define HORIZONTAL_TOLERANCE 10 // Horizontal offset between blue and green
+// (green square above blue square)
+#define TARGET_WIDTH 0.14           // size of blue/green suqares in meters
+#define TARGET_SPACING 0.26         // center to center spacing of squares
+#define WIDTH_MIN 15                // squares must be at least this many pixels
+#define SQUARE_TEST 20              // Difference between height and width must be less than this many pixels
+#define WIDTH_TOLERANCE 0.1         // Percent error of green and blue width
+#define HORIZONTAL_TOLERANCE 0.1    // Percent error of horizontal offset between blue and green compared to size
 #define BASE_PIXEL_EQUIVALENT 816.0 // See spreadsheet for details
+#define BLUE_THRESHOLD 30
+#define GREEN_THRESHOLD 20
+
 
 #include <iostream>
 #include <vector>
@@ -36,7 +41,7 @@ int main(int argc, char **argv)
     float target_distance;
     float target_direction;
 
-    cout << "Bruin-2 Camera Driver V1.0 Starting" << endl;
+    cout << "Bruin-2 Camera Driver V1.1 Starting" << endl;
 
     //function defined in ros_interface header
     startROS(argc, argv);
@@ -81,7 +86,7 @@ int main(int argc, char **argv)
         {
             for(int x = 0; x < image.cols; x++)                                 //Set up number of columbs to loop through
             {
-                if((image.at<cv::Vec3b>(y,x)[1]-20)>image.at<cv::Vec3b>(y,x)[0] && (image.at<cv::Vec3b>(y,x)[1]-20)>image.at<cv::Vec3b>(y,x)[2])
+                if((image.at<cv::Vec3b>(y,x)[1]-GREEN_THRESHOLD)>image.at<cv::Vec3b>(y,x)[0] && (image.at<cv::Vec3b>(y,x)[1]-GREEN_THRESHOLD)>image.at<cv::Vec3b>(y,x)[2])
                 //Compare Green greater than Red and Green greater than Blue
                 {
 		  igreen.at<uchar>(y,x)=255;
@@ -90,7 +95,7 @@ int main(int argc, char **argv)
                 {
                   igreen.at<uchar>(y,x)=0;
                 }
-                if((image.at<cv::Vec3b>(y,x)[0]-20)>image.at<cv::Vec3b>(y,x)[1] && (image.at<cv::Vec3b>(y,x)[0]-20)>image.at<cv::Vec3b>(y,x)[2])
+                if((image.at<cv::Vec3b>(y,x)[0]-BLUE_THRESHOLD)>image.at<cv::Vec3b>(y,x)[1] && (image.at<cv::Vec3b>(y,x)[0]-BLUE_THRESHOLD)>image.at<cv::Vec3b>(y,x)[2])
                 //Compare Blue greater than Red and Blue greater than green
                 {
 		  iblue.at<uchar>(y,x)=255;
@@ -167,9 +172,9 @@ int main(int argc, char **argv)
                 // look for matching blue but only on right-sized green
     		for( size_t ib = 0; ib < b_contours.size(); ib++ ) {
 			if (
-			  ( abs( g_boundRect[ig].tl().x - b_boundRect[ib].tl().x ) < HORIZONTAL_TOLERANCE ) // on top of each other
+			  ( abs( ((1.0*g_boundRect[ig].tl().x - b_boundRect[ib].tl().x)/g_boundRect[ig].width) ) < HORIZONTAL_TOLERANCE ) // on top of each other
 			  && ( g_boundRect[ig].br().y > b_boundRect[ib].tl().y) // green on top of blue
-			  && ( abs ( g_boundRect[ig].width - b_boundRect[ib].width ) < WIDTH_TOLERANCE ) // similar size
+			  && ( abs ( 1.0 - (1.0*g_boundRect[ig].width/b_boundRect[ib].width) ) < WIDTH_TOLERANCE ) // similar size
 			  && ( g_boundRect[ig].width>WIDTH_MIN) && ( b_boundRect[ib].width>WIDTH_MIN) // minimum size
 			) {
                           int pixels_offset;
@@ -181,8 +186,8 @@ int main(int argc, char **argv)
                           //cout << "br xy" << b_boundRect[ib].br().x << " " << b_boundRect[ib].br().y << " " << image.cols << endl;
 			  pixels_offset = ( b_boundRect[ib].br().x - (image.cols/2) + b_boundRect[ib].width/2 );
 			  target_direction = atan(pixels_offset/BASE_PIXEL_EQUIVALENT);
-			  cout << target_direction << " = " << target_direction*180/3.14159 << " deg" << endl;
-			  target_distance = TARGET_WIDTH * BASE_PIXEL_EQUIVALENT / b_boundRect[ib].width;
+			  //cout << "OK " << target_direction << " = " << target_direction*180/3.14159 << " deg" << endl;
+			  target_distance = TARGET_SPACING * BASE_PIXEL_EQUIVALENT / (g_boundRect[ig].tl().y-b_boundRect[ib].tl().y);
 			}
 		}
             }
