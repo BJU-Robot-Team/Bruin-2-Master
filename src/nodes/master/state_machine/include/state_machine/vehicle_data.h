@@ -30,6 +30,16 @@ struct VehicleData {
     //Vehicle heading
     double position_heading = 0;
 
+    //Folow target data
+    double follow_direction = 0;
+    double follow_distance = 0;
+    bool follow_valid = false;
+
+    // Actuator commands
+    double steer_cmd;
+    double brake_cmd;
+    double speed_cmd;	
+
     VehicleData() {
 
         const int number_of_relays = 16;

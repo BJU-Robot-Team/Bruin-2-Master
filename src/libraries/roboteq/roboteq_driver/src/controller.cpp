@@ -38,9 +38,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <iostream>
 #include <sstream>
 
+
 // Link to generated source from Microbasic script file.
 extern const char* script_lines[];
-extern const int script_ver = 28;
+extern const int script_ver = 29;  // Default script was 28
 
 namespace roboteq {
 

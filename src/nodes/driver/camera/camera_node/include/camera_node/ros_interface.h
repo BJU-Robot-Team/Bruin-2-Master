@@ -40,7 +40,7 @@ class ROSInterface {
         if (ros::ok()) {
             camera_node::CameraDataMsg message;
 
-            //Message has only one boolean field currently
+            //Populate message fields with data
             message.tracking = tracking;
 	    message.direction = direction;
             message.distance = distance;

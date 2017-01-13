@@ -95,4 +95,11 @@ class DrivePathState : public AbstractState {
     bool debugState(StateMachine* state_machine);
 };
 
+class FollowState : public AbstractState {
+  public:
+    ~FollowState() {};
+    void tick(StateMachine* state_machine, VehicleData* vehicle_data);
+    bool debugState(StateMachine* state_machine);
+};
+
 #endif

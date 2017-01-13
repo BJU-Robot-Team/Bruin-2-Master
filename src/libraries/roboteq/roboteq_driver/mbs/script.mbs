@@ -1,5 +1,7 @@
-SCRIPT_VER=28
-MAX_CHANNELS=1
+'Script for BJU Bruin-2
+'Bill Lovegrove, 1/11/2017
+SCRIPT_VER=29
+MAX_CHANNELS=2
 Dim last_mode[2] as Integer
 
 ' Mode values are:
@@ -11,32 +13,34 @@ Dim last_mode[2] as Integer
 last_mode[0] = -127
 setcommand(_VAR, 1, -1)
 
-' Motor controller configuration. Much of this is particular to Grizzly
-' and can be generalized/parameterized as the need arises. Page numbers
-' are a reference to this document:
-' www.roboteq.com/index.php/docman/motor-controllers-documents-and-files/documentation/user-manual/7-nextgen-controllers-user-manual/file
+' Modified from default (originally designed for ClearPath Robotics Grizzly 
+' They use encoder feedback for both position and speed control
+' We will use position relative mode with analog inputs instead
+' These are their comments:
+' 'Motor controller configuration. Much of this is particular to Grizzly	
+' 'and can be generalized/parameterized as the need arises. Page numbers
+' 'are a reference to this document:
+' 'www.roboteq.com/index.php/docman/motor-controllers-documents-and-files/documentation/user-manual/7-nextgen-controllers-user-manual/file
 
 setconfig(_ECHOF, 1) ' Serial echo off (p195)
 setconfig(_RWD, 110) ' Watchdog timeout, milliseconds (p195)
-setconfig(_AMOD, 1, 1) ' Analog input 1 absolute mode
-setconfig(_AMOD, 2, 1) ' Analog input 2 absolute mode
+setconfig(_AMOD, 1, 2) ' Analog input 1 absolute mode (1) or relative (2) if powered by motor controller 5V
+setconfig(_AMOD, 2, 2) ' Analog input 2 absolute mode	
+setconfig(_AINA, 1, 34) ' Analog input 1 is motor 2 (steering) feedback	
+setconfig(_AINA, 4, 18) ' Analog input 4 is motor 1 (brake) feedback	
 
-' Undervoltage/overvoltage limits (p214)
-setconfig(_OVL, 700)
-setconfig(_UVL, 280)
+' Undervoltage/overvoltage limits 16V/10V (p214)
+setconfig(_OVL, 160)
+setconfig(_UVL, 100)
 
 for ch = 1 andwhile ch <= MAX_CHANNELS evaluate ch++
-	' Encoder, speed config (p208, p221)
-	setconfig(_EMOD, ch, 50)
-	setconfig(_EPPR, ch, 1024)
-	setconfig(_MXRPM, ch, 3500)
-	setconfig(_CLERD, ch, 0)
 
-	' Current limit (p216)
-	setconfig(_ALIM, ch, 1500)
-	setconfig(_ATGA, ch, 2000)
-	setconfig(_ATGD, ch, 50)
-	setconfig(_ATRIG, ch, 0)
+	' Current limit, for us 7 amps (p216)
+	setconfig(_ALIM, ch, 70)
+	'Don't understand these parameters and I think we don't need them
+	'setconfig(_ATGA, ch, 2000)
+	'setconfig(_ATGD, ch, 50)
+	'setconfig(_ATRIG, ch, 0)
 
 	' Max acceleration/deceleration (p219)
 	setconfig(_MAC, ch, 20000)
@@ -50,7 +54,7 @@ top:
 
 			' Motor to be stopped (high-Z).
 			if getvalue(_VAR, ch) = -1 then
-				setconfig(_MMOD, ch, 1)
+				setconfig(_MMOD, ch, 1)  ' speed mode, speed 0
 				setconfig(_KP, ch, 0)
 				setconfig(_KI, ch, 0)
 				setconfig(_KD, ch, 0)
@@ -60,7 +64,7 @@ top:
 
 			' Motor in velocity-control mode.
 			if getvalue(_VAR, ch) = 0 then
-				setconfig(_MMOD, ch, 1)
+				setconfig(_MMOD, ch, 1)  ' 1 = closed loop speed
 				setconfig(_KP, ch, 20)
 				setconfig(_KI, ch, 40)
 				setconfig(_KD, ch, 10)
@@ -69,7 +73,7 @@ top:
 
 			' Motor in position-control mode.
 			if getvalue(_VAR, ch) = 1 then
-				setconfig(_MMOD, ch, 3)
+				setconfig(_MMOD, ch, 2) ' 2 = closed loop position relative
 				setconfig(_KP, ch, 2)
 				setconfig(_KI, ch, 0)
 				setconfig(_KD, ch, 0)

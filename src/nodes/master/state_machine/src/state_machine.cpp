@@ -15,7 +15,8 @@ StateMachine::StateMachine() {
 
     //setup table transition table. If adding new states add another row here
     //                 Event         : Current State   : Next State
-    buildTableRow(INITIALIZE_FINISHED, INITIALIZE      , DETECT_STATION         );
+    buildTableRow(INITIALIZE_FINISHED, INITIALIZE      , FOLLOW         ); // DETECT_STATION for taxi mode
+    buildTableRow(ENTER_FOLLOW       , INITIALIZE      , FOLLOW   );
     buildTableRow(STATION_DETECTED   , DETECT_STATION  , WAIT_FOR_COMMAND       );
     buildTableRow(SHUTDOWN_REQUESTED , WAIT_FOR_COMMAND, SHUTDOWN               );
     buildTableRow(STATION_REQUESTED  , WAIT_FOR_COMMAND, INITIAL_OBSTACLE_DETECT);
@@ -32,6 +33,8 @@ StateMachine::StateMachine() {
     buildTableRow(STOP_SIGN         , CHECK_STOP_SIGN     , PERFORMING_TAXI_STOP);
     buildTableRow(TAXI_STOP_FINISHED, PERFORMING_TAXI_STOP, DRIVE_PATH          );
     buildTableRow(PATH_FINISHED     , DRIVE_PATH          , CHECK_DESTINATION   );
+    buildTableRow(SHUTDOWN_REQUESTED, FOLLOW              , SHUTDOWN            );
+
 
 
     //create state_objects
@@ -47,6 +50,7 @@ StateMachine::StateMachine() {
     addState(CHECK_STOP_SIGN        , new CheckStopSignState);
     addState(PERFORMING_TAXI_STOP   , new PerformingTaxiStopState);
     addState(DRIVE_PATH             , new DrivePathState);
+    addState(FOLLOW                 , new FollowState);
 
     //lock table so we cannot add to it anymore
     lock_transition_table = true;

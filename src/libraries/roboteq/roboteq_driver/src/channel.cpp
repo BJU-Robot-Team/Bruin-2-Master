@@ -42,7 +42,8 @@ Channel::Channel(int channel_num, std::string ns, Controller* controller) :
 
   // Don't start this timer until we've received the first motion command, otherwise it
   // can interfere with code download on device startup.
-  timeout_timer_ = nh_.createTimer(ros::Duration(0.1), &Channel::timeoutCallback, this);
+  // Default 0.1, changed temporarily to 1.0 for fewer timeouts in testing
+  timeout_timer_ = nh_.createTimer(ros::Duration(1.0), &Channel::timeoutCallback, this);
   timeout_timer_.stop();
 }
 
@@ -69,7 +70,9 @@ void Channel::cmdCallback(const roboteq_msgs::Command& command)
   else if (command.mode == roboteq_msgs::Command::MODE_POSITION)
   {
     // Convert the commanded position in rads to encoder ticks.
-    int roboteq_position = to_encoder_ticks(command.setpoint);
+    // Bruin-2 uses absolute positioning so this conversion is not appropriate
+    // int roboteq_position = to_encoder_ticks(command.setpoint);
+    int roboteq_position = command.setpoint;
     ROS_DEBUG_STREAM("Commanding " << roboteq_position << " position to motor driver.");
 
     // Write command to the motor driver.

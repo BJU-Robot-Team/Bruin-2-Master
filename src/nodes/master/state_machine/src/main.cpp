@@ -7,7 +7,7 @@
 #include <vector>
 #include <string>
 
-//print vehicle data for debug pourposes
+//print vehicle data for debug purposes
 //TODO: Should be in VehicleData.h but has multiple definitions error and I ran out of time.
 void vehicleDataPrint(VehicleData* vehicle_data){
     std::cout << "########################" << std::endl
@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
     StateMachine state_machine;
     VehicleData* vehicle_data = new VehicleData();
     
-    state_machine.debug_mode = true;
+    state_machine.debug_mode = false;
     bool turn_off_light = false;
     int light_count = 0;
 
@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
                 turn_off_light = true;
                 light_count = 0;
             }
-        }
+        }	
 
         //check all ROS topics and update vehicle data object
         ros_interface.pollMessages(vehicle_data);
@@ -79,6 +79,23 @@ int main(int argc, char **argv) {
         if (state_machine.debug_mode) {
             vehicleDataPrint(vehicle_data);
         }
+
+        // Publish the command messages
+        roboteq_msgs::Command steerMessage;
+        roboteq_msgs::Command brakeMessage;
+        roboteq_msgs::Command speedMessage;
+
+        steerMessage.mode = 1; // 1=MODE_POSITION, 0=MODE_SPEED	
+        brakeMessage.mode = 1;
+        speedMessage.mode = 0; // MODE_SPEED
+
+        steerMessage.setpoint = vehicle_data->steer_cmd;
+        speedMessage.setpoint = vehicle_data->speed_cmd;
+        brakeMessage.setpoint = vehicle_data->brake_cmd;
+
+        ros_interface.steer_pub.publish(steerMessage);
+        ros_interface.brake_pub.publish(brakeMessage);
+        ros_interface.speed_pub.publish(speedMessage);
 
         //check if we are finished
     }

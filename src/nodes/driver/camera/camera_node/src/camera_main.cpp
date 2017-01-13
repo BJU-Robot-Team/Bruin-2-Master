@@ -10,8 +10,8 @@ using namespace std;
 #define TARGET_SPACING 0.26         // center to center spacing of squares
 #define WIDTH_MIN 15                // squares must be at least this many pixels
 #define SQUARE_TEST 20              // Difference between height and width must be less than this many pixels
-#define WIDTH_TOLERANCE 0.1         // Percent error of green and blue width
-#define HORIZONTAL_TOLERANCE 0.1    // Percent error of horizontal offset between blue and green compared to size
+#define WIDTH_TOLERANCE 0.2         // Percent error of green and blue width
+#define HORIZONTAL_TOLERANCE 0.2    // Percent error of horizontal offset between blue and green compared to size
 #define BASE_PIXEL_EQUIVALENT 816.0 // See spreadsheet for details
 #define BLUE_THRESHOLD 30
 #define GREEN_THRESHOLD 20
@@ -62,7 +62,7 @@ int main(int argc, char **argv)
         Mat image, dst, cdst, cimg, igreen, iblue, bnw;                                        //Image transformation variables
 
         cap>>image;                                                           //Get a new frame from camera
- 	cout << "Got a new image." << endl;
+ 	//cout << "Got a new image." << endl;
         //imshow("Camera Image", image);                                         
         medianBlur(image,image,5);                                              //Smooth out the image
         flip(image,image,-1);                                                   //Flip image upside down because camera is mounted upside down--uncomment for final code

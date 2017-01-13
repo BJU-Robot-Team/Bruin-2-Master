@@ -167,7 +167,7 @@ int main(int argc, char **argv)
     ROSInterface ros_interface;
 
     //setup serial connection
-    string port = "/dev/ttyAMC1";
+    string port = "/dev/compass";
     unsigned long baud = 19200;
     int fake_compass = 0;
     string rawData;
@@ -190,14 +190,17 @@ int main(int argc, char **argv)
     //tester object to call data manipulation methods from.
 	ManipulateData tester;	
 	
-    //load real or fake data 
+    //load real or fake data - outside the loop !?!?!?!?!? 
     if ( fake_compass) {
         cout << "Compass continuing with fake data (21.1 degrees)..." << endl; 
 	rawData = "$C21.1P-45.6R-163.4T20.5*27";
 	ROS_ERROR_STREAM("Compass continuing with fake data (21.1 degrees)..." << endl);
     }
     else {
-        rawData = readSerial(my_serial);
+        rawData = readSerial(my_serial); // Doesn't read a whole line !?!?!?!?
+        cout << "[" << rawData << "]" << endl;
+	rawData = "$C21.2P-45.6R-163.4T20.5*28"; // Fake data since code doesn't work
+
     }	
 
     while (ros_interface.isNodeRunning()) {

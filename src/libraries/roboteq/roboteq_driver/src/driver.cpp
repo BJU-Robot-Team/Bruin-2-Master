@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "~");
   ros::NodeHandle nh("~");
 
-  std::string port = "/dev/ttyUSB0";
+  std::string port = "/dev/roboteq";
   int32_t baud = 115200;
   nh.param<std::string>("port", port, port);
   nh.param<int32_t>("baud", baud, baud);

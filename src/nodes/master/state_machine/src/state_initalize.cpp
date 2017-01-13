@@ -28,7 +28,7 @@ void InitilizeState::tick(StateMachine* state_machine, VehicleData* vehicle_data
 
 
     //if all checks above come out true send state machine a transition event
-    //state_machine->internalEvent(INITIALIZE_FINISHED)
+    state_machine->internalEvent(INITIALIZE_FINISHED);
 }
 
 
@@ -39,6 +39,8 @@ bool InitilizeState::debugState(StateMachine* state_machine) {
 
     line_desc.push_back("INITIALIZE_FINISHED");
     event_lines.push_back(INITIALIZE_FINISHED);
+    line_desc.push_back("ENTER_FOLLOW");
+    event_lines.push_back(ENTER_FOLLOW);
 
     return queryUserForTransition("INITIALIZE", state_machine, line_desc,  event_lines);
 }

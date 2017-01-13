@@ -153,6 +153,7 @@ add_executable(state_machine_node
     src/state_drive_path.cpp
     src/waypoint_map.cpp
     src/state_performing_taxi_stop.cpp
+    src/state_follow.cpp
 )
 
 #Unit Tests

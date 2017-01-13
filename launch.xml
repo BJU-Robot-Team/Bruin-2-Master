@@ -1,7 +1,13 @@
+<!-- Launch file for Bruin2, the BJU Autonomous Vehicle -->
+<!-- name is a name of your choosing -->
+<!-- plk is the package name as defined in each project.xml -->
+<!-- type is executable listed in CMakeLists.txt? -->
 <launch>
-
     <node name="compass_driver" pkg="compass" type="compass_node" output="screen" />    
     <node name="relay_board_driver" pkg="relay_board" type="relay_board_node" output="screen" />    
     <node name="camera_driver" pkg="camera_node" type="camera_node" output="screen" />
+    <node name="roboteq_driver" pkg="roboteq_driver" type="roboteq_node" output="screen">
+	<rosparam param="channels">['brake', 'steer']</rosparam>
+    </node>
     <node name="state_machine_program" pkg="state_machine" type="state_machine_node" output="screen" />
 </launch>
