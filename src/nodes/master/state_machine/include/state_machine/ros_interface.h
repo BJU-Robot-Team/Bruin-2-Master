@@ -1,3 +1,4 @@
+// State machine ROS Details
 #ifndef ROS_INTERFACE_H 
 #define ROS_INTERFACE_H
 
@@ -9,6 +10,7 @@
 #include "compass/CompassDataMsg.h"
 #include "camera_node/CameraDataMsg.h"
 #include "roboteq_msgs/Command.h"
+#include "digipot/DigipotDataMsg.h"
 #include "/home/bruin2/bruin_2_code/src/libraries/roboteq/roboteq_driver/include/roboteq_driver/controller.h"
 
 #include <iostream>
@@ -41,7 +43,7 @@ public:
         relay_pub = InterfaceHandle.advertise<relay_board::RelayCommandMsg>("RelayControl", 1000);
         steer_pub = InterfaceHandle.advertise<roboteq_msgs::Command>("steer/cmd", 1000);
         brake_pub = InterfaceHandle.advertise<roboteq_msgs::Command>("brake/cmd", 1000);
-        speed_pub = InterfaceHandle.advertise<roboteq_msgs::Command>("speed", 1000);
+        speed_pub = InterfaceHandle.advertise<digipot::DigipotDataMsg>("/digipot/cmd", 1000);
 
     }
 

@@ -83,14 +83,13 @@ int main(int argc, char **argv) {
         // Publish the command messages
         roboteq_msgs::Command steerMessage;
         roboteq_msgs::Command brakeMessage;
-        roboteq_msgs::Command speedMessage;
+        digipot::DigipotDataMsg speedMessage;
 
         steerMessage.mode = 1; // 1=MODE_POSITION, 0=MODE_SPEED	
         brakeMessage.mode = 1;
-        speedMessage.mode = 0; // MODE_SPEED
 
         steerMessage.setpoint = vehicle_data->steer_cmd;
-        speedMessage.setpoint = vehicle_data->speed_cmd;
+        speedMessage.speed = vehicle_data->speed_cmd;
         brakeMessage.setpoint = vehicle_data->brake_cmd;
 
         ros_interface.steer_pub.publish(steerMessage);

@@ -4,6 +4,7 @@
 <!-- type is executable listed in CMakeLists.txt? -->
 <launch>
     <node name="compass_driver" pkg="compass" type="compass_node" output="screen" />    
+    <node name="digipot_driver" pkg="digipot" type="digipot_node" output="screen" />    
     <node name="relay_board_driver" pkg="relay_board" type="relay_board_node" output="screen" />    
     <node name="camera_driver" pkg="camera_node" type="camera_node" output="screen" />
     <node name="roboteq_driver" pkg="roboteq_driver" type="roboteq_node" output="screen">
