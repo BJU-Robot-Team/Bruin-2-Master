@@ -4,8 +4,7 @@
 #include "ros/ros.h"
 #include "gps/GpsDataMsg.h"
 
-#include "gps/gps_data.h"
-
+#include "gps/gps.h"
 
 void startROS(int argc, char **argv){
     //initilize ROS and the Node
@@ -37,22 +36,19 @@ class ROSInterface {
 
 
     //push data to listeners
-    void publishMessages(Gps_Data& data) {
+    void publishMessages(GPS& data) {
 
         if (ros::ok()) {
             gps::GpsDataMsg message;
+	    //does the above line need to be gps_node ?
+            //longitude of the GPS
+            message.longitude = data.longitude;
 
-            //heading of the compass
-            message.heading = data.heading;
+            //latitude of the GPS
+            message.latitude = data.latitude;
 
-            //pitch of the compass
-            message.pitch = data.pitch;
-
-            //roll of the compass
-            message.roll = data.roll;
-
-            //temperature of the compass
-            message.temperature = data.temperature;
+            //altitude of the GPS
+            message.altitude = data.altitude;
 
             //Publish message
             state_machine_pub.publish(message);

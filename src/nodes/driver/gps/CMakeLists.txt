@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(gps)
 
+set(CMAKE_CXX_FLAGS "-std=c++11 -ggdb -Wall ${CMAKE_CXX_FLAGS}")
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -11,8 +12,8 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
 )
 
+##moved cmake flags, determine if that was problem
 
-set(CMAKE_CXX_FLAGS "-std=c++11 -ggdb -Wall ${CMAKE_CXX_FLAGS}")
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -132,11 +133,14 @@ include_directories(
 
 ## Declare a C++ executable
 add_executable(gps_node 
-         src/gps_node.cpp)
+         src/gps_node.cpp
+         src/gps.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(gps_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+ add_dependencies(gps_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+##uncommented above to see if that was the problem.
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(gps_node

@@ -54,15 +54,25 @@ void writeSerial(serial::Serial *serial_port, char *msg) {
 // Called upon receipt of a message to the subscribed channel
 void digipot_callback(const digipot::DigipotDataMsg& command) {
     char msg[5];
+
     // Send a command to the digipot board
     msg[0] = 0xFE;
     msg[1] = 0xAA;
     msg[2] = POT_NUM;
     msg[3] = 255*MAX_SPEED/command.speed;
     msg[4] = 0;
-    writeSerial(my_serial, msg);
-    // And a ROS debug message
-    ROS_DEBUG_STREAM( "Digipot: got command " << command.speed );
+    if ( fake_digipot) {
+        ROS_INFO_STREAM( "Digipot: got command, no action taken.");
+    } else {
+        writeSerial(my_serial, msg);
+        // Get reply
+        std::string result = my_serial->read(1);
+        if (result.substr(0,1) != "U" ) {
+            ROS_ERROR_STREAM( "Digipot: expected 'U' reply, got " << result);
+        }
+        // And a ROS debug message
+        ROS_DEBUG_STREAM( "Digipot: got command " << command.speed );
+    }
 
 }
 
@@ -104,7 +114,15 @@ int main(int argc, char **argv)
     msg[2] = POT_NUM;
     msg[3] = 0;
     msg[4] = 0;
-    if (!fake_digipot) writeSerial( my_serial, msg);
+    if (!fake_digipot) {
+        writeSerial( my_serial, msg);
+        std::string result = my_serial->read(1);
+        if (result.substr(0,1) != "U" ) {
+           ROS_ERROR_STREAM( "Digipot: expected 'U' reply to default setting, got " << result);
+        }
+    } else {
+       ROS_WARN_STREAM("Digipot: continuing to run with fake connectivity for testing.");
+    }
 
 	
     while (ros_interface.isNodeRunning()) {

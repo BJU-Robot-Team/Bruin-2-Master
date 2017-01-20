@@ -1,5 +1,8 @@
-float64 heading
-float64 pitch
-float64 roll
-float64 temperature
-
+float32 hdop
+float32 pdop
+float32 vdop
+float32 velocity
+float32 longitude
+float32 latitude
+float32 altitude
+bool valid
