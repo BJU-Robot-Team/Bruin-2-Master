@@ -1,3 +1,4 @@
 ACTION=="add", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", SYMLINK+="compass"
 ACTION=="add", ATTRS{idVendor}=="20d2", ATTRS{idProduct}=="5740", SYMLINK+="roboteq"
 ACTION=="add", ATTRS{idVendor}=="067b", ATTRS{idProduct}=="2303", SYMLINK+="gps"
+ACTION=="add", ATTRS{idVendor}=="0424", ATTRS{idProduct}=="2514", SYMLINK+="relay_board"

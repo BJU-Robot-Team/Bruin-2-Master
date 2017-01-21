@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
 
     ROSInterface ros_interface;
 
-    std::string port = "/dev/ttyAMC0";
+    std::string port = "/dev/relay_board";
     unsigned long baud = 9600;
     int fake_relay = 0;
 
