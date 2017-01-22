@@ -21,6 +21,7 @@ using namespace std;
 
 void FollowState::tick(StateMachine* state_machine, VehicleData* vehicle_data) {
 
+    char c;
 
     //call the state's debug function if we are in debug mode.
     if (state_machine->debug_mode) {
@@ -57,6 +58,30 @@ void FollowState::tick(StateMachine* state_machine, VehicleData* vehicle_data) {
       ROS_DEBUG_STREAM( "Camera: not valid tracking");
     }
   
+    //Check for a keypress (Can't wait here or state machine will stop)
+    c = vehicle_data->char_input;
+    vehicle_data->char_input = 0;
+
+
+    switch(c) {
+    case 0:
+        break;
+    case 'j':
+    case 'J': {
+        ROS_DEBUG_STREAM( "Follow_command: joystick");
+        state_machine->internalEvent(ENTER_JOYSTICK);
+        break;
+    }
+    case 'q':
+    case 'Q': {
+        ROS_DEBUG_STREAM( "Follow Command: Quit");
+        state_machine->internalEvent(SHUTDOWN_REQUESTED);
+        break;
+    }
+    default:
+        break;
+    }
+
 }
 
 

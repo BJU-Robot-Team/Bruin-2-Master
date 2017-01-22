@@ -68,7 +68,7 @@ class StateMachine {
     //allows AbstractState and it's children to access "InternalEvent"
     //friend AbstractState;
 
-  private:
+  private:	
 
     //table describing what states an event can trigger 
     std::vector< StateTableRow > state_transition_table {};

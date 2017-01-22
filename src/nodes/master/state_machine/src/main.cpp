@@ -17,6 +17,7 @@ int main(int argc, char **argv) {
     relay_board::RelayCommandMsg relayMessage;
 
     VehicleStates last_state;
+    bool previous_entry=false, previous_exit=false;  // Joystick entry/exit flags to show/hide window
 
     //function defined in ros_interface header
     startROS(argc, argv);
@@ -39,8 +40,7 @@ int main(int argc, char **argv) {
     char code;
     
     SDL_Window *window = SDL_CreateWindow("Bruin-2 Keyboard input",
-                          SDL_WINDOWPOS_UNDEFINED,
-                          SDL_WINDOWPOS_UNDEFINED,
+                          0, 500,
                           300, 300,
                           SDL_WINDOW_OPENGL);
     //SDL_Surface *screen = SDL_GetWindowSurface(window);
@@ -114,6 +114,23 @@ int main(int argc, char **argv) {
         if ( last_state != state_machine.current_state ) {
             ROS_INFO_STREAM( "Current state: " << state_names[state_machine.current_state] );
             last_state = state_machine.current_state;
+        }
+        // Show or hide joystick window when you enter or leave JOYSTICK mode
+        if ( (state_machine.current_state == JOYSTICK) || (state_machine.current_state == FOLLOW) ) {
+            SDL_RaiseWindow(window);
+            if ( ! previous_entry ) {
+                previous_entry = true;
+                SDL_ShowWindow(window);
+                SDL_RenderPresent(renderer);
+                previous_exit = false;
+            }
+        }
+        else {
+            if ( ! previous_exit) {
+                SDL_HideWindow(window);
+                previous_exit = true;
+                previous_entry = false;
+            }
         }
         //Run state machine tick
         state_machine.tick(vehicle_data);
