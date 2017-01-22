@@ -154,6 +154,7 @@ add_executable(state_machine_node
     src/waypoint_map.cpp
     src/state_performing_taxi_stop.cpp
     src/state_follow.cpp
+    src/state_joystick.cpp
 )
 
 #Unit Tests

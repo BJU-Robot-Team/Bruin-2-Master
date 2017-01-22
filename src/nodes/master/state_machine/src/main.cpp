@@ -43,6 +43,8 @@ int main(int argc, char **argv) {
     bool turn_off_light = false;
     int light_count = 0;
 
+    std::cout << "Bruin-2 State Machine Running." << std::endl;
+
     //start main loop
     while (ros_interface.isNodeRunning()) {
 

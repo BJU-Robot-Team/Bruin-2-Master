@@ -24,7 +24,8 @@ enum VehicleStates {
     PERFORMING_TAXI_STOP,
     DRIVE_PATH,
     WAITING_FOR_OBSTACLE,
-    FOLLOW
+    FOLLOW,
+    JOYSTICK
 };
 
 //events that can cause a state transition
@@ -43,7 +44,8 @@ enum VehicleEvents {
     STOP_SIGN,
     TAXI_STOP_FINISHED,
     PATH_FINISHED,
-    ENTER_FOLLOW
+    ENTER_FOLLOW,
+    ENTER_JOYSTICK
     
 };
 

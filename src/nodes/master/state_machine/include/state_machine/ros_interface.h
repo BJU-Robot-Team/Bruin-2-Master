@@ -59,7 +59,7 @@ public:
 
         //get relay data
         auto relay_msg = 
-            ros::topic::waitForMessage<relay_board::RelayDataMsg>("RelayData", InterfaceHandle, ros::Duration(1));
+            ros::topic::waitForMessage<relay_board::RelayDataMsg>("RelayData", InterfaceHandle, ros::Duration(0.5));
 
         if (relay_msg != NULL) {
 
@@ -78,11 +78,11 @@ public:
 
         //get compass data
         auto compass_msg = 
-            ros::topic::waitForMessage<compass::CompassDataMsg>("CompassData", InterfaceHandle, ros::Duration(1));
+            ros::topic::waitForMessage<compass::CompassDataMsg>("CompassData", InterfaceHandle, ros::Duration(0.5));
 
         if (compass_msg != NULL) {
 
-            std::cout << "Compass heading: " << compass_msg->heading << std::endl;
+            ROS_DEBUG_STREAM( "State Machine: Compass heading: " << compass_msg->heading << std::endl);
             vehicle_data->position_heading = compass_msg->heading;
             
 
@@ -93,10 +93,10 @@ public:
 
 	//get camera data
         auto camera_msg = 
-            ros::topic::waitForMessage<camera_node::CameraDataMsg>("CameraData", InterfaceHandle, ros::Duration(1));
+            ros::topic::waitForMessage<camera_node::CameraDataMsg>("CameraData", InterfaceHandle, ros::Duration(0.5));
        if (camera_msg != NULL) {
 
-            std::cout << "Camera direction: " << camera_msg->direction << " distance:	 " << camera_msg->distance << std::endl;
+            ROS_DEBUG_STREAM("Camera direction: " << camera_msg->direction << " distance:	 " << camera_msg->distance << std::endl);
             vehicle_data->follow_direction = camera_msg->direction;
             vehicle_data->follow_distance = camera_msg->distance;
             vehicle_data->follow_valid = camera_msg->tracking;

@@ -15,8 +15,9 @@ StateMachine::StateMachine() {
 
     //setup table transition table. If adding new states add another row here
     //                 Event         : Current State   : Next State
-    buildTableRow(INITIALIZE_FINISHED, INITIALIZE      , FOLLOW         ); // DETECT_STATION for taxi mode
+    buildTableRow(INITIALIZE_FINISHED, INITIALIZE      , JOYSTICK	         ); // First state after init, DETECT_STATION for taxi mode
     buildTableRow(ENTER_FOLLOW       , INITIALIZE      , FOLLOW   );
+    buildTableRow(ENTER_JOYSTICK     , INITIALIZE      , JOYSTICK );
     buildTableRow(STATION_DETECTED   , DETECT_STATION  , WAIT_FOR_COMMAND       );
     buildTableRow(SHUTDOWN_REQUESTED , WAIT_FOR_COMMAND, SHUTDOWN               );
     buildTableRow(STATION_REQUESTED  , WAIT_FOR_COMMAND, INITIAL_OBSTACLE_DETECT);
@@ -34,6 +35,9 @@ StateMachine::StateMachine() {
     buildTableRow(TAXI_STOP_FINISHED, PERFORMING_TAXI_STOP, DRIVE_PATH          );
     buildTableRow(PATH_FINISHED     , DRIVE_PATH          , CHECK_DESTINATION   );
     buildTableRow(SHUTDOWN_REQUESTED, FOLLOW              , SHUTDOWN            );
+    buildTableRow(ENTER_JOYSTICK    , FOLLOW              , JOYSTICK            );
+    buildTableRow(SHUTDOWN_REQUESTED, JOYSTICK            , SHUTDOWN            );
+    buildTableRow(ENTER_FOLLOW      , JOYSTICK            , FOLLOW              );
 
 
 
@@ -51,6 +55,7 @@ StateMachine::StateMachine() {
     addState(PERFORMING_TAXI_STOP   , new PerformingTaxiStopState);
     addState(DRIVE_PATH             , new DrivePathState);
     addState(FOLLOW                 , new FollowState);
+    addState(JOYSTICK               , new JoystickState);
 
     //lock table so we cannot add to it anymore
     lock_transition_table = true;
