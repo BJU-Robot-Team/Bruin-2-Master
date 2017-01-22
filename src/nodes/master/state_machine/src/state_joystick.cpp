@@ -27,7 +27,7 @@ void JoystickState::tick(StateMachine* state_machine, VehicleData* vehicle_data)
         } //end running immediately 
     }
 
-    std::cout << "Go, Stop, Follow, Quit" << std::endl;    
+    std::cout << "Go, Stop, Left, Right, Center, Brake, Unbreak, Follow, Quit" << std::endl;    
     //Wait for a keypress.
     std::cin >> c;
 
@@ -44,15 +44,51 @@ void JoystickState::tick(StateMachine* state_machine, VehicleData* vehicle_data)
         ROS_DEBUG_STREAM( "Joystick state: Stop");
         break;
     }
+    case 'l':
+    case 'L': {
+        vehicle_data->steer_cmd = -0.5;
+        ROS_DEBUG_STREAM( "Joystick state: Left");
+        break;
+    }
+    case 'r':
+    case 'R': {
+        vehicle_data->steer_cmd = +0.5;
+        ROS_DEBUG_STREAM( "Joystick state: Right");
+        break;
+    }
+    case 'c':
+    case 'C': {
+        vehicle_data->steer_cmd = 0;
+        ROS_DEBUG_STREAM( "Joystick state: Center");
+        break;
+    }
+    case 'b':
+    case 'B': {
+        vehicle_data->brake_cmd = 0.5;
+        ROS_DEBUG_STREAM( "Joystick state: Break");
+        break;
+    }
+    case 'u':
+    case 'U': {
+        vehicle_data->brake_cmd = 0;
+        ROS_DEBUG_STREAM( "Joystick state: Unbreak");
+        break;
+    }
     case 'f':
     case 'F': {
         ROS_DEBUG_STREAM( "Joystick state: Follow");
         state_machine->internalEvent(ENTER_FOLLOW);
         break;
     }
+    case 'q':
+    case 'Q': {
+        ROS_DEBUG_STREAM( "Joystick state: Quit");
+        state_machine->internalEvent(SHUTDOWN_REQUESTED);
+        break;
+    }
     default:
         vehicle_data->speed_cmd = 0;
-        ROS_DEBUG_STREAM( "Joystick state: Quit");
+        ROS_DEBUG_STREAM( "Joystick state: " << c);
         break;
     }
 }
