@@ -1,3 +1,4 @@
+## Bruin-2 State machine node
 cmake_minimum_required(VERSION 2.8.3)
 project(state_machine)
 
@@ -10,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
 )
 
+find_package( SDL2 REQUIRED)
 
 set(CMAKE_CXX_FLAGS "-std=c++11 -DCSV_IO_NO_THREAD -ggdb -Wall ${CMAKE_CXX_FLAGS}")
 
@@ -124,6 +126,7 @@ catkin_package(
 include_directories(
     include
     ${catkin_INCLUDE_DIRS}
+    ${SDL_INCLUDE_DIRS}
     "../../../common"
 )
 
@@ -168,6 +171,7 @@ src/waypoint_map.cpp)
 ## Specify libraries to link a library or executable target against
 target_link_libraries(state_machine_node
   ${catkin_LIBRARIES}
+  ${SDL2_LIBRARIES}
 )
 
 #############

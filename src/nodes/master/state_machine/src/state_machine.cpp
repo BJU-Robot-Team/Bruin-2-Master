@@ -151,4 +151,4 @@ void StateMachine::externalEvent(VehicleEvents event){
 void StateMachine::tick(VehicleData * vehicle_data){
 
     state_objects[current_state]->tick(this, vehicle_data);
-}
+}	

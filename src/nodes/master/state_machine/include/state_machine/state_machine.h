@@ -28,6 +28,8 @@ enum VehicleStates {
     JOYSTICK
 };
 
+const std::string state_names[] = { "Invalid", "Init", "Shutdown", "Detect", "Wait", "Init obstacle", "Release brake", "Park", "Check dest", "Chech stop", "Taxi stop", "Drive", "Obstacle", "Follow", "Joystick" };
+
 //events that can cause a state transition
 enum VehicleEvents {
     INITIALIZE_FINISHED,
@@ -72,8 +74,6 @@ class StateMachine {
     std::vector< StateTableRow > state_transition_table {};
     bool lock_transition_table = false; //table can only be added to at the beginning 
 
-    //the current state
-    VehicleStates current_state;
 
     //list of state objects
     std::vector< AbstractState * > state_objects;
@@ -86,8 +86,11 @@ class StateMachine {
     void addState(VehicleStates state, AbstractState* state_obj);
 
   public:
-    //weather the program is in debug mode. if so the states will allow user input for testing purposes
+    //whether the program is in debug mode. if so the states will allow user input for testing purposes
     bool debug_mode = false;
+
+    //the current state
+    VehicleStates current_state;
 
     StateMachine();
     ~StateMachine();

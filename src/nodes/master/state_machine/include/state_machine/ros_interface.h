@@ -23,6 +23,12 @@ void startROS(int argc, char **argv){
     ros::init(argc, argv, "state_machine");
 }
 
+void endROS(){
+    //Shut down ROS
+    ros::shutdown();
+}
+
+
 //this class should be abstracted so all of our nodes can use it instead of copying it for each node
 class ROSInterface {
 
@@ -59,7 +65,7 @@ public:
 
         //get relay data
         auto relay_msg = 
-            ros::topic::waitForMessage<relay_board::RelayDataMsg>("RelayData", InterfaceHandle, ros::Duration(0.5));
+            ros::topic::waitForMessage<relay_board::RelayDataMsg>("RelayData", InterfaceHandle, ros::Duration(0.001));
 
         if (relay_msg != NULL) {
 
@@ -73,12 +79,12 @@ public:
             }
 
         } else {
-            std::cout << "no relay message" << std::endl;
+            //std::cout << "no relay message" << std::endl;
         }
 
         //get compass data
         auto compass_msg = 
-            ros::topic::waitForMessage<compass::CompassDataMsg>("CompassData", InterfaceHandle, ros::Duration(0.5));
+            ros::topic::waitForMessage<compass::CompassDataMsg>("CompassData", InterfaceHandle, ros::Duration(0.001));
 
         if (compass_msg != NULL) {
 
@@ -87,13 +93,13 @@ public:
             
 
         } else {
-            std::cout << "no compass message" << std::endl;
+            //std::cout << "no compass message" << std::endl;
         }
 
 
 	//get camera data
         auto camera_msg = 
-            ros::topic::waitForMessage<camera_node::CameraDataMsg>("CameraData", InterfaceHandle, ros::Duration(0.5));
+            ros::topic::waitForMessage<camera_node::CameraDataMsg>("CameraData", InterfaceHandle, ros::Duration(0.001));
        if (camera_msg != NULL) {
 
             ROS_DEBUG_STREAM("Camera direction: " << camera_msg->direction << " distance:	 " << camera_msg->distance << std::endl);
@@ -103,37 +109,11 @@ public:
             
 
         } else {
-            std::cout << "no camera message" << std::endl;
+            //std::cout << "no camera message" << std::endl;
         }
 
         //updates ROS (if this isn't here ROS doesn't know this node is subcribed)
         ros::spinOnce();
-
-    }
-
-    //push data to listeners
-    void publishMessages(std::string command) {
-
-        if (ros::ok()) {
-            relay_board::RelayCommandMsg message;
-
-            //sending a command for a relay
-            message.device_type = "relay";
-
-            //setting the device the cammand is for
-            message.device_number = 0;
-
-            //setting which command to do
-            message.command = command;
-
-            //Publish message
-            relay_pub.publish(message);
-
-            ros::spinOnce();
-            
-        } else {
-            //TODO: handle debug here. ROS has gone down for some reason.
-        }
 
     }
 

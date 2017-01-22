@@ -12,9 +12,8 @@ void ShutdownState::tick(StateMachine* state_machine, VehicleData* vehicle_data)
         if(!debugState(state_machine)) { return; } //end running imediatly 
     }
 
-
-    //check if destination station has been set
-        //if so trigger state transition to initial obstacle detect
+    std::cout << "State Shutdown." << std::endl;
+    vehicle_data->shutdown = true;
 
 }
 
