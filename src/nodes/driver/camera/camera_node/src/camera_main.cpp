@@ -13,7 +13,7 @@ using namespace std;
 #define WIDTH_TOLERANCE 0.2         // Percent error of green and blue width
 #define HORIZONTAL_TOLERANCE 0.2    // Percent error of horizontal offset between blue and green compared to size
 #define BASE_PIXEL_EQUIVALENT 816.0 // See spreadsheet for details
-#define BLUE_THRESHOLD 30
+#define BLUE_THRESHOLD 10 //was 30
 #define GREEN_THRESHOLD 20
 
 
