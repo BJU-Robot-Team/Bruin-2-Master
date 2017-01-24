@@ -101,5 +101,12 @@ class FollowState : public AbstractState {
     void tick(StateMachine* state_machine, VehicleData* vehicle_data);
     bool debugState(StateMachine* state_machine);
 };
+class JoystickState : public AbstractState {
+  public:
+    ~JoystickState() {};
+    void tick(StateMachine* state_machine, VehicleData* vehicle_data);
+    bool debugState(StateMachine* state_machine);
+};
+
 
 #endif

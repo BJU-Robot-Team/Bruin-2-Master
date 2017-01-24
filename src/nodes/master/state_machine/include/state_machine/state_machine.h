@@ -24,8 +24,11 @@ enum VehicleStates {
     PERFORMING_TAXI_STOP,
     DRIVE_PATH,
     WAITING_FOR_OBSTACLE,
-    FOLLOW
+    FOLLOW,
+    JOYSTICK
 };
+
+const std::string state_names[] = { "Invalid", "Init", "Shutdown", "Detect", "Wait", "Init obstacle", "Release brake", "Park", "Check dest", "Chech stop", "Taxi stop", "Drive", "Obstacle", "Follow", "Joystick" };
 
 //events that can cause a state transition
 enum VehicleEvents {
@@ -43,7 +46,8 @@ enum VehicleEvents {
     STOP_SIGN,
     TAXI_STOP_FINISHED,
     PATH_FINISHED,
-    ENTER_FOLLOW
+    ENTER_FOLLOW,
+    ENTER_JOYSTICK
     
 };
 
@@ -64,14 +68,12 @@ class StateMachine {
     //allows AbstractState and it's children to access "InternalEvent"
     //friend AbstractState;
 
-  private:
+  private:	
 
     //table describing what states an event can trigger 
     std::vector< StateTableRow > state_transition_table {};
     bool lock_transition_table = false; //table can only be added to at the beginning 
 
-    //the current state
-    VehicleStates current_state;
 
     //list of state objects
     std::vector< AbstractState * > state_objects;
@@ -84,8 +86,11 @@ class StateMachine {
     void addState(VehicleStates state, AbstractState* state_obj);
 
   public:
-    //weather the program is in debug mode. if so the states will allow user input for testing purposes
+    //whether the program is in debug mode. if so the states will allow user input for testing purposes
     bool debug_mode = false;
+
+    //the current state
+    VehicleStates current_state;
 
     StateMachine();
     ~StateMachine();

@@ -38,7 +38,10 @@ struct VehicleData {
     // Actuator commands
     double steer_cmd;
     double brake_cmd;
-    double speed_cmd;	
+    double speed_cmd;
+
+    bool shutdown = false;
+    char char_input = 0;	
 
     VehicleData() {
 

@@ -193,7 +193,9 @@ int main(int argc, char **argv)
             }
 	}
 
+        namedWindow( "Rectangles", WINDOW_NORMAL);
 	imshow( "Rectangles", image);
+        resizeWindow("Rectangles", 600,337);
 
         //flip(bnw,bnw,1);                                                      //Flip image horizontally since scan flips image horizontally--uncomment to debug ObstacleDetect
                                                                                 //Note: Scan was flipping horizontally at some point, maybe due to debug code--leave in case of debug
