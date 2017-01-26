@@ -6,7 +6,9 @@
 #include <iostream>
 
 
-//state for a single relay board device
+//state for a single relay board device - obsolete, use relay_mask instead?
+// mask is better because we can switch multiple relays simultaneously
+// it is more complicated because we have to maintain the state of them all to do this
 struct RelayDeviceStateData {
     std::string device_type;
     int device_number;
@@ -36,9 +38,10 @@ struct VehicleData {
     bool follow_valid = false;
 
     // Actuator commands
-    double steer_cmd;
-    double brake_cmd;
-    double speed_cmd;
+    double steer_cmd = 0;
+    double brake_cmd = 0;
+    double speed_cmd = 0;
+    uint16_t relay_mask = 0;
 
     bool shutdown = false;
     char char_input = 0;	

@@ -99,13 +99,13 @@ int main(int argc, char **argv) {
              ROS_DEBUG_STREAM("got quit" << std::endl);
           break;
           case SDL_MOUSEBUTTONDOWN:
-            std::cout << "Mouse: " << event.button.x << " " << event.button.y << std::endl;
+            ROS_DEBUG_STREAM( "Mouse: " << event.button.x << " " << event.button.y );
             if ( event.button.y < 75 && event.button.x < 100 ) {
                 ROS_DEBUG_STREAM("click go");
                 vehicle_data->char_input = 'g';
             }
             else if ( event.button.y < 75 && event.button.x > 100 ) {
-                ROS_INFO_STREAM("click stop");
+                ROS_DEBUG_STREAM("click stop");
                 vehicle_data->char_input = 's';
             }
             else if ( event.button.y > 75 && event.button.y<150 && event.button.x > 0 && event.button.x < 70 ) {
@@ -213,6 +213,18 @@ int main(int argc, char **argv) {
 
         relayMessage.device_type = "relay";
         relayMessage.device_number = 0;
+        relayMessage.command = "writeall";
+        if (vehicle_data->speed_cmd < 0.1) {
+            // Faking pot with relays; this is speed 0
+            relayMessage.mask = 0x0000;
+        } else {
+           // This is our other fixed speed, plus the start sensor simulation
+            relayMessage.mask = 0x0700;
+        }
+        // Add the state of the flashing light
+        if (!turn_off_light) {
+           relayMessage.mask = relayMessage.mask | 0x8000;
+        }
         ros_interface.relay_pub.publish(relayMessage);
 
         steerMessage.mode = 1; // 1=MODE_POSITION, 0=MODE_SPEED	

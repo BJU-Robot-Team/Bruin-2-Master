@@ -38,7 +38,7 @@ void JoystickState::tick(StateMachine* state_machine, VehicleData* vehicle_data)
         break;
     case 'g':
     case 'G': {
-        vehicle_data->speed_cmd = 1;
+        if (vehicle_data->speed_cmd<10) vehicle_data->speed_cmd= vehicle_data->speed_cmd + 1;
         ROS_DEBUG_STREAM( "Joystick state: Go");
         break;
     }

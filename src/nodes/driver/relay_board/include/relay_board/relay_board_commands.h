@@ -17,7 +17,7 @@ class RelayBoardCommands {
 
   public:
 
-    bool debug_mode = true;
+    bool debug_mode = false;
 
 
     RelayBoardCommands(serial::Serial *my_serial);
@@ -33,6 +33,9 @@ class RelayBoardCommands {
 
     //turn on a specified relay on the board
     std::string relayOn(serial::Serial *my_serial, unsigned int relay_id);
+
+    //turn on a specified relay on the board
+    std::string writeAll(serial::Serial *my_serial, unsigned int mask);
 
     //turn off a specified relay on the board
     std::string relayOff(serial::Serial *my_serial, unsigned int relay_id);

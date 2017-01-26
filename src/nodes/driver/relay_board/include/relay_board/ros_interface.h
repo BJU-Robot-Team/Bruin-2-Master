@@ -34,10 +34,10 @@ class ROSInterface {
     }
 
     //poll data from listeners
-    bool pollMessages(std::string& device_type, int& device_num, std::string& command) {
+    bool pollMessages(std::string& device_type, int& device_num, std::string& command, unsigned int& mask) {
 
          auto relay_msg = 
-            ros::topic::waitForMessage<relay_board::RelayCommandMsg>("RelayControl", InterfaceHandle, ros::Duration(.01));
+            ros::topic::waitForMessage<relay_board::RelayCommandMsg>("RelayControl", InterfaceHandle, ros::Duration(5));
 
         //updates ROS (if this isn't here ROS doesn't know this node is subcribed)
         ros::spinOnce();
@@ -47,11 +47,12 @@ class ROSInterface {
             device_type = relay_msg->device_type;
             device_num = relay_msg->device_number;
             command = relay_msg->command;
-
+            mask = relay_msg->mask;
+            //std::cout << "Relay: " << command << std::endl;
             return true;
 
         } else {
-            // std::cout << "no message" << std::endl;
+            //std::cout << "Relay: no message" << std::endl;
             return false;
         }
 

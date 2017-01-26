@@ -62,19 +62,19 @@ void FollowState::tick(StateMachine* state_machine, VehicleData* vehicle_data) {
     c = vehicle_data->char_input;
     vehicle_data->char_input = 0;
 
-    std::cout << "Follow input ("<< c << ") value " << int(c) << std::endl;;
+    ROS_DEBUG_STREAM( "Follow input ("<< c << ") value " << int(c) );
     switch(c) {
     case 0:
         break;
     case 'j':
     case 'J': {
-        ROS_INFO_STREAM( "Follow_command: joystick");
+        ROS_DEBUG_STREAM( "Follow_command: joystick");
         state_machine->internalEvent(ENTER_JOYSTICK);
         break;
     }
     case 'q':
     case 'Q': {
-        ROS_INFO_STREAM( "Follow Command: Quit");
+        ROS_DEBUG_STREAM( "Follow Command: Quit");
         state_machine->internalEvent(SHUTDOWN_REQUESTED);
         break;
     }

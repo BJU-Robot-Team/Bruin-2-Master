@@ -6,6 +6,7 @@
 #include <serial/utils/serial_listener.h>
 
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <unistd.h>
 
@@ -86,6 +87,22 @@ std::string RelayBoardCommands::version(serial::Serial *my_serial) {
 std::string RelayBoardCommands::relayOn(serial::Serial *my_serial, unsigned int relay_id) {
     //send command
     std::string command_str = "relay on "+std::to_string(relay_id);
+    
+    //send command and recive the response
+    std::string result = serialTransaction(my_serial, command_str);
+
+    return result;
+}
+
+
+
+//turn on/off all relays
+std::string RelayBoardCommands::writeAll(serial::Serial *my_serial, unsigned int mask) {
+    std::stringstream sstream;
+    sstream << std::hex << std::setw(4) << std::setfill ('0') << mask;
+    std::string wresult = sstream.str();
+    //send command
+    std::string command_str = "relay writeall " + wresult + "\r";
     
     //send command and recive the response
     std::string result = serialTransaction(my_serial, command_str);

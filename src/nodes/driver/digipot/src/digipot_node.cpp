@@ -5,7 +5,7 @@
 // "digipot" device which controls the speed on the Bruin 2.0 vehicle.
 
 #define MAX_SPEED 11.2 // meters per second = 25 mph at full throttle
-#define POT_NUM 0      // The pot number in use on the digipot board
+#define POT_NUM 1      // The pot number in use on the digipot board
 
 #include <iostream>
 #include <string>
@@ -37,14 +37,13 @@ string readSerial(serial::Serial *serial_port) {
 	        ROS_WARN_STREAM("Digipot: Serial::readline() returned no data.");
 	    }
 
-	    ROS_DEBUG_STREAM("Digipot: got message " << msg << endl);
 	    return msg;
 
 }
 
-void writeSerial(serial::Serial *serial_port, char *msg) {
+void writeSerial(serial::Serial *serial_port, uint8_t *msg, int size) {
     if (!fake_digipot) {
-        serial_port->write(msg);
+       serial_port->write(msg, size);
     } else {
        ROS_INFO_STREAM( "Digipot messsage not delivered." );
     }
@@ -53,29 +52,30 @@ void writeSerial(serial::Serial *serial_port, char *msg) {
 
 // Called upon receipt of a message to the subscribed channel
 void digipot_callback(const digipot::DigipotDataMsg& command) {
-    char msg[5];
+    uint8_t msg[5];
 
     // Send a command to the digipot board
     msg[0] = 0xFE;
     msg[1] = 0xAA;
     msg[2] = POT_NUM;
-    msg[3] = 255*MAX_SPEED/command.speed;
+    msg[3] = 255*command.speed/MAX_SPEED;
     msg[4] = 0;
+    ROS_INFO_STREAM( "Digipot: raw setting " << int(msg[3]));
     if ( fake_digipot) {
         ROS_INFO_STREAM( "Digipot: got command, no action taken.");
     } else {
-        writeSerial(my_serial, msg);
-        // Get reply
-        std::string result = my_serial->read(1);
+        writeSerial(my_serial, msg, 5);
+        // Get reply 
+        std::string result = my_serial->read(5);
         if (result.substr(0,1) != "U" ) {
-            ROS_ERROR_STREAM( "Digipot: expected 'U' reply, got " << result);
+            ROS_ERROR_STREAM( "Digipot: expected 'U' reply, got " << result << " length " << result.length() );
         }
         // And a ROS debug message
-        ROS_DEBUG_STREAM( "Digipot: got command " << command.speed );
+        ROS_INFO_STREAM( "Digipot: got command " << command.speed );
     }
 
 }
-
+ 		
 int main(int argc, char **argv)
 {
 
@@ -107,7 +107,7 @@ int main(int argc, char **argv)
     Digipot_Status digipotData(0);
 
     // Send a default setting to the digipot board
-    char msg[5];
+    uint8_t msg[5];
 
     msg[0] = 0xFE;
     msg[1] = 0xAC;
@@ -115,8 +115,9 @@ int main(int argc, char **argv)
     msg[3] = 0;
     msg[4] = 0;
     if (!fake_digipot) {
-        writeSerial( my_serial, msg);
-        std::string result = my_serial->read(1);
+        writeSerial( my_serial, msg, 5);
+        std::string result = my_serial->read(5);
+           ROS_INFO_STREAM( "Digipot: startup reply: " << result << " length " << result.length() );        
         if (result.substr(0,1) != "U" ) {
            ROS_ERROR_STREAM( "Digipot: expected 'U' reply to default setting, got " << result);
         }
