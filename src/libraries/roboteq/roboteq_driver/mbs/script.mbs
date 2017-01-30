@@ -35,8 +35,8 @@ setconfig(_UVL, 100)
 
 for ch = 1 andwhile ch <= MAX_CHANNELS evaluate ch++
 
-	' Current limit, for us 7 amps (p216)
-	setconfig(_ALIM, ch, 70)
+	' Current limit, for us 20 amps (p216)
+	setconfig(_ALIM, ch, 200)
 	'Don't understand these parameters and I think we don't need them
 	'setconfig(_ATGA, ch, 2000)
 	'setconfig(_ATGD, ch, 50)
@@ -45,6 +45,7 @@ for ch = 1 andwhile ch <= MAX_CHANNELS evaluate ch++
 	' Max acceleration/deceleration (p219)
 	setconfig(_MAC, ch, 20000)
 	setconfig(_MDEC, ch, 20000)
+	setconfig(_CLERD, ch, 3)  ' Option 3 = 1 second at 50% error, default 2 = 0.5s error at 25%
 next
 
 top:
@@ -74,8 +75,8 @@ top:
 			' Motor in position-control mode.
 			if getvalue(_VAR, ch) = 1 then
 				setconfig(_MMOD, ch, 2) ' 2 = closed loop position relative
-				setconfig(_KP, ch, 2)
-				setconfig(_KI, ch, 0)
+				setconfig(_KP, ch, 450) ' gain of 4.5
+				setconfig(_KI, ch, 0)  ' gain of 0
 				setconfig(_KD, ch, 0)
 				setconfig(_ICAP, ch, 0)
 			end if

@@ -30,6 +30,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "roboteq_msgs/Feedback.h"
 #include "roboteq_msgs/Command.h"
 
+#define RAD_TO_STEER_CMD 1000/(2*3.14159/8)
 
 namespace roboteq {
 
@@ -72,11 +73,11 @@ void Channel::cmdCallback(const roboteq_msgs::Command& command)
     // Convert the commanded position in rads to encoder ticks.
     // Bruin-2 uses absolute positioning so this conversion is not appropriate
     // int roboteq_position = to_encoder_ticks(command.setpoint);
-    int roboteq_position = command.setpoint;
-    ROS_DEBUG_STREAM("Commanding " << roboteq_position << " position to motor driver.");
+    float roboteq_position = command.setpoint;
+    ROS_DEBUG_STREAM("Commanding ch"<< channel_num_ << roboteq_position << " convert to "  << int(roboteq_position * RAD_TO_STEER_CMD) << " to motor driver.");
 
     // Write command to the motor driver.
-    controller_->command << "P" << channel_num_ << roboteq_position << controller_->send;
+    controller_->command << "G" << channel_num_ << int(roboteq_position * RAD_TO_STEER_CMD) << controller_->send;
   }
   else
   {

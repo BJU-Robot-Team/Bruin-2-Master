@@ -50,14 +50,14 @@ void JoystickState::tick(StateMachine* state_machine, VehicleData* vehicle_data)
     }
     case 'l':
     case 'L': {
-        vehicle_data->steer_cmd = -0.5;
-        ROS_DEBUG_STREAM( "Joystick state: Left");
+        if ( vehicle_data->steer_cmd > -0.7) vehicle_data->steer_cmd = vehicle_data->steer_cmd - 0.1;
+        ROS_DEBUG_STREAM( "Joystick state: Left" << vehicle_data->steer_cmd);
         break;
     }
     case 'r':
     case 'R': {
-        vehicle_data->steer_cmd = +0.5;
-        ROS_DEBUG_STREAM( "Joystick state: Right");
+        if ( vehicle_data->steer_cmd < 0.7) vehicle_data->steer_cmd = vehicle_data->steer_cmd + 0.1;
+        ROS_DEBUG_STREAM( "Joystick state: Right" << vehicle_data->steer_cmd);
         break;
     }
     case 'c':

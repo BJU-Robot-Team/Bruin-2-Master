@@ -6,15 +6,15 @@ using namespace std;
 
 // Factors when searching for green/blue tracking target
 // (green square above blue square)
-#define TARGET_WIDTH 0.14           // size of blue/green suqares in meters
+#define TARGET_WIDTH 0.14           // size of blue/green squares in meters
 #define TARGET_SPACING 0.26         // center to center spacing of squares
 #define WIDTH_MIN 15                // squares must be at least this many pixels
-#define SQUARE_TEST 20              // Difference between height and width must be less than this many pixels
-#define WIDTH_TOLERANCE 0.2         // Percent error of green and blue width
-#define HORIZONTAL_TOLERANCE 0.2    // Percent error of horizontal offset between blue and green compared to size
-#define BASE_PIXEL_EQUIVALENT 816.0 // See spreadsheet for details
+#define SQUARE_TEST 30              // Difference between height and width must be less than this many pixels
+#define WIDTH_TOLERANCE 0.3         // Percent error of green and blue width
+#define HORIZONTAL_TOLERANCE 0.3    // Percent error of horizontal offset between blue and green compared to size
+#define BASE_PIXEL_EQUIVALENT 600.0 // See spreadsheet for details
 #define BLUE_THRESHOLD 10 //was 30
-#define GREEN_THRESHOLD 20
+#define GREEN_THRESHOLD 15
 
 
 #include <iostream>
@@ -187,7 +187,7 @@ int main(int argc, char **argv)
 			  pixels_offset = ( b_boundRect[ib].br().x - (image.cols/2) + b_boundRect[ib].width/2 );
 			  target_direction = atan(pixels_offset/BASE_PIXEL_EQUIVALENT);
 			  //cout << "OK " << target_direction << " = " << target_direction*180/3.14159 << " deg" << endl;
-			  target_distance = TARGET_SPACING * BASE_PIXEL_EQUIVALENT / (g_boundRect[ig].tl().y-b_boundRect[ib].tl().y);
+			  target_distance = TARGET_SPACING * BASE_PIXEL_EQUIVALENT / (g_boundRect[ig].tl().y-b_boundRect[ib].tl().y) - 1;
 			}
 		}
             }

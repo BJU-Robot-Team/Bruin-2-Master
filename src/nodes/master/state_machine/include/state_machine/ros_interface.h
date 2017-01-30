@@ -65,7 +65,7 @@ public:
 
         //get relay data
         auto relay_msg = 
-            ros::topic::waitForMessage<relay_board::RelayDataMsg>("RelayData", InterfaceHandle, ros::Duration(0.001));
+            ros::topic::waitForMessage<relay_board::RelayDataMsg>("RelayData", InterfaceHandle, ros::Duration(0.1));
 
         if (relay_msg != NULL) {
 
@@ -84,7 +84,7 @@ public:
 
         //get compass data
         auto compass_msg = 
-            ros::topic::waitForMessage<compass::CompassDataMsg>("CompassData", InterfaceHandle, ros::Duration(0.001));
+            ros::topic::waitForMessage<compass::CompassDataMsg>("CompassData", InterfaceHandle, ros::Duration(0.1));
 
         if (compass_msg != NULL) {
 
@@ -99,17 +99,16 @@ public:
 
 	//get camera data
         auto camera_msg = 
-            ros::topic::waitForMessage<camera_node::CameraDataMsg>("CameraData", InterfaceHandle, ros::Duration(0.001));
+            ros::topic::waitForMessage<camera_node::CameraDataMsg>("CameraData", InterfaceHandle, ros::Duration(1));
        if (camera_msg != NULL) {
 
-            ROS_DEBUG_STREAM("Camera direction: " << camera_msg->direction << " distance:	 " << camera_msg->distance << std::endl);
+            ROS_INFO_STREAM("Camera direction: " << camera_msg->direction << " distance:	 " << camera_msg->distance << "valid:" << camera_msg->tracking );
             vehicle_data->follow_direction = camera_msg->direction;
             vehicle_data->follow_distance = camera_msg->distance;
             vehicle_data->follow_valid = camera_msg->tracking;
-            
 
         } else {
-            //std::cout << "no camera message" << std::endl;
+            ROS_INFO_STREAM("no camera message" );
         }
 
         //updates ROS (if this isn't here ROS doesn't know this node is subcribed)

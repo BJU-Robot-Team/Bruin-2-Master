@@ -9,6 +9,12 @@
 #include <string>
 #include <SDL2/SDL.h>
 
+// Relay assignments since we generate relay messages (should be in the relay header file?)
+        #define FLASHING_LIGHT 0x8000
+        #define FORWARD_RELAY  0x0004
+        #define REVERSE_RELAY  0x0008
+        #define START_RELAY    0x0080
+
 int main(int argc, char **argv) {
 
     // ROS command messages
@@ -152,7 +158,7 @@ int main(int argc, char **argv) {
         //TODO: this should have it's own place not slapped int the middle of the main loop. But I'm out of time.
         //Can be invoked by a ROS Timer
         if (turn_off_light) {
-            if (light_count < 50) { //cycles for light to be on
+            if (light_count < 10) { //cycles for light to be on
                 light_count = light_count+1;
             } else {
                 relayMessage.command = "OFF";
@@ -162,7 +168,7 @@ int main(int argc, char **argv) {
 
         } else {
 
-            if (light_count < 50) { //cycles for light to be off
+            if (light_count < 10) { //cycles for light to be off
                 light_count = light_count+1;
             } else {
                 relayMessage.command = "ON";
@@ -173,6 +179,7 @@ int main(int argc, char **argv) {
 
         //check all ROS topics and update vehicle data object
         ros_interface.pollMessages(vehicle_data);
+        ROS_INFO_STREAM( "follow valid? " << vehicle_data->follow_valid);
 
         // Message on every state change
         if ( last_state != state_machine.current_state ) {
@@ -211,19 +218,21 @@ int main(int argc, char **argv) {
 
         // Publish all the command messages, between every tick of the states
 
+
+
         relayMessage.device_type = "relay";
         relayMessage.device_number = 0;
         relayMessage.command = "writeall";
         if (vehicle_data->speed_cmd < 0.1) {
             // Faking pot with relays; this is speed 0
-            relayMessage.mask = 0x0000;
+            relayMessage.mask = 0x0000 | FORWARD_RELAY;
         } else {
-           // This is our other fixed speed, plus the start sensor simulation
-            relayMessage.mask = 0x0700;
+           // This is our other fixed speed, plus the start sensor simulation, FORWARD
+            relayMessage.mask = 0x0300 | START_RELAY | FORWARD_RELAY;
         }
         // Add the state of the flashing light
         if (!turn_off_light) {
-           relayMessage.mask = relayMessage.mask | 0x8000;
+           relayMessage.mask = relayMessage.mask | FLASHING_LIGHT;
         }
         ros_interface.relay_pub.publish(relayMessage);
 
