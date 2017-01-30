@@ -38,18 +38,30 @@ public:
     ros::Publisher steer_pub;
     ros::Publisher brake_pub;
     ros::Publisher speed_pub;
+    ros::Subscriber relay_sub;
+    ros::Subscriber compass_sub;
+    ros::Subscriber camera_sub;
 
 
   public:
 
-    ROSInterface() {
+    ROSInterface(
+      void (*relay_cb)(const relay_board::RelayDataMsg&),
+      void (*compass_cb)(const compass::CompassDataMsg&),
+      void (*camera_cb)(const camera_node::CameraDataMsg&)
+    ) {
 
         
-        
-        relay_pub = InterfaceHandle.advertise<relay_board::RelayCommandMsg>("RelayControl", 1000);
-        steer_pub = InterfaceHandle.advertise<roboteq_msgs::Command>("steer/cmd", 1000);
-        brake_pub = InterfaceHandle.advertise<roboteq_msgs::Command>("brake/cmd", 1000);
-        speed_pub = InterfaceHandle.advertise<digipot::DigipotDataMsg>("/digipot/cmd", 1000);
+        // Publishers        
+        relay_pub   = InterfaceHandle.advertise<relay_board::RelayCommandMsg>("RelayControl", 1000);
+        steer_pub   = InterfaceHandle.advertise<roboteq_msgs::Command>("steer/cmd", 1000);
+        brake_pub   = InterfaceHandle.advertise<roboteq_msgs::Command>("brake/cmd", 1000);
+        speed_pub   = InterfaceHandle.advertise<digipot::DigipotDataMsg>("/digipot/cmd", 1000);
+
+        // Subscribers, with callbacks
+	relay_sub   = InterfaceHandle.subscribe("RelayData", 1, relay_cb);
+	compass_sub = InterfaceHandle.subscribe("CompassData", 1, compass_cb);
+	camera_sub  = InterfaceHandle.subscribe("CameraData", 1, camera_cb);
 
     }
 

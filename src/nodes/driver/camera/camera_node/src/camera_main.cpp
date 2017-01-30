@@ -2,20 +2,24 @@
 // V1.0 by Bill Lovegrove modified from Michael Boye's beta code
 // added integration with ROS
 // V1.1 added green/blue target tracking
+// V1.2 changed to red/yellow stacked squares, attempt to flush the buffer
 using namespace std;
 
-// Factors when searching for green/blue tracking target
-// (green square above blue square)
+// Factors when searching for colored tracking target
+// (green square above blue square) - red means blue, green means yellow, haven't changed all names yet
 #define TARGET_WIDTH 0.14           // size of blue/green squares in meters
 #define TARGET_SPACING 0.26         // center to center spacing of squares
-#define WIDTH_MIN 15                // squares must be at least this many pixels
-#define SQUARE_TEST 30              // Difference between height and width must be less than this many pixels
+#define WIDTH_MIN 10                // squares must be at least this many pixels
+#define SQUARE_TEST 0.4              // Difference between height and width must be less than this percentage
 #define WIDTH_TOLERANCE 0.3         // Percent error of green and blue width
 #define HORIZONTAL_TOLERANCE 0.3    // Percent error of horizontal offset between blue and green compared to size
 #define BASE_PIXEL_EQUIVALENT 600.0 // See spreadsheet for details
-#define BLUE_THRESHOLD 10 //was 30
-#define GREEN_THRESHOLD 15
+#define YELLOW_THRESHOLD 20
+#define RED_THRESHOLD 20
 
+#define BLUE 0
+#define GREEN 1
+#define RED 2
 
 #include <iostream>
 #include <vector>
@@ -58,9 +62,14 @@ int main(int argc, char **argv)
         return -1;
       }
 
+    namedWindow( "Rectangles", WINDOW_NORMAL);
+    resizeWindow("Rectangles", 600,337);
+
     while (ros_interface.isNodeRunning()) {
         Mat image, dst, cdst, cimg, igreen, iblue, bnw;                                        //Image transformation variables
 
+        // buffer fills with several images, so let's try to flush them
+        for (int i=0; i<5; i++) cap>>image;     //Get a new frame from camera
         cap>>image;                                                           //Get a new frame from camera
  	//cout << "Got a new image." << endl;
         //imshow("Camera Image", image);                                         
@@ -78,7 +87,7 @@ int main(int argc, char **argv)
         #if 1 //--uncomment for debugging purposes
 
         //ObstacleDetect
-        //Set up loop to scan image for GREEN > BLUE && GREEN > RED
+        //Set up loop to scan image for RED/YELLOW SQUARES
         //Then create BLACK and WHITE image from scan results
         //WHITE is TRUE, BLACK is FALSE
 
@@ -86,8 +95,8 @@ int main(int argc, char **argv)
         {
             for(int x = 0; x < image.cols; x++)                                 //Set up number of columbs to loop through
             {
-                if((image.at<cv::Vec3b>(y,x)[1]-GREEN_THRESHOLD)>image.at<cv::Vec3b>(y,x)[0] && (image.at<cv::Vec3b>(y,x)[1]-GREEN_THRESHOLD)>image.at<cv::Vec3b>(y,x)[2])
-                //Compare Green greater than Red and Green greater than Blue
+                if((image.at<cv::Vec3b>(y,x)[RED]-RED_THRESHOLD)>image.at<cv::Vec3b>(y,x)[GREEN] && (image.at<cv::Vec3b>(y,x)[RED]-RED_THRESHOLD)>image.at<cv::Vec3b>(y,x)[BLUE])
+                //This is dominant RED
                 {
 		  igreen.at<uchar>(y,x)=255;
                 }
@@ -95,8 +104,8 @@ int main(int argc, char **argv)
                 {
                   igreen.at<uchar>(y,x)=0;
                 }
-                if((image.at<cv::Vec3b>(y,x)[0]-BLUE_THRESHOLD)>image.at<cv::Vec3b>(y,x)[1] && (image.at<cv::Vec3b>(y,x)[0]-BLUE_THRESHOLD)>image.at<cv::Vec3b>(y,x)[2])
-                //Compare Blue greater than Red and Blue greater than green
+                if((image.at<cv::Vec3b>(y,x)[RED]-YELLOW_THRESHOLD)>image.at<cv::Vec3b>(y,x)[BLUE] && (image.at<cv::Vec3b>(y,x)[GREEN]-YELLOW_THRESHOLD)>image.at<cv::Vec3b>(y,x)[BLUE])
+                //This is dominant RED/GREEN (Yellow)
                 {
 		  iblue.at<uchar>(y,x)=255;
                 }
@@ -115,14 +124,10 @@ int main(int argc, char **argv)
               cv::Size(2 * erosion_size + 1, 2 * erosion_size + 1),
               cv::Point(erosion_size, erosion_size) );
  
-        // Apply erosion or dilation on the image
-        //erode(igreen, igreen,element);
-        //erode(iblue, iblue,element);
-
  	vector<vector<Point> > g_contours, b_contours;
   	vector<Vec4i> hierarchy;
 
-        // rectangles around green
+        // rectangles around red
 	findContours( igreen, g_contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0) );
 	vector<vector<Point> > g_contours_poly( g_contours.size() );
   	vector<Rect> g_boundRect( g_contours.size() );
@@ -136,15 +141,16 @@ int main(int argc, char **argv)
          }
         for( size_t i = 0; i< g_contours.size(); i++ )
         {
-             Scalar color = Scalar( 0, 255, 0 );
+             Scalar color = Scalar( 0, 0, 255 );
              // drawContours( image, g_contours_poly, (int)i, color, 1, 8, vector<Vec4i>(), 0, Point() );
-             if ( g_boundRect[i].width > WIDTH_MIN && (abs(g_boundRect[i].width-g_boundRect[i].height) < SQUARE_TEST) ) {
+             if ( g_boundRect[i].width > WIDTH_MIN 
+                  && (abs(1.0-(1.0*g_boundRect[i].width/g_boundRect[i].height) ) < SQUARE_TEST) ) {
 		// Draw the areas that match the size and shape threshold
 		rectangle( image, g_boundRect[i].tl(), g_boundRect[i].br(), color, 2, 8, 0 );
 	     }
          }
 
-	// rectangles around blue
+	// rectangles around yellow
 	findContours( iblue, b_contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0) );
 	vector<vector<Point> > b_contours_poly( b_contours.size() );
   	vector<Rect> b_boundRect( b_contours.size() );
@@ -156,9 +162,10 @@ int main(int argc, char **argv)
         Mat drawing = Mat::zeros( iblue.size(), CV_8UC3 );
         for( size_t i = 0; i< b_contours.size(); i++ )
         {
-             Scalar color = Scalar( 255, 0, 0 );
+             Scalar color = Scalar( 0, 255, 255 );
              // drawContours( image, contours_poly, (int)i, color, 1, 8, vector<Vec4i>(), 0, Point() );
-              if ( b_boundRect[i].width > WIDTH_MIN && (abs(b_boundRect[i].width-b_boundRect[i].height) < SQUARE_TEST) ) {
+              if ( b_boundRect[i].width > WIDTH_MIN
+                   && (abs(1.0-(1.0*b_boundRect[i].width/b_boundRect[i].height) ) < SQUARE_TEST) ) {
 		// Draw the areas that match the size and shape threshold
 		rectangle( image, b_boundRect[i].tl(), b_boundRect[i].br(), color, 2, 8, 0 );
 	     }
@@ -168,7 +175,8 @@ int main(int argc, char **argv)
 	target_distance = 0.0;
 	target_direction = 0.0;
         for( size_t ig = 0; ig< g_contours.size(); ig++ ) {
-             if ( g_boundRect[ig].width > WIDTH_MIN && (abs(g_boundRect[ig].width-g_boundRect[ig].height) < SQUARE_TEST) ) {
+             if ( g_boundRect[ig].width > WIDTH_MIN
+                 && (abs(1.0-(1.0*g_boundRect[ig].width/g_boundRect[ig].height) ) < SQUARE_TEST) ) {
                 // look for matching blue but only on right-sized green
     		for( size_t ib = 0; ib < b_contours.size(); ib++ ) {
 			if (
@@ -176,11 +184,14 @@ int main(int argc, char **argv)
 			  && ( g_boundRect[ig].br().y > b_boundRect[ib].tl().y) // green on top of blue
 			  && ( abs ( 1.0 - (1.0*g_boundRect[ig].width/b_boundRect[ib].width) ) < WIDTH_TOLERANCE ) // similar size
 			  && ( g_boundRect[ig].width>WIDTH_MIN) && ( b_boundRect[ib].width>WIDTH_MIN) // minimum size
+                          && (abs(1.0-(1.0*g_boundRect[ig].width/g_boundRect[ig].height) ) < SQUARE_TEST) // also square
 			) {
                           int pixels_offset;
-	                  Scalar color = Scalar( 0,0,255);
-			  rectangle( image, b_boundRect[ib].tl(), b_boundRect[ib].br(), color, 2, 8, 0 );
-			  rectangle( image, g_boundRect[ig].tl(), g_boundRect[ig].br(), color, 2, 8, 0 );
+	                  Scalar color = Scalar( 0,120,0);
+			  rectangle( image, b_boundRect[ib].tl(), b_boundRect[ib].br(), color, 5, 8, 0 );
+			  line( image, b_boundRect[ib].tl(), b_boundRect[ib].br(), color, 5, 8, 0 );
+			  rectangle( image, g_boundRect[ig].tl(), g_boundRect[ig].br(), color, 5, 8, 0 );
+			  line( image, g_boundRect[ig].tl(), g_boundRect[ig].br(), color, 5, 8, 0 );
                           target_found = true;
                           //cout << "tl xy" << b_boundRect[ib].tl().x << " " << b_boundRect[ib].tl().y << " " << image.cols << endl;
                           //cout << "br xy" << b_boundRect[ib].br().x << " " << b_boundRect[ib].br().y << " " << image.cols << endl;
@@ -193,9 +204,7 @@ int main(int argc, char **argv)
             }
 	}
 
-        namedWindow( "Rectangles", WINDOW_NORMAL);
 	imshow( "Rectangles", image);
-        resizeWindow("Rectangles", 600,337);
 
         //flip(bnw,bnw,1);                                                      //Flip image horizontally since scan flips image horizontally--uncomment to debug ObstacleDetect
                                                                                 //Note: Scan was flipping horizontally at some point, maybe due to debug code--leave in case of debug
@@ -229,7 +238,7 @@ int main(int argc, char **argv)
 
         ros_interface.publishMessages(target_found, target_direction, target_distance);
         // Sleep between images
-	waitKey(250);
+	waitKey(50);
         //this_thread::sleep_for(chrono::milliseconds(500));
       }
 

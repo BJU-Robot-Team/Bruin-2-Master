@@ -7,6 +7,8 @@
 
 #include <vector>
 #include <string>
+#include <chrono>
+#include <thread>
 #include <SDL2/SDL.h>
 
 // Relay assignments since we generate relay messages (should be in the relay header file?)
@@ -15,13 +17,31 @@
         #define REVERSE_RELAY  0x0008
         #define START_RELAY    0x0080
 
-int main(int argc, char **argv) {
-
-    // ROS command messages
     roboteq_msgs::Command steerMessage;
     roboteq_msgs::Command brakeMessage;
     digipot::DigipotDataMsg speedMessage;
     relay_board::RelayCommandMsg relayMessage;
+    relay_board::RelayDataMsg relayDataMessage;
+    VehicleData* vehicle_data;
+
+// Callback methods execute on each message receipt,
+// load data from messages into vehicle_data
+void relay_callback(const relay_board::RelayDataMsg& relayStatusMessage) {
+}
+
+void compass_callback(const compass::CompassDataMsg& compassMessage) {
+    ROS_INFO_STREAM( "State Machine: Compass heading: " << compassMessage.heading << std::endl);
+    vehicle_data->position_heading = compassMessage.heading;
+}
+
+void camera_callback(const camera_node::CameraDataMsg& cameraMessage) {
+    ROS_INFO_STREAM("Camera direction: " << cameraMessage.direction << " distance:	 " << cameraMessage.distance << "valid:" << cameraMessage.tracking );
+    vehicle_data->follow_direction = cameraMessage.direction;
+    vehicle_data->follow_distance = cameraMessage.distance;
+    vehicle_data->follow_valid = cameraMessage.tracking;
+}
+
+int main(int argc, char **argv) {
 
     VehicleStates last_state;
     bool previous_entry=false, previous_exit=false;  // Joystick entry/exit flags to show/hide window
@@ -30,9 +50,10 @@ int main(int argc, char **argv) {
     startROS(argc, argv);
 
     //setup ros interface, state machine, and vehicle data  objects
-    ROSInterface ros_interface;
+    ROSInterface ros_interface( &relay_callback, &compass_callback, &camera_callback);
     StateMachine state_machine;
-    VehicleData* vehicle_data = new VehicleData();
+    vehicle_data =  new VehicleData();
+
     
     state_machine.debug_mode = false;
     bool turn_off_light = false;
@@ -48,7 +69,7 @@ int main(int argc, char **argv) {
     
     SDL_Window *window;
     window = SDL_CreateWindow("Bruin-2 Keyboard input",
-                          0, 500,
+                          900, 100,
                           215, 298,
                           SDL_WINDOW_OPENGL);
     if ( window == NULL ) {
@@ -177,9 +198,9 @@ int main(int argc, char **argv) {
             }
         }	
 
-        //check all ROS topics and update vehicle data object
-        ros_interface.pollMessages(vehicle_data);
-        ROS_INFO_STREAM( "follow valid? " << vehicle_data->follow_valid);
+        //check all ROS topics and update vehicle data object - obsolete, now using callbacks
+        //ros_interface.pollMessages(vehicle_data);
+        ROS_DEBUG_STREAM( "follow valid? " << vehicle_data->follow_valid);
 
         // Message on every state change
         if ( last_state != state_machine.current_state ) {
@@ -188,13 +209,12 @@ int main(int argc, char **argv) {
             previous_entry = false;
         }
 
-
         // Show or hide joystick window when you enter or leave JOYSTICK/FOLLOW mode
         // Also switch menu bitmaps when switching between JOYSTICK and FOLLOW
         // In hihdsight, there is probably an easier way...
         if ( (state_machine.current_state == JOYSTICK) || (state_machine.current_state == FOLLOW) ) {
             if ( ! previous_entry ) {
-                previous_entry = true;
+                //previous_entry = true;
                 SDL_ShowWindow(window);
                 SDL_RenderClear(renderer);
                 if ( state_machine.current_state == JOYSTICK) {
@@ -217,8 +237,6 @@ int main(int argc, char **argv) {
         state_machine.tick(vehicle_data);
 
         // Publish all the command messages, between every tick of the states
-
-
 
         relayMessage.device_type = "relay";
         relayMessage.device_number = 0;
@@ -249,7 +267,8 @@ int main(int argc, char **argv) {
 
         //check if we are finished
         if ( vehicle_data->shutdown ) endROS();
-        ros::spinOnce();  // Need to spin if we use callbacks, and to let ROS know we are alive?
+        ros::spinOnce();  // Need to spin if we use callbacks, and to let ROS know we are alive?        //
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 
 #ifdef USE_SDL

@@ -7,7 +7,7 @@
     <node name="compass_driver" pkg="compass" type="compass_node" output="screen" required="true" />    
     <!-- node name="digipot_driver" pkg="digipot" type="digipot_node" output="screen" required="true" -->
     <!-- digipot disabled - hardware design flawed and digipot 0 damaged -->    
-    <node name="relay_board_driver" pkg="relay_board" type="relay_board_node" output="screen" required="true" />    
+    <node name="relay_board_driver" pkg="relay_board" type="relay_board_node" output="screen" required="false" />    
     <node name="roboteq_driver" pkg="roboteq_driver" type="roboteq_node" output="screen" required="true" >
 	<rosparam param="channels">['brake', 'steer']</rosparam>
     </node>

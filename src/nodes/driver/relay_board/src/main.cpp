@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
 	my_serial->open();
     }
     catch (exception &e) {
-	ROS_ERROR_STREAM("Digipot serial port open failed." << e.what());
+	ROS_ERROR_STREAM("Relay serial port open failed." << e.what());
         fake_relay = true;
     }
     RelayBoardCommands relay_command_interface(my_serial);
