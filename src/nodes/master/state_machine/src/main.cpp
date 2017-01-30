@@ -244,9 +244,18 @@ int main(int argc, char **argv) {
         if (vehicle_data->speed_cmd < 0.1) {
             // Faking pot with relays; this is speed 0
             relayMessage.mask = 0x0000 | FORWARD_RELAY;
-        } else {
-           // This is our other fixed speed, plus the start sensor simulation, FORWARD
+        } else if (vehicle_data->speed_cmd < 1) {
+           // second fixed speed, FORWARD
             relayMessage.mask = 0x0300 | START_RELAY | FORWARD_RELAY;
+        } else if (vehicle_data->speed_cmd < 3) {
+           // third fixed speed, FORWARD
+            relayMessage.mask = 0x0500 | START_RELAY | FORWARD_RELAY;
+        } else if (vehicle_data->speed_cmd < 4) {
+           // fourth fixed speed, FORWARD
+            relayMessage.mask = 0x0900 | START_RELAY | FORWARD_RELAY;
+        } else {
+           // fifth fixed speed, FORWARD
+            relayMessage.mask = 0x1100 | START_RELAY | FORWARD_RELAY;
         }
         // Add the state of the flashing light
         if (!turn_off_light) {
