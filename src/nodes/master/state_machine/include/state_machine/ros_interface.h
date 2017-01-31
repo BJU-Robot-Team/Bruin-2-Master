@@ -70,63 +70,6 @@ public:
         return ros::ok();
     }
 
-    //poll data from listeners
-    void pollMessages(VehicleData* vehicle_data) {
-
-	// This program should use Subscribe rather than polling waitforMessage !?!?!?!?
-
-        //get relay data
-        auto relay_msg = 
-            ros::topic::waitForMessage<relay_board::RelayDataMsg>("RelayData", InterfaceHandle, ros::Duration(0.1));
-
-        if (relay_msg != NULL) {
-
-            std::cout << relay_msg->device_type << " - #: " << relay_msg->device_number << "; State: " <<  relay_msg->state << std::endl;
-            if ( relay_msg->device_type == "relay" ) {
-                vehicle_data->relay_states[relay_msg->device_number].device_state = relay_msg->state;
-            } else if ( relay_msg->device_type == "gpio" ) {
-                vehicle_data->gpio_states[relay_msg->device_number].device_state = relay_msg->state;
-            } else {
-                //print debug
-            }
-
-        } else {
-            //std::cout << "no relay message" << std::endl;
-        }
-
-        //get compass data
-        auto compass_msg = 
-            ros::topic::waitForMessage<compass::CompassDataMsg>("CompassData", InterfaceHandle, ros::Duration(0.1));
-
-        if (compass_msg != NULL) {
-
-            ROS_DEBUG_STREAM( "State Machine: Compass heading: " << compass_msg->heading << std::endl);
-            vehicle_data->position_heading = compass_msg->heading;
-            
-
-        } else {
-            //std::cout << "no compass message" << std::endl;
-        }
-
-
-	//get camera data
-        auto camera_msg = 
-            ros::topic::waitForMessage<camera_node::CameraDataMsg>("CameraData", InterfaceHandle, ros::Duration(1));
-       if (camera_msg != NULL) {
-
-            ROS_INFO_STREAM("Camera direction: " << camera_msg->direction << " distance:	 " << camera_msg->distance << "valid:" << camera_msg->tracking );
-            vehicle_data->follow_direction = camera_msg->direction;
-            vehicle_data->follow_distance = camera_msg->distance;
-            vehicle_data->follow_valid = camera_msg->tracking;
-
-        } else {
-            ROS_INFO_STREAM("no camera message" );
-        }
-
-        //updates ROS (if this isn't here ROS doesn't know this node is subcribed)
-        ros::spinOnce();
-
-    }
 
 };
 

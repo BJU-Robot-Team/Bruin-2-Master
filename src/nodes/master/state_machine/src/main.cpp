@@ -30,12 +30,12 @@ void relay_callback(const relay_board::RelayDataMsg& relayStatusMessage) {
 }
 
 void compass_callback(const compass::CompassDataMsg& compassMessage) {
-    ROS_INFO_STREAM( "State Machine: Compass heading: " << compassMessage.heading << std::endl);
+    ROS_DEBUG_STREAM( "State Machine: Compass heading: " << compassMessage.heading << std::endl);
     vehicle_data->position_heading = compassMessage.heading;
 }
 
 void camera_callback(const camera_node::CameraDataMsg& cameraMessage) {
-    ROS_INFO_STREAM("Camera direction: " << cameraMessage.direction << " distance:	 " << cameraMessage.distance << "valid:" << cameraMessage.tracking );
+    ROS_DEBUG_STREAM("Camera direction: " << cameraMessage.direction << " distance:	 " << cameraMessage.distance << "valid:" << cameraMessage.tracking );
     vehicle_data->follow_direction = cameraMessage.direction;
     vehicle_data->follow_distance = cameraMessage.distance;
     vehicle_data->follow_valid = cameraMessage.tracking;
@@ -198,8 +198,7 @@ int main(int argc, char **argv) {
             }
         }	
 
-        //check all ROS topics and update vehicle data object - obsolete, now using callbacks
-        //ros_interface.pollMessages(vehicle_data);
+
         ROS_DEBUG_STREAM( "follow valid? " << vehicle_data->follow_valid);
 
         // Message on every state change

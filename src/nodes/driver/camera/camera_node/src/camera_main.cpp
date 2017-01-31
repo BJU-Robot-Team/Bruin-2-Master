@@ -9,12 +9,12 @@ using namespace std;
 // (red square above yellow square) - 
 #define TARGET_WIDTH 0.14           // size of blue/green squares in meters
 #define TARGET_SPACING 0.26         // center to center spacing of squares
-#define WIDTH_MIN 20                // squares must be at least this many pixels
+#define WIDTH_MIN 7                // squares must be at least this many pixels
 #define SQUARE_TEST 0.3              // Difference between height and width must be less than this percentage
 #define WIDTH_TOLERANCE 0.2         // Percent error of green and blue width
 #define HORIZONTAL_TOLERANCE 0.3    // Percent error of horizontal offset between blue and green compared to size
 #define BASE_PIXEL_EQUIVALENT 800.0 // See spreadsheet for details 800 for laptop, 600 for Bruin-2
-#define YELLOW_THRESHOLD 40
+#define YELLOW_THRESHOLD 35
 #define RED_THRESHOLD 40
 
 #define BLUE 0
@@ -44,6 +44,8 @@ int main(int argc, char **argv)
     bool target_found;
     float target_distance;
     float target_direction;
+    int no_target_count = 0; // count how many frames since we saw the target
+    #define NO_TARGET_LIMIT 3  // after this many frames, start reporting no target
 
     cout << "Bruin-2 Camera Driver V1.1 Starting" << endl;
 
@@ -63,7 +65,7 @@ int main(int argc, char **argv)
       }
 
     namedWindow( "Rectangles", WINDOW_NORMAL);
-    resizeWindow("Rectangles", 600,337);
+    resizeWindow("Rectangles", 500,337);
 
     while (ros_interface.isNodeRunning()) {
         Mat image, dst, cdst, cimg, ired, iyellow, bnw;                                        //Image transformation variables
@@ -234,7 +236,17 @@ int main(int argc, char **argv)
 
         #endif //--uncomment for debugging purposes
 
-        ros_interface.publishMessages(target_found, target_direction, target_distance);
+        if ( target_found) {
+          ros_interface.publishMessages(target_found, target_direction, target_distance);
+          no_target_count = 0;
+        } else {
+          if ( no_target_count < NO_TARGET_LIMIT ) {
+            // Dont' send updates until several target misses
+            no_target_count += 1;
+          } else {
+            ros_interface.publishMessages(target_found, target_direction, target_distance);
+          } 
+        }
         // Sleep between images
 	waitKey(50);
         //this_thread::sleep_for(chrono::milliseconds(500));

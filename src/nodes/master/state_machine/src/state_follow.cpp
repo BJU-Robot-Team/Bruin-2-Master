@@ -37,7 +37,7 @@ void FollowState::tick(StateMachine* state_machine, VehicleData* vehicle_data) {
     if ( vehicle_data->follow_valid ) {
       if ( vehicle_data->follow_distance < FOLLOW_MIN ) {
         // Too close, speed=0, brake on
-	ROS_INFO_STREAM( "Camera: Too close: Brake on. Speed 0");
+	ROS_DEBUG_STREAM( "Camera: Too close: Brake on. Speed 0");
         vehicle_data->brake_cmd = 1000;
         vehicle_data->speed_cmd = 0;
       }
@@ -45,17 +45,17 @@ void FollowState::tick(StateMachine* state_machine, VehicleData* vehicle_data) {
         // Calculate follow speed
         vehicle_data->brake_cmd = 0;
         vehicle_data->speed_cmd = (vehicle_data->follow_distance - FOLLOW_MIN)*FOLLOW_GAIN;
-	ROS_INFO_STREAM( "Camera: Command speed " << vehicle_data->speed_cmd );
+	ROS_DEBUG_STREAM( "Camera: Command speed " << vehicle_data->speed_cmd );
       }
       // Either way, calculate steer direction PREVIOUSLY RAD_TO_POS*...
       vehicle_data->steer_cmd = atan( 2 * sin(vehicle_data->follow_direction) / (WHEELBASE*vehicle_data->follow_distance) );
-      ROS_INFO_STREAM( "Camera: Command steer " << vehicle_data->steer_cmd );
+      ROS_DEBUG_STREAM( "Camera: Command steer " << vehicle_data->steer_cmd );
     }
     else {
       // Not tracking, speed=0, steer=0, brake on
         vehicle_data->brake_cmd = 1;
         vehicle_data->speed_cmd = 0;
-      ROS_INFO_STREAM( "Camera: not valid tracking");
+      ROS_DEBUG_STREAM( "Camera: not valid tracking");
     }
   
     //Check for a keypress (Can't wait here or state machine will stop)
@@ -73,7 +73,7 @@ void FollowState::tick(StateMachine* state_machine, VehicleData* vehicle_data) {
     }
     case 'q':
     case 'Q': {
-        ROS_DEBUG_STREAM( "Follow Command: Quit");
+        ROS_INFO_STREAM( "Follow Command: Quit");
         state_machine->internalEvent(SHUTDOWN_REQUESTED);
         break;
     }
