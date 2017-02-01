@@ -3,19 +3,21 @@
 // added integration with ROS
 // V1.1 added green/blue target tracking
 // V1.2 changed to red/yellow stacked squares, attempt to flush the buffer
+// V1.3 change yellow to green (now looking for green/red)
 using namespace std;
 
 // Factors when searching for colored tracking target
-// (red square above yellow square) - 
+// (yellow above red square) - change to green above red? 
 #define TARGET_WIDTH 0.14           // size of blue/green squares in meters
 #define TARGET_SPACING 0.26         // center to center spacing of squares
 #define WIDTH_MIN 7                // squares must be at least this many pixels
 #define SQUARE_TEST 0.3              // Difference between height and width must be less than this percentage
-#define WIDTH_TOLERANCE 0.4         // Percent error of green and blue width
-#define HORIZONTAL_TOLERANCE 0.4    // Percent error of horizontal offset between blue and green compared to size
+#define WIDTH_TOLERANCE 0.4         // Percent error in width
+#define HORIZONTAL_TOLERANCE 0.4    // Percent error of horizontal offset between squares compared to size
 #define BASE_PIXEL_EQUIVALENT 640.0 // See spreadsheet for details 800 for laptop, 600 for Bruin-2
 #define YELLOW_THRESHOLD 25
 #define RED_THRESHOLD 40
+#define GREEN_THRESHOLD 30
 
 #define BLUE 0
 #define GREEN 1
@@ -106,8 +108,8 @@ int main(int argc, char **argv)
                 {
                   ired.at<uchar>(y,x)=0;
                 }
-                if((image.at<cv::Vec3b>(y,x)[RED]-YELLOW_THRESHOLD)>image.at<cv::Vec3b>(y,x)[BLUE] && (image.at<cv::Vec3b>(y,x)[GREEN]-YELLOW_THRESHOLD)>image.at<cv::Vec3b>(y,x)[BLUE])
-                //This is dominant RED/GREEN (Yellow)
+                if((image.at<cv::Vec3b>(y,x)[GREEN]-GREEN_THRESHOLD)>image.at<cv::Vec3b>(y,x)[BLUE] && (image.at<cv::Vec3b>(y,x)[GREEN]-GREEN_THRESHOLD)>image.at<cv::Vec3b>(y,x)[RED])
+                //This is dominant GREEN (formerly RED/GREEN=Yellow)
                 {
 		  iyellow.at<uchar>(y,x)=255;
                 }
@@ -164,7 +166,7 @@ int main(int argc, char **argv)
         Mat drawing = Mat::zeros( iyellow.size(), CV_8UC3 );
         for( size_t i = 0; i< y_contours.size(); i++ )
         {
-             Scalar color = Scalar( 0, 255, 255 );
+             Scalar color = Scalar( 0, 255, 0 );
              // drawContours( image, contours_poly, (int)i, color, 1, 8, vector<Vec4i>(), 0, Point() );
               if ( y_boundRect[i].width > WIDTH_MIN
                    && (abs(1.0-(1.0*y_boundRect[i].width/y_boundRect[i].height) ) < SQUARE_TEST) ) {
@@ -182,7 +184,7 @@ int main(int argc, char **argv)
                 // look for matching yellow but only on right-sized red
     		for( size_t iy = 0; iy < y_contours.size(); iy++ ) {
 			if (
-			  ( abs( ((1.0*r_boundRect[ir].tl().x - y_boundRect[iy].tl().x)/r_boundRect[ir].width) ) < HORIZONTAL_TOLERANCE ) // on top of each other
+			  ( abs( ((1.0*r_boundRect[ir].tl().x - y_boundRect[iy].tl().x)/r_boundRect[ir].width) ) < HORIZONTAL_TOLERANCE ) // yellow on top of red
 			  && ( r_boundRect[ir].br().y > y_boundRect[iy].tl().y) // red on top of yellow
 			  && ( abs ( 1.0 - (1.0*r_boundRect[ir].width/y_boundRect[iy].width) ) < WIDTH_TOLERANCE ) // similar size
 			  && ( r_boundRect[ir].width>WIDTH_MIN) && ( y_boundRect[iy].width>WIDTH_MIN) // minimum size
@@ -190,7 +192,7 @@ int main(int argc, char **argv)
                           && ( (r_boundRect[ir].tl().x - y_boundRect[iy].tl().x) << 2*r_boundRect[ir].width ) // not too far apart
 			) {
                           int pixels_offset;
-	                  Scalar color = Scalar( 0,120,0);
+	                  Scalar color = Scalar( 0,200,200);
 			  rectangle( image, y_boundRect[iy].tl(), y_boundRect[iy].br(), color, 5, 8, 0 );
 			  line( image, y_boundRect[iy].tl(), y_boundRect[iy].br(), color, 5, 8, 0 );
 			  rectangle( image, r_boundRect[ir].tl(), r_boundRect[ir].br(), color, 5, 8, 0 );

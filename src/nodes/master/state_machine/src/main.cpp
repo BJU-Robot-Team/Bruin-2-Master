@@ -11,6 +11,8 @@
 #include <thread>
 #include <SDL2/SDL.h>
 
+#define STEER_OFFSET 0.01 // Correct for feedback pot not being perfectly mounted
+
 // Relay assignments since we generate relay messages (should be in the relay header file?)
         #define FLASHING_LIGHT 0x8000
         #define FORWARD_RELAY  0x0004
@@ -265,8 +267,13 @@ int main(int argc, char **argv) {
         steerMessage.mode = 1; // 1=MODE_POSITION, 0=MODE_SPEED	
         brakeMessage.mode = 1;
 
-        steerMessage.setpoint = vehicle_data->steer_cmd*1.5; // deliberately oversteer
-        speedMessage.speed = vehicle_data->speed_cmd;
+        steerMessage.setpoint = STEER_OFFSET + vehicle_data->steer_cmd*1.5; // deliberately oversteer
+        if (speedMessage.speed < (vehicle_data->speed_cmd - 1)) {
+          // Don't drop speed suddenly from high speed to zero
+          speedMessage.speed = vehicle_data->speed_cmd - 1;
+        } else {
+          speedMessage.speed = vehicle_data->speed_cmd;
+        }
         brakeMessage.setpoint = vehicle_data->brake_cmd;
 
         ros_interface.steer_pub.publish(steerMessage);
