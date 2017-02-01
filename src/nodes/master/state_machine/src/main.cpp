@@ -265,7 +265,7 @@ int main(int argc, char **argv) {
         steerMessage.mode = 1; // 1=MODE_POSITION, 0=MODE_SPEED	
         brakeMessage.mode = 1;
 
-        steerMessage.setpoint = vehicle_data->steer_cmd;
+        steerMessage.setpoint = vehicle_data->steer_cmd*1.5; // deliberately oversteer
         speedMessage.speed = vehicle_data->speed_cmd;
         brakeMessage.setpoint = vehicle_data->brake_cmd;
 

@@ -11,10 +11,10 @@ using namespace std;
 #define TARGET_SPACING 0.26         // center to center spacing of squares
 #define WIDTH_MIN 7                // squares must be at least this many pixels
 #define SQUARE_TEST 0.3              // Difference between height and width must be less than this percentage
-#define WIDTH_TOLERANCE 0.2         // Percent error of green and blue width
-#define HORIZONTAL_TOLERANCE 0.3    // Percent error of horizontal offset between blue and green compared to size
-#define BASE_PIXEL_EQUIVALENT 800.0 // See spreadsheet for details 800 for laptop, 600 for Bruin-2
-#define YELLOW_THRESHOLD 35
+#define WIDTH_TOLERANCE 0.4         // Percent error of green and blue width
+#define HORIZONTAL_TOLERANCE 0.4    // Percent error of horizontal offset between blue and green compared to size
+#define BASE_PIXEL_EQUIVALENT 640.0 // See spreadsheet for details 800 for laptop, 600 for Bruin-2
+#define YELLOW_THRESHOLD 25
 #define RED_THRESHOLD 40
 
 #define BLUE 0
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
         Mat image, dst, cdst, cimg, ired, iyellow, bnw;                                        //Image transformation variables
 
         // buffer fills with several images, so let's try to flush them
-        for (int i=0; i<5; i++) cap>>image;     //Get a new frame from camera
+        for (int i=0; i<3; i++) cap>>image;     //Get a new frame from camera
         cap>>image;                                                           //Get a new frame from camera
  	//cout << "Got a new image." << endl;
         //imshow("Camera Image", image);                                         
