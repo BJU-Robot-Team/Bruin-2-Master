@@ -17,7 +17,7 @@ using namespace std;
 #define BASE_PIXEL_EQUIVALENT 640.0 // See spreadsheet for details 800 for laptop, 600 for Bruin-2
 #define YELLOW_THRESHOLD 25
 #define RED_THRESHOLD 40
-#define GREEN_THRESHOLD 30
+#define GREEN_THRESHOLD 20
 
 #define BLUE 0
 #define GREEN 1
