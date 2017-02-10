@@ -11,7 +11,7 @@
 #include <thread>
 #include <SDL2/SDL.h>
 
-#define STEER_OFFSET 0.01 // Correct for feedback pot not being perfectly mounted
+#define STEER_OFFSET 0.02 // Correct for feedback pot not being perfectly mounted
 
 // Relay assignments since we generate relay messages (should be in the relay header file?)
         #define FLASHING_LIGHT 0x8000
