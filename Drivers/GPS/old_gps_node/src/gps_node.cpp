@@ -105,15 +105,15 @@ int main(int argc, char **argv)
 
         if(interp == "$GPRMC" ) {
             //cout<<interp<<endl;
-          //commented out  storeRMC(parsed_gps_string, &gpsData);
+            //storeRMC(parsed_gps_string, gpsData);
         } else if(interp == "$GPGGA") {
             //cout<<interp<<endl;
-            //storeGGA(parsed_gps_string, &gpsData);
+            //storeGGA(parsed_gps_string, gpsData);
         } else if(interp == "$GPGSA"){
             //cout<<interp<<endl;
-            //storeGSA(parsed_gps_string, &gpsData);
+            //storeGSA(parsed_gps_string, gpsData);
         } else {
-            //cout<<"NOT USABLE DATA"<<endl;
+            cout<<"gps_node: NOT USABLE DATA"<<endl;
         }
 
 

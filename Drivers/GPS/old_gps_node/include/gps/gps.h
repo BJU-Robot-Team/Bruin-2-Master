@@ -14,9 +14,9 @@ struct GPS;
 
 int indexOf(string str, char delim);
 vector<string> parseLine(string str);
-void storeGGA(vector<string> str, GPS *gps);
-void storeGSA(vector<string> str, GPS *gps);
-void storeRMC(vector<string> str, GPS *gps);
+void storeGGA(vector<string> str, GPS &gps);
+void storeGSA(vector<string> str, GPS &gps);
+void storeRMC(vector<string> str, GPS &gps);
 GPS averageData(vector<GPS> vec);
 
 

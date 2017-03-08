@@ -33,7 +33,7 @@ vector<string> parseLine(string str)
 }
 
 //stores data for GPGGA
-void storeGGA(vector<string> str, GPS *gps)
+void storeGGA(vector<string> str, GPS &gps)
 {
    //need to parse lat and long before shove
    if(str.at(1) != "")
@@ -42,42 +42,42 @@ void storeGGA(vector<string> str, GPS *gps)
        string str1 = str.at(1).substr(0,2);
        string str2 = str.at(1).substr(2);
 
-       gps->latitude = stof(str1) + stof(str2)/60;
+       gps.latitude = stof(str1) + stof(str2)/60;
    }
    if(str.at(3) != "")
    {
        string str1 = str.at(3).substr(0,3);
        string str2 = str.at(3).substr(3);
 
-       gps->longitude = stof(str1) + stof(str2)/60;
+       gps.longitude = stof(str1) + stof(str2)/60;
    }
-   if(str.at(5) == "1"){gps->valid = 1;}
-   if(str.at(7) != "") {gps->hdop = stof(str.at(7));}
-   if(str.at(8) != "") {gps->altitude = stof(str.at(8));}
+   if(str.at(5) == "1"){gps.valid = 1;}
+   if(str.at(7) != "") {gps.hdop = stof(str.at(7));}
+   if(str.at(8) != "") {gps.altitude = stof(str.at(8));}
 }
 
 //stores data for GPGSA
-void storeGSA(vector<string> str, GPS *gps)
+void storeGSA(vector<string> str, GPS &gps)
 {
-   if(str.at(1)  != "1"){gps->valid = 1;}
-   if(str.at(14) != "") {gps->pdop = stof(str.at(14));}
-   if(str.at(15) != "") {gps->hdop = stof(str.at(16));}
-   if(str.at(16) != "") {gps->vdop = stof(str.at(16));}
+   if(str.at(1)  != "1"){gps.valid = 1;}
+   if(str.at(14) != "") {gps.pdop = stof(str.at(14));}
+   if(str.at(15) != "") {gps.hdop = stof(str.at(16));}
+   if(str.at(16) != "") {gps.vdop = stof(str.at(16));}
 }
 
 //stores data for GPRMC
-void storeRMC(vector<string> str, GPS *gps)
+void storeRMC(vector<string> str, GPS &gps)
 {
     //need to parse lat and long before shove
    //cout<<1;
-   if(str.at(1) == "A"){gps->valid = 1;}
+   if(str.at(1) == "A"){gps.valid = 1;}
    //cout<<2;
    if(str.at(2) != "")
    {
        string str1 = str.at(2).substr(0,2);
        string str2 = str.at(2).substr(2);
 
-       gps->latitude = stof(str1) + stof(str2)/60;
+       gps.latitude = stof(str1) + stof(str2)/60;
    }
    //cout<<4;
    if(str.at(4) != "")
@@ -85,10 +85,10 @@ void storeRMC(vector<string> str, GPS *gps)
        string str1 = str.at(4).substr(0,3);
        string str2 = str.at(4).substr(3);
 
-       gps->longitude = stof(str1) + stof(str2)/60;
+       gps.longitude = stof(str1) + stof(str2)/60;
    }
    //cout<<6;
-   if(str.at(6) != "") {gps->velocity = stof(str.at(6))*1.150779;}
+   if(str.at(6) != "") {gps.velocity = stof(str.at(6))*1.150779;}
 }
 
 //Averages all GPS structs together in GPS vector vec
