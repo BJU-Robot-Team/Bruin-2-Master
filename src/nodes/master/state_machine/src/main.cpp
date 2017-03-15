@@ -79,8 +79,8 @@ int main(int argc, char **argv) {
         throw std::runtime_error("State Machine Could not open window");
     }
     SDL_Surface *jpanel, *fpanel;
-    jpanel = SDL_LoadBMP("j_panel.bmp");  // Bitmap is 215x298
-    fpanel = SDL_LoadBMP("f_panel.bmp");
+    jpanel = SDL_LoadBMP("data/j_panel.bmp");  // Bitmap is 215x298
+    fpanel = SDL_LoadBMP("data/f_panel.bmp");
     if ( jpanel == NULL ) {
         ROS_ERROR_STREAM("State Machine: could not load j_panel.bmp");
         throw std::runtime_error("State Machine Could not load jpanel bitmap");
