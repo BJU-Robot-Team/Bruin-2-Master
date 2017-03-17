@@ -5,7 +5,9 @@
 #include "ros/ros.h"
 #include "relay_board/RelayDataMsg.h"
 #include "compass/CompassDataMsg.h"
+#include "sensor_msgs/NavSatFix.h"
 #include "camera_node/CameraDataMsg.h"
+
 
 #include <iostream>
 #include <string>
@@ -30,6 +32,7 @@ class ROSInterface {
 public:
     ros::Subscriber relay_sub;
     ros::Subscriber compass_sub;
+    ros::Subscriber gps_sub;
     ros::Subscriber camera_sub;
 
 
@@ -38,6 +41,7 @@ public:
     ROSInterface(
       void (*relay_cb)(const relay_board::RelayDataMsg&),
       void (*compass_cb)(const compass::CompassDataMsg&),
+      void (*gps_cb)(const sensor_msgs::NavSatFix&),
       void (*camera_cb)(const camera_node::CameraDataMsg&)
     ) {
 
@@ -46,6 +50,7 @@ public:
         // Subscribers, with callbacks
 	    relay_sub   = InterfaceHandle.subscribe("RelayData", 1, relay_cb);
 	    compass_sub = InterfaceHandle.subscribe("CompassData", 1, compass_cb);
+            gps_sub 	= InterfaceHandle.subscribe("GPSData", 1, gps_cb);
 	    camera_sub  = InterfaceHandle.subscribe("CameraData", 1, camera_cb);
 
     }

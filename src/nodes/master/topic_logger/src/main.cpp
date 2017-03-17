@@ -10,6 +10,7 @@
 //TODO study the callback functions and figure out how to pass the data without globals
 std::ofstream relay_file;
 std::ofstream compass_file;
+std::ofstream gps_file;
 std::ofstream camera_file;
 
 
@@ -48,6 +49,15 @@ void compass_callback(const compass::CompassDataMsg& compassMessage) {
     writeData(compass_file, data);
 }
 
+void gps_callback(const sensor_msgs::NavSatFix& gpsMessage) {
+    std::string data = "Compass latitude: " + std::to_string(gpsMessage.latitude) + '\n'
+                     + "	longitude: " + std::to_string(gpsMessage.longitude) +'\n'
+                     + "	altitude: " + std::to_string(gpsMessage.altitude);// + '\n'
+//                     + "	status: " + std::to_string(gpsMessage.status);
+
+    writeData(gps_file, data);
+}
+
 void camera_callback(const camera_node::CameraDataMsg& cameraMessage) {
     std::string data = "Camera direction: " + std::to_string(cameraMessage.direction) + '\n'
                      + "	distance: " + std::to_string(cameraMessage.distance) + '\n'
@@ -64,7 +74,7 @@ int main(int argc, char **argv) {
     startROS(argc, argv);
 
     //setup ros interface, state machine, and vehicle data  objects
-    ROSInterface ros_interface( &relay_callback, &compass_callback, &camera_callback);
+    ROSInterface ros_interface( &relay_callback, &compass_callback, &gps_callback, &camera_callback);
 
     //open log files
     
@@ -73,9 +83,11 @@ int main(int argc, char **argv) {
     //TODO maybe put it one more directory down like "sensor_data"
     std::string base_path = "log/latest/";
 
-    relay_file = std::ofstream(base_path+"relay_board_msg.log", std::ios_base::app);
-    compass_file = std::ofstream(base_path+"compass_msg.log", std::ios_base::app);
-    camera_file = std::ofstream(base_path+"camera_msg.log", std::ios_base::app);
+    relay_file = std::ofstream(base_path+"relay_board_msgs.log", std::ios_base::app);
+    compass_file = std::ofstream(base_path+"compass_msgs.log", std::ios_base::app);
+    gps_file = std::ofstream(base_path+"gps_msgs.log", std::ios_base::app);
+    camera_file = std::ofstream(base_path+"camera_msgs.log", std::ios_base::app);
+
 
     //start main loop (just to keep the program running while ROS is running)
     while (ros_interface.isNodeRunning()) {
