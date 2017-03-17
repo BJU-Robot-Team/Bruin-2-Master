@@ -12,7 +12,11 @@
 
 
 WaypointMap::WaypointMap(std::string map_folder_path) {
-    loadCSVMapFormat(map_folder_path);
+    bool loaded = loadCSVMapFormat(map_folder_path);
+
+    if (!loaded) {
+        std::cout << "not loaded" << std::endl;
+    }
 }
 
 
@@ -27,6 +31,7 @@ bool WaypointMap::loadCSVMapFormat(std::string map_folder_path) {
 
     //if we cannot parse the stations file we cannot go on.
     if (parse_success == false) {
+        std::cout << "not loaded" << std::endl;
         return parse_success; //TODO handle error.
     }
 
@@ -35,7 +40,7 @@ bool WaypointMap::loadCSVMapFormat(std::string map_folder_path) {
     //directory list code aquired from http://stackoverflow.com/questions/306533
     //  /how-do-i-get-a-list-of-files-in-a-directory-in-c from awnser Kloberdanz
 
-    //TODO: not entierly sure what this does so it needs comments
+    //TODO: not entierly sure how this works but it needs comments
     DIR *dpdf;
     struct dirent *epdf;
 
@@ -165,7 +170,9 @@ bool WaypointMap::parseCSVData(std::string file_path, bool file_type_waypoints) 
         //close the file
         file.close();
         return true;
-    }   
+    } else {
+        throw std::runtime_error("Waypoint map loading is missing a file. path: "+file_path);
+    }  
     return false;
 }
 
