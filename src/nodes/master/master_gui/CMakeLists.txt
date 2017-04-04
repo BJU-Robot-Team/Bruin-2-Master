@@ -1,35 +1,23 @@
-## Bruin-2 State machine node
 cmake_minimum_required(VERSION 2.8.3)
-project(state_machine)
+project(master_gui)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  relay_board
-  compass
-  roscpp
+  rospy
+  rqt_gui
+  rqt_gui_py
 )
 
-find_package( SDL2 REQUIRED)
-
-set(CMAKE_CXX_FLAGS "-std=c++11 -DCSV_IO_NO_THREAD -ggdb -Wall ${CMAKE_CXX_FLAGS}")
-
-
-OPTION(CSV_THREADS "Option description" ON)
-
-IF(CSV_THREADS)
-    ADD_DEFINITIONS(-DCSV_IO_NO_THREAD)
-ENDIF(CSV_THREADS)
-
 ## System dependencies are found with CMake's conventions
-##find_package(Boost REQUIRED COMPONENTS system)
+# find_package(Boost REQUIRED COMPONENTS system)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
+catkin_python_setup()
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -56,11 +44,11 @@ ENDIF(CSV_THREADS)
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-#add_message_files(
-#  FILES
-#  RelayCommandMsg.msg
-#  RelayDataMsg.msg
-#)
+# add_message_files(
+#   FILES
+#   Message1.msg
+#   Message2.msg
+# )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -113,8 +101,9 @@ ENDIF(CSV_THREADS)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES state_machine
-#  CATKIN_DEPENDS other_catkin_pkg
+#  LIBRARIES master_gui
+#  CATKIN_DEPENDS rospy rqt_gui rqt_gui_py
+#  DEPENDS system_lib
 )
 
 ###########
@@ -123,57 +112,32 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
+# include_directories(include)
 include_directories(
-    include
-    ${catkin_INCLUDE_DIRS}
-    ${SDL_INCLUDE_DIRS}
-    "../../../common"
+  ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
-# add_library(state_machine
-#   src/${PROJECT_NAME}/state_machine.cpp
+# add_library(master_gui
+#   src/${PROJECT_NAME}/master_gui.cpp
 # )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(state_machine ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(master_gui ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-add_executable(state_machine_node 
-    src/main.cpp
-    src/state_machine.cpp
-    src/state_initalize.cpp
-    src/state_shutdown.cpp
-    src/state_release_break.cpp
-    src/state_check_destination.cpp
-    src/state_initial_obstacle_detect.cpp  
-    src/state_wait_for_command.cpp
-    src/state_check_stop_sign.cpp    
-    src/state_detect_station.cpp     
-    src/state_park.cpp
-    src/state_drive_path.cpp
-    src/waypoint_map.cpp
-    src/waypoint_math.cpp
-    src/state_performing_taxi_stop.cpp
-    src/state_follow.cpp
-    src/state_joystick.cpp
-)
-
-#Unit Tests
-add_executable(waypoint_map_tests src/unit_tests/waypoint_map_tests.cpp 
-src/waypoint_map.cpp)
+# add_executable(master_gui_node src/master_gui_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-#add_dependencies(state_machine_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(master_gui_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(state_machine_node
-  ${catkin_LIBRARIES}
-  ${SDL2_LIBRARIES}
-)
+# target_link_libraries(master_gui_node
+#   ${catkin_LIBRARIES}
+# )
 
 #############
 ## Install ##
@@ -184,22 +148,23 @@ target_link_libraries(state_machine_node
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-# install(PROGRAMS
-#   scripts/my_python_script
-#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+install(PROGRAMS scripts/master_gui
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 ## Mark executables and/or libraries for installation
-install(TARGETS state_machine_node
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+# install(TARGETS master_gui master_gui_node
+#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
 
 ## Mark cpp header files for installation
-install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-  FILES_MATCHING PATTERN "*.h"
-  PATTERN ".svn" EXCLUDE
-)
+# install(DIRECTORY include/${PROJECT_NAME}/
+#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+#   FILES_MATCHING PATTERN "*.h"
+#   PATTERN ".svn" EXCLUDE
+# )
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 # install(FILES
@@ -213,7 +178,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_state_machine.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_master_gui.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

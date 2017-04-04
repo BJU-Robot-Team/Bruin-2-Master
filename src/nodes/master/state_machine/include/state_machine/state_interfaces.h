@@ -3,6 +3,7 @@
 
 #include "state_machine/state_machine.h"
 #include "state_machine/vehicle_data.h"
+#include "state_machine/waypoint_math.h"
 
 //each state is basically just a wrapper for a function run on each tick
 class AbstractState {
@@ -89,11 +90,15 @@ class PerformingTaxiStopState : public AbstractState {
 };
 
 class DrivePathState : public AbstractState {
+  private:
+    WaypointMath waypoint_math;
+
   public:
     ~DrivePathState() {};
     void tick(StateMachine* state_machine, VehicleData* vehicle_data);
     bool debugState(StateMachine* state_machine);
 };
+
 
 class FollowState : public AbstractState {
   public:
@@ -101,6 +106,8 @@ class FollowState : public AbstractState {
     void tick(StateMachine* state_machine, VehicleData* vehicle_data);
     bool debugState(StateMachine* state_machine);
 };
+
+
 class JoystickState : public AbstractState {
   public:
     ~JoystickState() {};

@@ -1,9 +1,9 @@
 #include "state_machine/state_interfaces.h"
 #include "state_machine/debug_utils.h"
 #include "state_machine/state_machine.h"
+#include "state_machine/waypoint_map.h"
 
 #include <string>
-
 #include <iostream>
 
 void InitilizeState::tick(StateMachine* state_machine, VehicleData* vehicle_data) {
@@ -16,9 +16,22 @@ void InitilizeState::tick(StateMachine* state_machine, VehicleData* vehicle_data
         if(!debugState(state_machine)) { return; } //end running imediatly 
     }
         
+    bool waypoint_map_loaded = true;
+    bool gps_accurate = true; //TODO set to false once implemented below.
+    bool ros_moduals_active = true; //TODO set to false once implemented below.
 
     //check if waypoint map is loaded
-        //if not load it
+    if (vehicle_data->waypoint_map == NULL) {
+
+        //load waypoint map
+        vehicle_data->waypoint_map = new WaypointMap("data/maps/testmap");
+
+        //TODO need to do some error checking.
+
+        //map is loaded so we set bool to true
+        waypoint_map_loaded = true;
+    }
+        
 
 
     //check GPS accuracy
@@ -28,7 +41,9 @@ void InitilizeState::tick(StateMachine* state_machine, VehicleData* vehicle_data
 
 
     //if all checks above come out true send state machine a transition event
-    state_machine->internalEvent(INITIALIZE_FINISHED);
+    if (waypoint_map_loaded and gps_accurate and ros_moduals_active ) {
+        state_machine->internalEvent(INITIALIZE_FINISHED);
+    }
 }
 
 

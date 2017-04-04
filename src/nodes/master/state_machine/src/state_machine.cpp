@@ -38,7 +38,7 @@ StateMachine::StateMachine() {
     buildTableRow(ENTER_JOYSTICK    , FOLLOW              , JOYSTICK            );
     buildTableRow(SHUTDOWN_REQUESTED, JOYSTICK            , SHUTDOWN            );
     buildTableRow(ENTER_FOLLOW      , JOYSTICK            , FOLLOW              );
-
+    buildTableRow(ENTER_DRIVE_PATH      , JOYSTICK            , DRIVE_PATH      );
 
 
     //create state_objects

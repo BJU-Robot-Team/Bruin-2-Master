@@ -1,0 +1,20 @@
+<library path="src">
+  <class name="Master GUI" type="master_gui.main.MyPlugin" base_class_type="rqt_gui_py::Plugin">
+    <description>
+      The master_gui node that displaies the main user interface for bruin 2.0.
+    </description>
+    <qtgui>
+      <!-- optional grouping...
+      <group>
+        <label>Group</label>
+      </group>
+      <group>
+        <label>Subgroup</label>
+      </group>
+      -->
+      <label>My first Python Plugin</label>
+      <icon type="theme">system-help</icon>
+      <statustip>Great user interface to provide real value.</statustip>
+    </qtgui>
+  </class>
+</library>

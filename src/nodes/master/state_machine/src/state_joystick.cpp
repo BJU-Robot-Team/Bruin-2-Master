@@ -80,8 +80,8 @@ void JoystickState::tick(StateMachine* state_machine, VehicleData* vehicle_data)
     }
     case 'f':
     case 'F': {
-        ROS_DEBUG_STREAM( "Joystick state: Follow");
-        state_machine->internalEvent(ENTER_FOLLOW);
+        ROS_DEBUG_STREAM( "Joystick state: Follow a waypoint");
+        state_machine->internalEvent(ENTER_DRIVE_PATH);
         break;
     }
     case 'q':

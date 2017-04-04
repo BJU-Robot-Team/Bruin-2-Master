@@ -47,7 +47,8 @@ enum VehicleEvents {
     TAXI_STOP_FINISHED,
     PATH_FINISHED,
     ENTER_FOLLOW,
-    ENTER_JOYSTICK
+    ENTER_JOYSTICK,
+    ENTER_DRIVE_PATH
     
 };
 

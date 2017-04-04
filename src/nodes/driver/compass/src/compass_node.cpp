@@ -50,7 +50,8 @@ Compass_Data ManipulateData::ParseData(string rawData)
 		switch (option)	//switch through the wanted data options.
 		{
 		case 'C'://we found the heading
-			newData.heading = PullData(rawData, i);
+		// correct for east relativeness (90) and magnetic declination (6 degrees 37 arcminutes)
+			newData.heading = PullData(rawData, i) - 90 + (6+37/60); 
 			break;
 			
 		case 'P': //we found the pitch
@@ -215,8 +216,7 @@ int main(int argc, char **argv)
 	}	
 
 	compData = tester.ParseData(rawData);
-	
-		
+			
 	//send data out to main program for debugging
 	//tester.SendData(compData);
         ros_interface.publishMessages(compData);

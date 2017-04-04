@@ -5,6 +5,8 @@
 #include <vector>
 #include <iostream>
 
+#include "state_machine/waypoint_map.h"
+
 
 //state for a single relay board device - obsolete, use relay_mask instead?
 // mask is better because we can switch multiple relays simultaneously
@@ -22,12 +24,20 @@ struct RelayDeviceStateData {
 
 struct VehicleData {
 
+    //objects that keep track of relay information
     std::vector<RelayDeviceStateData> relay_states;
     std::vector<RelayDeviceStateData> gpio_states;
+
+    //Waypoint map object storing all possible paths
+    WaypointMap* waypoint_map;
 
     //gps data for current location
     double position_latitude  = 0;
     double position_longitude = 0;
+
+    //gps origin, needs to be loaded from ini file
+    double origin_lat = 34.8686574
+    double origin_long=-82.36457
 
     //Vehicle heading
     double position_heading = 0;
