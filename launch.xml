@@ -20,6 +20,9 @@
 
     <node name="state_machine_program" pkg="state_machine" type="state_machine_node" output="screen" required="true" /> 
 
+    <!-- records all messages into a "bag file" that allows playing back the data -->
+    <node pkg="rosbag" type="record" name="robot_bag" args="-a -o /home/bruin2/.ros/log/latest/all_messages" />
+
 </launch>
 
 
