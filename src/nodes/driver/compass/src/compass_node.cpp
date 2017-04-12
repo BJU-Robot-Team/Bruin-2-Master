@@ -51,7 +51,15 @@ Compass_Data ManipulateData::ParseData(string rawData)
 		{
 		case 'C'://we found the heading
 		// correct for east relativeness (90) and magnetic declination (6 degrees 37 arcminutes)
-			newData.heading = PullData(rawData, i) - 90 + (6+37/60); 
+			//add correction 			
+			//formula to correct for east relative with CCW = 90 - theta
+			newData.heading = PullData(rawData, i);
+			newData.heading = 90 - newData.heading - (6 + 37/60);	//correct to east relative			
+				if(newData.heading < 0)
+				{
+					newData.heading = newData.heading + 360;
+				}
+				
 			break;
 			
 		case 'P': //we found the pitch
