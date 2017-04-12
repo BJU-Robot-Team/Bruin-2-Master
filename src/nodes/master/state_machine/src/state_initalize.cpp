@@ -24,7 +24,7 @@ void InitilizeState::tick(StateMachine* state_machine, VehicleData* vehicle_data
     if (vehicle_data->waypoint_map == NULL) {
 
         //load waypoint map
-        vehicle_data->waypoint_map = new WaypointMap("data/maps/testmap");
+        //vehicle_data->waypoint_map = new WaypointMap("data/maps/testmap");
 
         //TODO need to do some error checking.
 

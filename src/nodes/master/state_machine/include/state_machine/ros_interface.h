@@ -9,6 +9,7 @@
 #include "relay_board/RelayDataMsg.h"
 #include "compass/CompassDataMsg.h"
 #include "camera_node/CameraDataMsg.h"
+#include "sensor_msgs/NavSatFix.h"
 #include "roboteq_msgs/Command.h"
 #include "digipot/DigipotDataMsg.h"
 #include "/home/bruin2/bruin_2_code/src/libraries/roboteq/roboteq_driver/include/roboteq_driver/controller.h"
@@ -41,6 +42,7 @@ public:
     ros::Subscriber relay_sub;
     ros::Subscriber compass_sub;
     ros::Subscriber camera_sub;
+    ros::Subscriber gps_sub;
 
 
   public:
@@ -48,7 +50,8 @@ public:
     ROSInterface(
       void (*relay_cb)(const relay_board::RelayDataMsg&),
       void (*compass_cb)(const compass::CompassDataMsg&),
-      void (*camera_cb)(const camera_node::CameraDataMsg&)
+      void (*camera_cb)(const camera_node::CameraDataMsg&),
+      void (*gps_cb)(const sensor_msgs::NavSatFix&)
     ) {
 
         
@@ -62,6 +65,7 @@ public:
 	relay_sub   = InterfaceHandle.subscribe("RelayData", 1, relay_cb);
 	compass_sub = InterfaceHandle.subscribe("CompassData", 1, compass_cb);
 	camera_sub  = InterfaceHandle.subscribe("CameraData", 1, camera_cb);
+        gps_sub     = InterfaceHandle.subscribe("GPSData", 1, gps_cb);
 
     }
 

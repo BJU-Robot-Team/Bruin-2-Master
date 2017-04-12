@@ -8,6 +8,9 @@
 #include "roboteq_msgs/Command.h"
 #include "/home/bruin2/bruin_2_code/src/libraries/roboteq/roboteq_driver/include/roboteq_driver/controller.h"
 
+#include <string>
+#include <cmath>
+
 using namespace std;
 
 #define FOLLOW_MIN 2   // min follow distance in meters
@@ -16,8 +19,6 @@ using namespace std;
 
 #define RAD_TO_POS    1273   // (180/Pi)*1000/45 (max counts / max degrees)
 
-#include <string>
-#include <cmath>
 
 void FollowState::tick(StateMachine* state_machine, VehicleData* vehicle_data) {
 

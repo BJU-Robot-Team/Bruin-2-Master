@@ -5,6 +5,8 @@
 #include "state_machine/vehicle_data.h"
 #include "state_machine/ros_interface.h"
 
+#include "sensor_msgs/NavSatFix.h" //for gps callback
+
 #include <vector>
 #include <string>
 #include <chrono>
@@ -43,6 +45,12 @@ void camera_callback(const camera_node::CameraDataMsg& cameraMessage) {
     vehicle_data->follow_valid = cameraMessage.tracking;
 }
 
+void gps_callback(const sensor_msgs::NavSatFix& gpsMessage) {
+    ROS_DEBUG_STREAM( "State Machine: GPS Fix: latitude: " << gpsMessage.latitude << ", longitude: " << gpsMessage.longitude << std::endl);
+    vehicle_data->position_latitude = gpsMessage.latitude;
+    vehicle_data->position_longitude = gpsMessage.longitude;
+}
+
 int main(int argc, char **argv) {
 
     VehicleStates last_state;
@@ -52,7 +60,7 @@ int main(int argc, char **argv) {
     startROS(argc, argv);
 
     //setup ros interface, state machine, and vehicle data  objects
-    ROSInterface ros_interface( &relay_callback, &compass_callback, &camera_callback);
+    ROSInterface ros_interface( &relay_callback, &compass_callback, &camera_callback, &gps_callback);
     StateMachine state_machine;
     vehicle_data =  new VehicleData();
 

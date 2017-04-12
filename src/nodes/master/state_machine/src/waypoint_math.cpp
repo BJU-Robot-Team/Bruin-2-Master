@@ -3,6 +3,7 @@
 #include <state_machine/waypoint_math.h>
 
 
+
 // Calculates the angle to the waypoint relative to east.
 // temptheta_w is the quadrant relative angle to the waypoint
 // x1, y1, are the local position of the car// todo Correct to local coordinate system.
@@ -27,9 +28,10 @@ double WaypointMath::calculateThetaW(double x1, double y1, double x2, double y2)
 // returns a steering angle (in radians). A positive steering command is CW and turns the vehicle right. 
 double WaypointMath::calcSteerAngle(double &theta_c, double &theta_w, double k) {
 	//calculate the difference in car heading and waypoint angle
-	double theta_d = theta_c - theta_w;
+	double theta_d = (theta_c*(pi_num/180) - theta_w);
 
-	int negVar = 1;//variable that controls left and right turns
+	//std::cout << theta_d << std::endl; //debug message 
+	int negVar = 1;//variable that controls left and right turns. If negVar=1, we turn right. If negVar=-1, we turn left.
 
 	if (theta_d > 0) {
 		if (theta_d < pi_num) { std::cout << "Turn Right" << std::endl; }  
@@ -40,7 +42,13 @@ double WaypointMath::calcSteerAngle(double &theta_c, double &theta_w, double k) 
 		else { std::cout << "Turn Right" << std::endl; }
 	}
 
-	if (std::abs(theta_d) > max_steer){ return (negVar*max_steer); } 			
-	else { return (negVar*k*std::abs(theta_d)); }
+	if (std::abs(theta_d) > max_steer){
+		return (negVar*max_steer); 
+		//return(1);
+        } else { 
+		return (negVar*k*std::abs(theta_d)); 
+		//return(2);
+	}
 }// end calcSteerAngle
+
 

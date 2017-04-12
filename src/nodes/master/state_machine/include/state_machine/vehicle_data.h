@@ -35,9 +35,7 @@ struct VehicleData {
     double position_latitude  = 0;
     double position_longitude = 0;
 
-    //gps origin, needs to be loaded from ini file
-    double origin_lat = 34.8686574
-    double origin_long=-82.36457
+
 
     //Vehicle heading
     double position_heading = 0;
