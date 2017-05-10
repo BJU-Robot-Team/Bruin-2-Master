@@ -1,0 +1,46 @@
+Bruin 2 Checklist:
+- GUI 
+	1. needs to receive current state, GPS location, and target - done
+	2. needs to send messages of the station to state machine - done
+	3. needs to implement moving Bruin2 icon (readability) *not critical* - partially done, but can't complete GPS
+- CSV files
+	1. give local coordinates instead of pixels in waypoint map stations file (we edit this) *not crucial but helpful*
+- State Machine
+	1. Code for waypoint map crashes program (csv file parser header file causes problems. Possibly write our own?)
+	2. Compass causing issues (code issue or physical issue?)
+	3. Be able to stop if something gets in the way, we reach the waypoint etc -> goes along with LIDAR
+	4. Path finding code (fuzzy logic)
+- LIDAR node	
+	1. Find appropriate LIDAR library on github (find on the website)
+	2. Implement this code for the stopping logic (goes along with the stopping logic above)
+notes:
+clean up your dang folders
+
+where should this go?
+
+tasks accomplished:
+1. installed sublime text
+2. fixed shell script problems
+3. configured GUI folder to output messages
+4. reconfigured GUI
+5. finished station talker 
+6. started work on listener
+7. wrote test to move the GUI icon
+8. completed the xml/cmake prep for state_machine messages
+9. completed listeners in the state machine from the GUI
+10. edited GUI some more to account for all of the things we need 
+
+
+
+TODO: 
+1. finish the GUI's functionality
+    * button needs to disable after being pressed once
+    * global variable that the GUI sends out indicating if the robot should go or not?
+    * get the rest of the data from the gps/hard coded in
+2. implement the GUI's message functionality in main.cpp
+    *go to the correct waypoint based on whichever one we want
+3. fix CSV file
+    * this goes along with the GUI. look at way_pointmath.h to figure this out
+4. LIDAR installation
+    * friday? see how far we can get
+5. (If time - fix bugs in step 3 above ^^^) probably won't get here
