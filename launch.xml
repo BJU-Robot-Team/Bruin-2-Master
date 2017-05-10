@@ -3,22 +3,24 @@
 <!-- plk is the package name as defined in each project.xml -->
 <!-- type is executable listed in CMakeLists.txt? -->
 <launch>
-    <node name="camera_driver" pkg="camera_node" type="camera_node" output="screen" required="true" />
+    <node name="camera_driver" pkg="camera_node" type="camera_node" output="screen" required="false" />
 
-    <node name="compass_driver" pkg="compass" type="compass_node" output="screen" required="true" />      
+    <node name="compass_driver" pkg="compass" type="compass_node" output="screen" required="false" />      
     
-    <node name="gps_driver" pkg="nmea_navsat_driver" type="nmea_serial_driver" output="screen" required="true" 
+    <node name="gps_driver" pkg="nmea_navsat_driver" type="nmea_serial_driver" output="screen" required="false" 
         args="_port:=/dev/gps _baud:=4800" />
 
-    <node name="relay_board_driver" pkg="relay_board" type="relay_board_node" output="screen" required="false" />    
+    <node name="relay_board_driver" pkg="relay_board" type="relay_board_node" output="screen" required="false" />
 
-    <node name="roboteq_driver" pkg="roboteq_driver" type="roboteq_node" output="screen" required="true" >
+    <node name="roboteq_driver" pkg="roboteq_driver" type="roboteq_node" output="screen" required="false" >
 	<rosparam param="channels">['brake', 'steer']</rosparam>
     </node>
 
     <node name="topic_logger" pkg="topic_logger" type="topic_logger_node" output="screen" required="false" /> 
 
     <node name="state_machine_program" pkg="state_machine" type="state_machine_node" output="screen" required="true" /> 
+
+    <node name="master_gui" pkg="master_gui" type="main.py" output="screen" required="true" /> 
 
     <!-- records all messages into a "bag file" that allows playing back the data -->
     <node pkg="rosbag" type="record" name="robot_bag" args="-a -o /home/bruin2/.ros/log/latest/all_messages" />

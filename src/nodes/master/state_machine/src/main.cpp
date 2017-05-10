@@ -4,11 +4,14 @@
 #include "state_machine/state_machine.h"
 #include "state_machine/vehicle_data.h"
 #include "state_machine/ros_interface.h"
+#include "ros/ros.h"
+
 
 #include "sensor_msgs/NavSatFix.h" //for gps callback
 
 #include <vector>
 #include <string>
+#include <sstream>
 #include <chrono>
 #include <thread>
 #include <SDL2/SDL.h>
@@ -26,6 +29,7 @@
     digipot::DigipotDataMsg speedMessage;
     relay_board::RelayCommandMsg relayMessage;
     relay_board::RelayDataMsg relayDataMessage;
+    state_machine::MsgsForGUI StateOfRobotMessage;
     VehicleData* vehicle_data;
 
 // Callback methods execute on each message receipt,
@@ -51,6 +55,11 @@ void gps_callback(const sensor_msgs::NavSatFix& gpsMessage) {
     vehicle_data->position_longitude = gpsMessage.longitude;
 }
 
+//TODO: make the GUI adjust which waypoint we go to  
+void gui_callback(const master_gui::GUImsg& guiMessage) {
+    
+}
+
 int main(int argc, char **argv) {
 
     VehicleStates last_state;
@@ -60,11 +69,11 @@ int main(int argc, char **argv) {
     startROS(argc, argv);
 
     //setup ros interface, state machine, and vehicle data  objects
-    ROSInterface ros_interface( &relay_callback, &compass_callback, &camera_callback, &gps_callback);
+    ROSInterface ros_interface( &relay_callback, &compass_callback, &camera_callback, &gps_callback, &gui_callback);
     StateMachine state_machine;
     vehicle_data =  new VehicleData();
 
-    
+
     state_machine.debug_mode = false;
     bool turn_off_light = false;
     int light_count = 0;
@@ -117,7 +126,6 @@ int main(int argc, char **argv) {
 
     //start main loop
     while (ros_interface.isNodeRunning()) {
-
 
 #ifdef USE_SDL
         while (SDL_PollEvent(&event)) {
@@ -186,7 +194,7 @@ int main(int argc, char **argv) {
 #endif
 
         //Warrning light code
-        //TODO: this should have it's own place not slapped int the middle of the main loop. But I'm out of time.
+        //TODO: this should have it's own place not slapped in the middle of the main loop. But I'm out of time.
         //Can be invoked by a ROS Timer
         if (turn_off_light) {
             if (light_count < 10) { //cycles for light to be on
@@ -283,11 +291,15 @@ int main(int argc, char **argv) {
           speedMessage.speed = vehicle_data->speed_cmd;
         }
         brakeMessage.setpoint = vehicle_data->brake_cmd;
-
+ 
+        StateOfRobotMessage.currentstate = state_machine.getCurrentState();
+        ros_interface.state_pub.publish(StateOfRobotMessage);
         ros_interface.steer_pub.publish(steerMessage);
         ros_interface.brake_pub.publish(brakeMessage);
         ros_interface.speed_pub.publish(speedMessage);
-
+  
+    
+     
         //check if we are finished
         if ( vehicle_data->shutdown ) endROS();
         ros::spinOnce();  // Need to spin if we use callbacks, and to let ROS know we are alive?        //

@@ -20,3 +20,4 @@ rm -rf ~/.ros/data && cp -r data ~/.ros
 
 #Now we can run everything using roslaunch and the launch.xml config file
 roslaunch launch.xml
+

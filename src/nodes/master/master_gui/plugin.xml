@@ -1,5 +1,5 @@
 <library path="src">
-  <class name="Master GUI" type="master_gui.main.MyPlugin" base_class_type="rqt_gui_py::Plugin">
+  <class name="GUIPlugin" type="master_gui.main.GUIPlugin" base_class_type="rqt_gui_py::Plugin">
     <description>
       The master_gui node that displaies the main user interface for bruin 2.0.
     </description>

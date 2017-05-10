@@ -9,6 +9,7 @@ find_package(catkin REQUIRED COMPONENTS
   relay_board
   compass
   roscpp
+  message_generation
 )
 
 find_package( SDL2 REQUIRED)
@@ -56,11 +57,10 @@ ENDIF(CSV_THREADS)
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-#add_message_files(
-#  FILES
-#  RelayCommandMsg.msg
-#  RelayDataMsg.msg
-#)
+add_message_files(
+  FILES
+  MsgsForGUI.msg
+)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -77,10 +77,10 @@ ENDIF(CSV_THREADS)
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
+generate_messages(
+  DEPENDENCIES
+ std_msgs  # Or other packages containing msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -114,7 +114,7 @@ ENDIF(CSV_THREADS)
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES state_machine
-#  CATKIN_DEPENDS other_catkin_pkg
+  CATKIN_DEPENDS message_runtime
 )
 
 ###########

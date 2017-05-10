@@ -12,6 +12,8 @@
 #include "sensor_msgs/NavSatFix.h"
 #include "roboteq_msgs/Command.h"
 #include "digipot/DigipotDataMsg.h"
+#include "state_machine/MsgsForGUI.h"
+#include "master_gui/GUImsg.h"
 #include "/home/bruin2/bruin_2_code/src/libraries/roboteq/roboteq_driver/include/roboteq_driver/controller.h"
 
 #include <iostream>
@@ -39,11 +41,12 @@ public:
     ros::Publisher steer_pub;
     ros::Publisher brake_pub;
     ros::Publisher speed_pub;
+    ros::Publisher state_pub;
     ros::Subscriber relay_sub;
     ros::Subscriber compass_sub;
     ros::Subscriber camera_sub;
     ros::Subscriber gps_sub;
-
+    ros::Subscriber gui_sub;
 
   public:
 
@@ -51,7 +54,8 @@ public:
       void (*relay_cb)(const relay_board::RelayDataMsg&),
       void (*compass_cb)(const compass::CompassDataMsg&),
       void (*camera_cb)(const camera_node::CameraDataMsg&),
-      void (*gps_cb)(const sensor_msgs::NavSatFix&)
+      void (*gps_cb)(const sensor_msgs::NavSatFix&),
+      void (*gui_cb)(const master_gui::GUImsg&)
     ) {
 
         
@@ -60,12 +64,14 @@ public:
         steer_pub   = InterfaceHandle.advertise<roboteq_msgs::Command>("steer/cmd", 1000);
         brake_pub   = InterfaceHandle.advertise<roboteq_msgs::Command>("brake/cmd", 1000);
         speed_pub   = InterfaceHandle.advertise<digipot::DigipotDataMsg>("/digipot/cmd", 1000);
+        state_pub   = InterfaceHandle.advertise<state_machine::MsgsForGUI>("CurrentState", 1000);
 
         // Subscribers, with callbacks
 	relay_sub   = InterfaceHandle.subscribe("RelayData", 1, relay_cb);
 	compass_sub = InterfaceHandle.subscribe("CompassData", 1, compass_cb);
 	camera_sub  = InterfaceHandle.subscribe("CameraData", 1, camera_cb);
         gps_sub     = InterfaceHandle.subscribe("GPSData", 1, gps_cb);
+        gui_sub     = InterfaceHandle.subscribe("GUIData", 1, gui_cb);
 
     }
 

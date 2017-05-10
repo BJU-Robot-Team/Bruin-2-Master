@@ -10,6 +10,7 @@
 //   constructor which builds the state table transition
 
 //list of possible machine states
+#define NUM_VEHICLE_STATES 14
 enum VehicleStates {
     INVALID_STATE,
     INITIALIZE,
@@ -27,8 +28,9 @@ enum VehicleStates {
     FOLLOW,
     JOYSTICK
 };
+//NOTE: if you edit the above states, edit the #defined num vehicle states as well
 
-const std::string state_names[] = { "Invalid", "Init", "Shutdown", "Detect", "Wait", "Init obstacle", "Release brake", "Park", "Check dest", "Chech stop", "Taxi stop", "Drive", "Obstacle", "Follow", "Joystick" };
+const std::string state_names[] = { "Invalid", "Init", "Shutdown", "Detect", "Wait", "Init obstacle", "Release brake", "Park", "Check dest", "Check stop", "Taxi stop", "Drive", "Obstacle", "Follow", "Joystick" };
 
 //events that can cause a state transition
 enum VehicleEvents {
@@ -52,6 +54,8 @@ enum VehicleEvents {
     
 };
 
+
+
 struct StateTableRow {
     VehicleStates source_state; //state we are in when the event occures
     VehicleStates next_state; //state we will transition to after the event
@@ -60,6 +64,8 @@ struct StateTableRow {
       : source_state(source), next_state(next)
     {};
 };
+
+
 
 class AbstractState;
 
@@ -95,7 +101,8 @@ class StateMachine {
 
     StateMachine();
     ~StateMachine();
-
+   
+    std::string getCurrentState();
     //called to trigger a transition by a state
     void internalEvent(VehicleEvents event);
 

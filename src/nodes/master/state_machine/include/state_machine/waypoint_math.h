@@ -27,7 +27,7 @@ class WaypointMath {
             long_const = lat_const*cos((origin_lat/360)*2*pi_num); // longitude constant of operating area
 	};
      
-        // Computes the x-cooridinate equivalent of the longitude of a given point.
+        // Computes the x-coordinate equivalent of the longitude of a given point.
 	// p_long is the longitude of the given point
 	// long_o is the origin longitude of the localized map
 	// long_const is the longitude constant for the current operational area

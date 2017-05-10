@@ -121,6 +121,13 @@ void StateMachine::addState(VehicleStates state, AbstractState* state_obj){
 }
 
 
+std::string StateMachine::getCurrentState() {
+
+	//if (current_state < NUM_VEHICLE_STATES){
+		return state_names[current_state];
+	//}
+}
+
 //called to trigger a transition by a state
 void StateMachine::internalEvent(VehicleEvents event){
 
@@ -130,8 +137,6 @@ void StateMachine::internalEvent(VehicleEvents event){
     if (current_state == source) {
         //change current state to the new state
         current_state = next;
-
-        //TODO: update GUI debug screen with new state info
     } else {
         //send out debug/warning message about an invalid event call
     }
