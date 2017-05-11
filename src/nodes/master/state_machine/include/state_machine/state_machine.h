@@ -2,6 +2,7 @@
 #define STATE_MACHINE_H
 
 #include <vector>
+#include <string>
 
 #include "state_machine/vehicle_data.h"
 
@@ -98,6 +99,7 @@ class StateMachine {
 
     //the current state
     VehicleStates current_state;
+      
 
     StateMachine();
     ~StateMachine();

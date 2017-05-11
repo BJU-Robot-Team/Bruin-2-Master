@@ -1,7 +1,7 @@
 #include "state_machine/state_interfaces.h"
 #include "state_machine/debug_utils.h"
 #include "state_machine/state_machine.h"
-
+#include "ros/ros.h"
 #include <string>
 
 void WaitForCommandState::tick(StateMachine* state_machine, VehicleData* vehicle_data) {
@@ -9,13 +9,18 @@ void WaitForCommandState::tick(StateMachine* state_machine, VehicleData* vehicle
     //call the state's debug function if we are in debug mode.
     if (state_machine->debug_mode) {
         //run the state's debug function if it returns true continue normal code
-        if(!debugState(state_machine)) { return; } //end running imediatly 
+        if(!debugState(state_machine)) { return; } //end running immediatly 
     }
 
 
     //check if destination station has been set
         //if so trigger state transition to initial obstacle detect
-
+        if (vehicle_data->selected_station != "None" && vehicle_data->goto_button_pressed == true) {
+            //TODO: set the desired destination to the selected_station and get the robot moving
+            state_machine->internalEvent(ENTER_DRIVE_PATH);
+        } else {
+            return;
+        }
 }
 
 

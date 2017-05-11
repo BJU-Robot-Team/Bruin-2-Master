@@ -31,15 +31,15 @@ class WaypointMath {
 	// p_long is the longitude of the given point
 	// long_o is the origin longitude of the localized map
 	// long_const is the longitude constant for the current operational area
-	// returns x-cooridinate relative to the local map
+	// returns x-coordinate relative to the local map
 	double computeLocalX(double point_longitude) { return ((point_longitude - origin_long)*long_const); } //end computeLongitude
 
 
-	// Computes the y-cooridinate equivalent of the latitude of a given point.
+	// Computes the y-coordinate equivalent of the latitude of a given point.
 	// p_lat is the latitude of the given point
 	// lat_o is the origin latitude of the localized map
 	// lat_const is the latitude constant for the current operational area
-	// returns y-cooridinate relative to the local map
+	// returns y-coordinate relative to the local map
 	double computeLocalY(double point_latitude) { return ((point_latitude - origin_lat)*lat_const); }//end computeLatitude
 
 	// Sets the Local Map Origin point

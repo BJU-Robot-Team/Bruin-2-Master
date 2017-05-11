@@ -35,7 +35,11 @@ struct VehicleData {
     double position_latitude  = 0;
     double position_longitude = 0;
 
-
+    //the station we want to go to is gotten from the GUI messages and stored here, and whether or not we want to go is also stored
+    //I wanted to put this in the state machine but without it being global there was no way to access it from some of the methods this
+    //information needed to be seen it
+    std::string selected_station = "None";
+    bool goto_button_pressed = false;
 
     //Vehicle heading
     double position_heading = 0;

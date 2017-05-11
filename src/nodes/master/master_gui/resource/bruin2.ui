@@ -46,17 +46,17 @@ font: 14pt &quot;Sans Serif&quot;;</string>
     </property>
     <item>
      <property name="text">
-      <string>Waypoint 1</string>
+      <string>None</string>
      </property>
     </item>
     <item>
      <property name="text">
-      <string>Waypoint 2</string>
+      <string>Target 1</string>
      </property>
     </item>
     <item>
      <property name="text">
-      <string>Waypoint 3</string>
+      <string>Target 2</string>
      </property>
     </item>
    </widget>

@@ -178,9 +178,9 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.lbl_Title.setText(_translate("MainWindow", "Bruin 2 Navigator"))
-        self.cB_WayPointNum.setItemText(0, _translate("MainWindow", "Waypoint 1"))
-        self.cB_WayPointNum.setItemText(1, _translate("MainWindow", "Waypoint 2"))
-        self.cB_WayPointNum.setItemText(2, _translate("MainWindow", "Waypoint 3"))
+        self.cB_WayPointNum.setItemText(0, _translate("MainWindow", "None"))
+        self.cB_WayPointNum.setItemText(1, _translate("MainWindow", "Target 1"))
+        self.cB_WayPointNum.setItemText(2, _translate("MainWindow", "Target 2"))
         self.lbl_lattitude.setText(_translate("MainWindow", "Lattitude:"))
         self.lbl_longitude.setText(_translate("MainWindow", "Longitude:"))
         self.lbl_lattitudeNum.setText(_translate("MainWindow", "0"))

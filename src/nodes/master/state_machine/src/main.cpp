@@ -57,7 +57,17 @@ void gps_callback(const sensor_msgs::NavSatFix& gpsMessage) {
 
 //TODO: make the GUI adjust which waypoint we go to  
 void gui_callback(const master_gui::GUImsg& guiMessage) {
-    
+    ROS_DEBUG_STREAM("GUI station selected: " << guiMessage.state << std::endl);
+    vehicle_data->selected_station = guiMessage.state;
+    //this isn't necessary but I thought a bool was cleaner than using a string and less prone to error
+    if (guiMessage.goToNextState == "True") {
+        vehicle_data->goto_button_pressed = true;
+    } else {
+        vehicle_data-> goto_button_pressed = false;
+    }
+
+
+
 }
 
 int main(int argc, char **argv) {
@@ -292,7 +302,7 @@ int main(int argc, char **argv) {
         }
         brakeMessage.setpoint = vehicle_data->brake_cmd;
  
-        StateOfRobotMessage.currentstate = state_machine.getCurrentState();
+        StateOfRobotMessage.currentState = state_machine.getCurrentState();
         ros_interface.state_pub.publish(StateOfRobotMessage);
         ros_interface.steer_pub.publish(steerMessage);
         ros_interface.brake_pub.publish(brakeMessage);
