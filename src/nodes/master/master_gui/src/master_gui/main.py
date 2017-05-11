@@ -75,7 +75,7 @@ class MainForm(QtWidgets.QMainWindow):
         is clicked (or a similar signal was recieved from the combo box"""
         global currentStation
         #if the window is not already open, open a new window
-        currentStation = "Target 1"
+        currentStation = "station1"
         if self.stopgowindow is None:
             self.stopgowindow = StopGo(self)
         self.stopgowindow.show()
@@ -86,7 +86,7 @@ class MainForm(QtWidgets.QMainWindow):
         """creates a new stop/go window when the second target button
         is clicked (or a similar signal was recieved from the combo box"""
         global currentStation
-        currentStation = "Target 2"
+        currentStation = "station2"
         # if the window is not already open, open a new window
         if self.stopgowindow is None:
             self.stopgowindow = StopGo(self)
@@ -96,9 +96,9 @@ class MainForm(QtWidgets.QMainWindow):
     def comboBoxPressEvent(self, event):
         """handle the text changing in the combo box, opens the corresponding
         corresponding target button stop/go window """
-        if self.ui.cB_WayPointNum.currentText() is "None":
+        if self.ui.cB_StationNum.currentText() is "None":
             currentStation = "None"
-        elif self.ui.cB_WayPointNum.currentText() is "Target 1":
+        elif self.ui.cB_StationNum.currentText() is "station1":
             self.targetButton1PressEvent(self)
         else:
             self.targetButton2PressEvent(self)
@@ -210,7 +210,7 @@ class MainForm(QtWidgets.QMainWindow):
         self.ui.btn_debug.clicked.connect(self.debugButtonPressEvent)
         self.target1.clicked.connect(self.targetButton1PressEvent)
         self.target2.clicked.connect(self.targetButton2PressEvent)
-        self.ui.cB_WayPointNum.currentIndexChanged.connect(self.comboBoxPressEvent)
+        self.ui.cB_StationNum.currentIndexChanged.connect(self.comboBoxPressEvent)
         
         #setup map's picture using the pixmap feature
         self.ui.lbl_map.setPixmap(QtGui.QPixmap(os.path.join(resource_path, "map.png")))

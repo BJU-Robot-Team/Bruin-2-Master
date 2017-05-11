@@ -49,7 +49,7 @@ void DrivePathState::tick(StateMachine* state_machine, VehicleData* vehicle_data
 	//double x2 = 272.5103629905;	//Below walkway
 	//double y2 = 587.5095144198;
 
-        double x2 = 79.19078054;	//station C middle of greenhouse field
+    double x2 = 79.19078054;	//station C middle of greenhouse field
 	double y2 = 45.9902;            //lat: 34.8690710, longitue: -82.3637030
 
 	//calculate waypoint angle

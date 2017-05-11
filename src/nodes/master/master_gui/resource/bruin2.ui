@@ -35,7 +35,7 @@ font: 14pt &quot;Sans Serif&quot;;</string>
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QComboBox" name="cB_WayPointNum">
+   <widget class="QComboBox" name="cB_StationNum">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -51,12 +51,12 @@ font: 14pt &quot;Sans Serif&quot;;</string>
     </item>
     <item>
      <property name="text">
-      <string>Target 1</string>
+      <string>station1</string>
      </property>
     </item>
     <item>
      <property name="text">
-      <string>Target 2</string>
+      <string>station2</string>
      </property>
     </item>
    </widget>
@@ -385,7 +385,7 @@ font: 14pt &quot;Sans Serif&quot;;</string>
    </widget>
    <zorder>lbl_black</zorder>
    <zorder>lbl_Title</zorder>
-   <zorder>cB_WayPointNum</zorder>
+   <zorder>cB_StationNum</zorder>
    <zorder>lbl_lattitude</zorder>
    <zorder>lbl_longitude</zorder>
    <zorder>lbl_lattitudeNum</zorder>
