@@ -13,25 +13,24 @@ void InitilizeState::tick(StateMachine* state_machine, VehicleData* vehicle_data
     //call the state's debug function if we are in debug mode.
     if (state_machine->debug_mode) {
         //run the state's debug function if it returns true continue normal code
-        if(!debugState(state_machine)) { return; } //end running imediatly 
+        if(!debugState(state_machine)) { return; } //end running imediatly
     }
-        
+
     bool waypoint_map_loaded = true;
     bool gps_accurate = true; //TODO set to false once implemented below.
     bool ros_moduals_active = true; //TODO set to false once implemented below.
-
     //check if waypoint map is loaded
+
     if (vehicle_data->waypoint_map == NULL) {
 
         //load waypoint map
         //vehicle_data->waypoint_map = new WaypointMap("data/maps/testmap");
-
         //TODO need to do some error checking.
 
         //map is loaded so we set bool to true
         waypoint_map_loaded = true;
     }
-        
+
 
 
     //check GPS accuracy

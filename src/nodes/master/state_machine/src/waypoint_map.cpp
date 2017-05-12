@@ -73,7 +73,7 @@ bool WaypointMap::loadCSVMapFormat(std::string map_folder_path) {
             epdf = readdir(dpdf);
         }
     } else {
-      //TODO: this should probably be changed to the ROS_DEBUG_STREAM
+      //TODO: should this be changed to the ROS_DEBUG_STREAM instead of cout?
       std::cout << "The directory name provided to the CSV parser method was invalid" << std::endl;
     }
     //close the open directory just as you would do with a normal file
@@ -83,7 +83,10 @@ bool WaypointMap::loadCSVMapFormat(std::string map_folder_path) {
 }
 
 
-//parses a given CSV file's contents.
+//  parses a given CSV file's contents.
+//  TODO: Do we even need to use this code to parse a CSV file? It seems nice but unnecessary.
+//  TODO CONTINUED: I think the best thing to do would be to run python's csv parse (which is much simpler)
+//  TODO CONTINUED: then use its output. But that's up to whoever codes this.
 //  takes a filepath string and a bool indicating which file type this is
 //  returns a bool. true indicates success
 //  TODO: we need to do a lot of validation
@@ -115,6 +118,8 @@ bool WaypointMap::parseCSVData(std::string file_path, bool file_type_waypoints) 
 
         //normal waypoints path file format
         } else {
+
+
             //setup csv parser
             //first line has only 2 columns
             io::CSVReader<2> station_reader(file_path, filestream);
@@ -125,7 +130,11 @@ bool WaypointMap::parseCSVData(std::string file_path, bool file_type_waypoints) 
             //read first line which describes source and destination stations
             std::string start_station, end_station;
             station_reader.read_row(start_station, end_station);
-
+            //TODO: finish the below if statement (this is just pseudocode at the moment)
+            /*if (stoi(start_station_coordinates) equals stoi (end_station_coordinates)) {
+              cout << "Start station and end station are in the same place" << endl;
+              //handle error
+            } */
             //read the rest of the lines which are each waypoints
             std::string comment;
             double latitude, longitude, curvature, precision;
@@ -182,7 +191,7 @@ bool WaypointMap::parseCSVData(std::string file_path, bool file_type_waypoints) 
         file.close();
         return true;
     } else {
-        throw std::runtime_error("Waypoint map loading is missing a file. path: "+file_path);
+        throw std::runtime_error("Waypoint map loading is missing a file, path: " + file_path);
     }
     return false;
 }
