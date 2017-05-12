@@ -13,8 +13,9 @@ import os
 import rospy
 import rospkg
 import std_msgs.msg
-import warnings
-warnings.filterwarnings('error')
+#TODO: I think we need to use the screeninfo module to move the robot (since QT's positioning is based on pixels and pixels are relative to the 
+#monitor, I thought moving the robot locally would need to be based on the pixels of each individual screen)
+#from screeninfo import get_monitors
 from compass.msg import CompassDataMsg
 from state_machine.msg import MsgsForGUI
 from master_gui.msg import GUImsg
@@ -285,20 +286,17 @@ class StopGo(QtWidgets.QMainWindow):
         """Handles a timer hit by displaying the current
          information supplied by ROS messages"""
 
-        #TODO: replace these with the listener information
+        #TODO: stil need the turn info and speed
         global direction, x, y
-        #global x
-        #global y
         self.ui.lbl_latittudedata.setText(str(y))
         self.ui.lbl_longitudedata.setText(str(x))
         self.ui.lbl_directiondata.setText(direction)
-        #self.ui.lbl_headingdata.setText("0")
-        #self.ui.lbl_headingdata.setText("300")
 
     def goButtonPress(self):
         """when the user presses the "yes I want to go here"
-        button, disable the button and tell the state machine w
+        button, disable the button and tell the state machine 
         we are actively going to the desired target"""
+        #TODO: Renable this after the user closes the window
         self.ui.btn_go.setEnabled(False)
         global goToStation
         goToStation = True
@@ -310,7 +308,10 @@ class StopGo(QtWidgets.QMainWindow):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.timer = QtCore.QTimer()
+        self.ui.btn_go.setEnabled(True)
         self.timer.timeout.connect(self.timerHit)
+	self.ui.lbl_latittudedata.setText(str(y))
+        self.ui.lbl_longitudedata.setText(str(x))
         global CONST_CLOCK_SPEED
         self.timer.start(CONST_CLOCK_SPEED)
         self.ui.btn_go.clicked.connect(self.goButtonPress)

@@ -1,6 +1,5 @@
-
-
 //main.cpp The Bruin-2 State Machine
+
 #include "state_machine/state_machine.h"
 #include "state_machine/vehicle_data.h"
 #include "state_machine/ros_interface.h"
@@ -55,7 +54,7 @@ void gps_callback(const sensor_msgs::NavSatFix& gpsMessage) {
     vehicle_data->position_longitude = gpsMessage.longitude;
 }
 
-//TODO: make the GUI adjust which waypoint we go to  
+//TODO: make the GUI adjust which waypoint we go to/ which file we open
 void gui_callback(const master_gui::GUImsg& guiMessage) {
     ROS_DEBUG_STREAM("GUI station selected: " << guiMessage.state << std::endl);
     vehicle_data->selected_station = guiMessage.state;
@@ -65,9 +64,35 @@ void gui_callback(const master_gui::GUImsg& guiMessage) {
     } else {
         vehicle_data-> goto_button_pressed = false;
     }
+}
 
 
+//Warning light code
+//TODO: should be able to be invoked by a ROS Timer
+void adjustLight(bool turn_off_light, relay_board::RelayCommandMsg& relayMessage, int light_count){
 
+        //if the turn_off_light is true and the light count is less than ten increment the light count
+        if (turn_off_light) {
+            if (light_count < 10) { //cycles for light to be on
+                light_count = light_count+1;
+            //otherwise, set the command to off, the turn_off_light again to false and count to 0
+            } else {
+                relayMessage.command = "OFF";
+                turn_off_light = false;
+                light_count = 0;
+            }
+        //otherise, if turn_off_light is false
+        } else {
+            //if light count is less than ten, increment the light count
+            if (light_count < 10) { //cycles for light to be off
+                light_count = light_count+1;
+            //otherwise, set the command to on, the turn_off_light again to true and count to 0
+            } else {
+                relayMessage.command = "ON";
+                turn_off_light = true;
+                light_count = 0;
+            }
+        }
 }
 
 int main(int argc, char **argv) {
@@ -88,14 +113,14 @@ int main(int argc, char **argv) {
     bool turn_off_light = false;
     int light_count = 0;
 
-    ROS_INFO_STREAM( "Bruin-2 State Machine Running.");
+    ROS_INFO_STREAM("Bruin-2 State Machine Running.");
 
 #define USE_SDL // uncomment this to open and use the SDL window for keyboard input
 #ifdef USE_SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) throw std::runtime_error("Could not init SDL");
     SDL_Event event;
     char code;
-    
+
     SDL_Window *window;
     window = SDL_CreateWindow("Bruin-2 Keyboard input",
                           900, 100,
@@ -199,34 +224,11 @@ int main(int argc, char **argv) {
           default:
              ROS_DEBUG_STREAM( "not up or down or quit" << std::endl);
           break;
-          }
+
         }
 #endif
-
-        //Warrning light code
-        //TODO: this should have it's own place not slapped in the middle of the main loop. But I'm out of time.
-        //Can be invoked by a ROS Timer
-        if (turn_off_light) {
-            if (light_count < 10) { //cycles for light to be on
-                light_count = light_count+1;
-            } else {
-                relayMessage.command = "OFF";
-                turn_off_light = false;
-                light_count = 0;
-            }
-
-        } else {
-
-            if (light_count < 10) { //cycles for light to be off
-                light_count = light_count+1;
-            } else {
-                relayMessage.command = "ON";
-                turn_off_light = true;
-                light_count = 0;
-            }
-        }	
-
-
+       //call warning light method
+        adjustLight(turn_off_light,relayMessage, light_count);
         ROS_DEBUG_STREAM( "follow valid? " << vehicle_data->follow_valid);
 
         // Message on every state change
@@ -252,8 +254,7 @@ int main(int argc, char **argv) {
                 SDL_RenderPresent(renderer);
                 previous_exit = false;
             }
-        }
-        else {
+        } else {
             if ( ! previous_exit ) {
                 SDL_HideWindow(window);
                 previous_exit = true;
@@ -264,7 +265,7 @@ int main(int argc, char **argv) {
         state_machine.tick(vehicle_data);
 
         // Publish all the command messages, between every tick of the states
-
+}
         relayMessage.device_type = "relay";
         relayMessage.device_number = 0;
         relayMessage.command = "writeall";
@@ -290,7 +291,7 @@ int main(int argc, char **argv) {
         }
         ros_interface.relay_pub.publish(relayMessage);
 
-        steerMessage.mode = 1; // 1=MODE_POSITION, 0=MODE_SPEED	
+        steerMessage.mode = 1; // 1=MODE_POSITION, 0=MODE_SPEED
         brakeMessage.mode = 1;
 
         steerMessage.setpoint = STEER_OFFSET + vehicle_data->steer_cmd*1.5; // deliberately oversteer
@@ -301,18 +302,19 @@ int main(int argc, char **argv) {
           speedMessage.speed = vehicle_data->speed_cmd;
         }
         brakeMessage.setpoint = vehicle_data->brake_cmd;
- 
+
+        //publish the messages we got in the interface
         StateOfRobotMessage.currentState = state_machine.getCurrentState();
         ros_interface.state_pub.publish(StateOfRobotMessage);
         ros_interface.steer_pub.publish(steerMessage);
         ros_interface.brake_pub.publish(brakeMessage);
         ros_interface.speed_pub.publish(speedMessage);
-  
-    
-     
+
+
+
         //check if we are finished
         if ( vehicle_data->shutdown ) endROS();
-        ros::spinOnce();  // Need to spin if we use callbacks, and to let ROS know we are alive?        //
+        ros::spinOnce();  // Need to spin if we use callbacks, and to let ROS know we are alive
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 

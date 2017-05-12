@@ -5,7 +5,7 @@
 
 #include <iostream>     // std::ios, std::istream, std::cout
 #include <fstream>      // std::filebuf
-#include <dirent.h>     // DIR type, opendir, readdir 
+#include <dirent.h>     // DIR type, opendir, readdir
 
 #include "state_machine/waypoint_map.h"
 #include "csv.h"
@@ -14,8 +14,9 @@
 WaypointMap::WaypointMap(std::string map_folder_path) {
     bool loaded = loadCSVMapFormat(map_folder_path);
 
+    //if something went wrong, print the error to cout
     if (!loaded) {
-        std::cout << "not loaded" << std::endl;
+      std::cout << "The desired CSV file path and files were not loaded" << std::endl;
     }
 }
 
@@ -24,7 +25,7 @@ WaypointMap::WaypointMap(std::string map_folder_path) {
 //  takes a folder path string
 //  returns bool. true means success
 bool WaypointMap::loadCSVMapFormat(std::string map_folder_path) {
-    bool parse_success;    
+    bool parse_success;
 
     //parse the stations file first
     parse_success = parseCSVData(map_folder_path+"/stations.csv", false);
@@ -40,14 +41,21 @@ bool WaypointMap::loadCSVMapFormat(std::string map_folder_path) {
     //directory list code aquired from http://stackoverflow.com/questions/306533
     //  /how-do-i-get-a-list-of-files-in-a-directory-in-c from awnser Kloberdanz
 
-    //TODO: not entierly sure how this works but it needs comments
+    //create a pointer that wil point to the directory
     DIR *dpdf;
+
     struct dirent *epdf;
 
+    //use the opendir command to get a pointer to the *map_folder_path*
+    //seems to work similar to fopen, except it's for directories to iterate over
+    //files
     dpdf = opendir(map_folder_path.c_str());
 
+    //if the directory exists after calling opendir, parse the information inside
     if (dpdf != NULL){
+        //set the dirent struct pointer equal to the open directory
         epdf = readdir(dpdf);
+        //while there is another file in the directory, continue looping
         while (epdf){
             std::string filename = epdf->d_name;
 
@@ -55,7 +63,7 @@ bool WaypointMap::loadCSVMapFormat(std::string map_folder_path) {
             if (filename == "stations.csv") {
                 continue;
 
-            //parse every file that ends in .csv 
+            //parse every file that ends in .csv
             //  (minus the stations.csv we skiped above)
             } else if (filename.substr(filename.length()-4) == ".csv") {
                 parseCSVData(map_folder_path+"/"+filename, true);
@@ -64,8 +72,11 @@ bool WaypointMap::loadCSVMapFormat(std::string map_folder_path) {
             }
             epdf = readdir(dpdf);
         }
+    } else {
+      //TODO: this should probably be changed to the ROS_DEBUG_STREAM
+      std::cout << "The directory name provided to the CSV parser method was invalid" << std::endl;
     }
-
+    //close the open directory just as you would do with a normal file
     closedir(dpdf);
 
     return parse_success;
@@ -114,11 +125,11 @@ bool WaypointMap::parseCSVData(std::string file_path, bool file_type_waypoints) 
             //read first line which describes source and destination stations
             std::string start_station, end_station;
             station_reader.read_row(start_station, end_station);
-            
+
             //read the rest of the lines which are each waypoints
             std::string comment;
             double latitude, longitude, curvature, precision;
-            int stop_sign_value=0; //value is optional so we pre initialize it 
+            int stop_sign_value=0; //value is optional so we pre initialize it
 
             std::vector<Waypoint> waypoints;
 
@@ -134,13 +145,13 @@ bool WaypointMap::parseCSVData(std::string file_path, bool file_type_waypoints) 
                 }
 
                 //make a waypoint object from the read data
-                Waypoint point(comment, latitude, longitude, curvature, 
+                Waypoint point(comment, latitude, longitude, curvature,
                               precision, stop_sign);
 
                 //add the waypoints to the end of our list
                 waypoints.push_back(point);
             }
-            
+
             //create a path object from the data read in.
             WaypointPath wp_path;
             wp_path.start_station = start_station;
@@ -148,48 +159,48 @@ bool WaypointMap::parseCSVData(std::string file_path, bool file_type_waypoints) 
             wp_path.waypoints = waypoints;
 
             //add the path to the station matrix
-            
-            //starting and ending station's indexes 
+
+            //starting and ending station's indexes
             int start_station_index = -1;
             int end_station_index = -1;
 
-            findStationIndexes(start_station, end_station, 
+            findStationIndexes(start_station, end_station,
                     start_station_index, end_station_index);
 
             //check if we found both stations
             if (start_station_index == -1 || end_station_index == -1) {
                 //one of the stations could not be found so we end without saving
                 file.close();
-                return false; 
+                return false;
             } else {
                 //we found the index's so we can now add the path to the matrix
                 station_matrix[start_station_index][end_station_index] = wp_path;
             }
-        }        
+        }
 
         //close the file
         file.close();
         return true;
     } else {
         throw std::runtime_error("Waypoint map loading is missing a file. path: "+file_path);
-    }  
+    }
     return false;
 }
 
 
 //returns a waypoint path given two stations
 WaypointPath *WaypointMap::getWaypointList(std::string start_station, std::string end_station) {
-    //starting and ending station's indexes 
+    //starting and ending station's indexes
     int start_station_index = -1;
     int end_station_index = -1;
 
-    findStationIndexes(start_station, end_station, 
+    findStationIndexes(start_station, end_station,
                  start_station_index, end_station_index);
 
     //check if we found both stations
     if (start_station_index == -1 || end_station_index == -1) {
          //one of the stations could not be found so we cannot return a path for it
-         return nullptr; 
+         return nullptr;
      } else {
          //we found the index's so we can now add the path to the matrix
          return nullptr;//station_matrix[start_station_index][end_station_index];
@@ -202,7 +213,7 @@ void WaypointMap::findStationIndexes(std::string start_station, std::string end_
     //go through the station index list and find what index the start
     //  and end stations have
     int i = 0;
-    for (auto it=station_index.begin(); it != station_index.end(); it++,i++) { 
+    for (auto it=station_index.begin(); it != station_index.end(); it++,i++) {
 
         //set station index if we found it.
         if (*it == start_station) {
@@ -210,8 +221,8 @@ void WaypointMap::findStationIndexes(std::string start_station, std::string end_
         } else if (*it == end_station) {
             end_station_index = i;
         }
-            
-        //end the loop early if we found both 
+
+        //end the loop early if we found both
         if (start_station_index != -1 && end_station_index != -1) {
             break;
         }

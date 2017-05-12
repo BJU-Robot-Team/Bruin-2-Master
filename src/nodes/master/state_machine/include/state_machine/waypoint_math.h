@@ -8,7 +8,7 @@
 //pi needs to be called pi_num or else we get compile errors. I think it conflicts with a macro or something
 #define pi_num 3.14159265358 // the value of pi to 11 decimal places
 //#define lat_o 34.8686574  //origin latitude
-//#define long_o -82.36457  //origin longitude 
+//#define long_o -82.36457  //origin longitude
     //gps origin, needs to be loaded from ini file
 #define origin_lat 34.8686574
 #define origin_long -82.36457
@@ -22,11 +22,11 @@ class WaypointMath {
     public:
 
 
-	WaypointMath() { 
+	WaypointMath() {
 	    lat_const = 2*pi_num*(6371000/360); // latitude constant of operating area
             long_const = lat_const*cos((origin_lat/360)*2*pi_num); // longitude constant of operating area
 	};
-     
+
         // Computes the x-coordinate equivalent of the longitude of a given point.
 	// p_long is the longitude of the given point
 	// long_o is the origin longitude of the localized map
@@ -63,8 +63,8 @@ class WaypointMath {
 	// k is the proportional gain for steering commands
 	// returns a steering angle (in radians). A positive steering command is CW and turns the vehicle right.
 	double calcSteerAngle(double &theta_c, double &theta_w, double k);
-	
-	//Determines the distance between two points. 
+
+	//Determines the distance between two points.
 	double computeDistance(double x1, double y1, double x2, double y2){ return (std::sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1)));}//end computeDistance
 
 };
