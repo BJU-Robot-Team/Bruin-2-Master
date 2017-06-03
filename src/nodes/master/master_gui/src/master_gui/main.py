@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-#ATTENTION: DO NOT MODIFY THIS CODE WITHOUT FIRST CONSULTING CARTER SHEAN
+#ATTENTION: DO NOT MODIFY THIS CODE WITHOUT FIRST CONSULTING CARTER SHEAN 
+#(at least until Bruin 2 is finished)
 #-----------------------------------------------------------------
 #Python file for managing the GUI for the Bruin 2 Robot
 #using PyQT5 modules and QT designer paired with the Pyuic command
@@ -12,10 +13,14 @@ import os
 import rospy
 import rospkg
 import std_msgs.msg
+#TODO: I think we need to use the screeninfo module to move the robot (since QT's positioning is based on pixels and pixels are relative to the 
+#monitor, I thought moving the robot locally would need to be based on the pixels of each individual screen)
+#from screeninfo import get_monitors
 from compass.msg import CompassDataMsg
 from state_machine.msg import MsgsForGUI
 from master_gui.msg import GUImsg
 from roboteq_msgs.msg import Command
+from sensor_msgs.msg import NavSatFix
 from PyQt5 import QtCore, QtWidgets, QtGui
 
 
@@ -60,7 +65,9 @@ class MainForm(QtWidgets.QMainWindow):
            to operation"""
         if event.key() == QtCore.Qt.Key_Escape:
             self.close()
-
+    def startGUImoving(self):
+        global CONST_CLOCK_SPEED
+        self.moveRobotTimer.start(CONST_CLOCK_SPEED)
     
     def debugButtonPressEvent(self, event):
         """creates a new debugging window when 
@@ -111,7 +118,15 @@ class MainForm(QtWidgets.QMainWindow):
         rospy.loginfo(self.msg)
         self.pub.publish(self.msg)
 
-   
+    def moveGUI(self):
+        """updates the GUI Robot object every time the timer 
+        hits CONST_CLOCK_SPEED milliseconds per second using the 
+        global X and Y variables"""
+        #TODO: set the geometry equal to the values the GPS is giving out
+        #adapted for the pixels on screen (will this value need to change based
+        #on what the screen resolution is? 
+        #self.bruin2.setGeometry(QtCore.QRect(x, y, 30, 30))
+        print("unimplemented")
     def CompassCallBack(self, data):
         """Handles the call back from the compass, 
         extracting the heading and adding this information to
@@ -146,12 +161,27 @@ class MainForm(QtWidgets.QMainWindow):
        
         global debuggingWindowText 
         debuggingWindowText += currentRobotState + "\n"
+        
 
-
+    def GPSCallBack(self, data):
+        """handles the GPS's data output message, 
+        TODO: may need commented out whenever 
+        the GPS is not connected  """
+        rospy.loginfo("%s" % (data))
+        global x
+        global y
+        x = str(data.longitude) 
+        y = str(data.latitude)
+        self.ui.lbl_lattitudeNum.setText(y)
+        self.ui.lbl_longitudeNum.setText(x)
+         
+        global debuggingWindowText 
+        debuggingWindowText += "coordinates: " + x + "," + y + "\n"
+   
     def InitializeButtons(self):
         """set up the objects on the map (targets, bruin2)
         with scaled contents, desired text/pixmap and shape
-        NOTE: these will need changed everytime the robot or targets change 
+        IMPORTANT NOTE: these will need changed every time the robot or targets change 
         locations"""
         self.bruin2 = QtWidgets.QLabel(self)
         self.bruin2.setGeometry(QtCore.QRect(350, 350, 30, 30))
@@ -186,21 +216,24 @@ class MainForm(QtWidgets.QMainWindow):
 
         #set up the publisher of the state to be sent to the state machine
         rospy.init_node('GUIIO', anonymous=True)
-        self.pub = rospy.Publisher('GUIData', GUImsg)
+        self.pub = rospy.Publisher('GUIData', GUImsg, queue_size=10)
         self.msg = GUImsg()
         self.msg.state = currentStation
 
         #set a timer to update which station we're going to every CONST_CLOCK_SPEED
-        #number of seconds
         self.stateTimer = QtCore.QTimer()
         self.stateTimer.timeout.connect(self.outputState)
+        self.moveRobotTimer = QtCore.QTimer()
+        self.moveRobotTimer.timeout.connect(self.moveGUI)
         global CONST_CLOCK_SPEED
         self.stateTimer.start(CONST_CLOCK_SPEED)
-
+        
+ 
         #initialize the listeners to the various things we need to pull data from
-        rospy.Subscriber("CompassData", CompassDataMsg,self.CompassCallBack)
+        rospy.Subscriber("CompassData", CompassDataMsg, self.CompassCallBack)
         rospy.Subscriber("CurrentState", MsgsForGUI, self.StateMachineCallBack)
         rospy.Subscriber("steer/cmd", Command, self.SteerCallBack)
+        rospy.Subscriber("GPSData", NavSatFix, self.GPSCallBack)
    
         #initialize the pop up windows to None (will be initialized when a button is clicked)
         self.debuggingwindow = None
@@ -253,18 +286,17 @@ class StopGo(QtWidgets.QMainWindow):
         """Handles a timer hit by displaying the current
          information supplied by ROS messages"""
 
-        #TODO: replace these with the listener information
-        global direction
-        #self.ui.lbl_latittudedata.setText("100")
-        #self.ui.lbl_longitudedata.setText("200")
+        #TODO: stil need the turn info and speed
+        global direction, x, y
+        self.ui.lbl_latittudedata.setText(str(y))
+        self.ui.lbl_longitudedata.setText(str(x))
         self.ui.lbl_directiondata.setText(direction)
-        #self.ui.lbl_headingdata.setText("0")
-        #self.ui.lbl_headingdata.setText("300")
 
     def goButtonPress(self):
         """when the user presses the "yes I want to go here"
-        button, disable the button and tell the state machine w
+        button, disable the button and tell the state machine 
         we are actively going to the desired target"""
+        #TODO: Renable this after the user closes the window
         self.ui.btn_go.setEnabled(False)
         global goToStation
         goToStation = True
@@ -276,7 +308,10 @@ class StopGo(QtWidgets.QMainWindow):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.timer = QtCore.QTimer()
+        self.ui.btn_go.setEnabled(True)
         self.timer.timeout.connect(self.timerHit)
+	self.ui.lbl_latittudedata.setText(str(y))
+        self.ui.lbl_longitudedata.setText(str(x))
         global CONST_CLOCK_SPEED
         self.timer.start(CONST_CLOCK_SPEED)
         self.ui.btn_go.clicked.connect(self.goButtonPress)
@@ -285,6 +320,7 @@ class StopGo(QtWidgets.QMainWindow):
 if __name__ == '__main__':
     """create a new window and display it until the user
     closes the window"""
+    global mainwin
     app = QtWidgets.QApplication(sys.argv)
     mainwin = MainForm()
     mainwin.show()
