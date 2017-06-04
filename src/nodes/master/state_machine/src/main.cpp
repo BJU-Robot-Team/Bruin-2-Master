@@ -3,8 +3,9 @@
 #include "state_machine/state_machine.h"
 #include "state_machine/vehicle_data.h"
 #include "state_machine/ros_interface.h"
-#include "ros/ros.h"
+#include "state_machine/globals.h"
 
+#include "ros/ros.h"
 
 #include "sensor_msgs/NavSatFix.h" //for gps callback
 
@@ -15,57 +16,14 @@
 #include <thread>
 #include <SDL2/SDL.h>
 
-#define STEER_OFFSET 0.02 // Correct for feedback pot not being perfectly mounted
 
-// Relay assignments since we generate relay messages (should be in the relay header file?)
-        #define FLASHING_LIGHT 0x8000
-        #define FORWARD_RELAY  0x0004
-        #define REVERSE_RELAY  0x0008
-        #define START_RELAY    0x0080
-
-    roboteq_msgs::Command steerMessage;
-    roboteq_msgs::Command brakeMessage;
-    digipot::DigipotDataMsg speedMessage;
-    relay_board::RelayCommandMsg relayMessage;
-    relay_board::RelayDataMsg relayDataMessage;
-    state_machine::MsgsForGUI StateOfRobotMessage;
-    VehicleData* vehicle_data;
-
-// Callback methods execute on each message receipt,
-// load data from messages into vehicle_data
-void relay_callback(const relay_board::RelayDataMsg& relayStatusMessage) {
-}
-
-void compass_callback(const compass::CompassDataMsg& compassMessage) {
-    ROS_DEBUG_STREAM( "State Machine: Compass heading: " << compassMessage.heading << std::endl);
-    vehicle_data->position_heading = compassMessage.heading;
-}
-
-void camera_callback(const camera_node::CameraDataMsg& cameraMessage) {
-    ROS_DEBUG_STREAM("Camera direction: " << cameraMessage.direction << " distance:	 " << cameraMessage.distance << "valid:" << cameraMessage.tracking );
-    vehicle_data->follow_direction = cameraMessage.direction;
-    vehicle_data->follow_distance = cameraMessage.distance;
-    vehicle_data->follow_valid = cameraMessage.tracking;
-}
-
-void gps_callback(const sensor_msgs::NavSatFix& gpsMessage) {
-    ROS_DEBUG_STREAM( "State Machine: GPS Fix: latitude: " << gpsMessage.latitude << ", longitude: " << gpsMessage.longitude << std::endl);
-    vehicle_data->position_latitude = gpsMessage.latitude;
-    vehicle_data->position_longitude = gpsMessage.longitude;
-}
-
-//TODO: make the GUI adjust which waypoint we go to/ which file we open
-void gui_callback(const master_gui::GUImsg& guiMessage) {
-    ROS_DEBUG_STREAM("GUI station selected: " << guiMessage.state << std::endl);
-    vehicle_data->selected_station = guiMessage.state;
-    //this isn't necessary but I thought a bool was cleaner than using a string and less prone to error
-    if (guiMessage.goToNextState == "True") {
-        vehicle_data->goto_button_pressed = true;
-    } else {
-        vehicle_data-> goto_button_pressed = false;
-    }
-}
-
+roboteq_msgs::Command steerMessage;
+roboteq_msgs::Command brakeMessage;
+digipot::DigipotDataMsg speedMessage;
+relay_board::RelayCommandMsg relayMessage;
+relay_board::RelayDataMsg relayDataMessage;
+state_machine::MsgsForGUI StateOfRobotMessage;
+VehicleData* vehicle_data; //extern defined in globals
 
 //Warning light code
 //TODO: should be able to be invoked by a ROS Timer
@@ -104,7 +62,7 @@ int main(int argc, char **argv) {
     startROS(argc, argv);
 
     //setup ros interface, state machine, and vehicle data  objects
-    ROSInterface ros_interface( &relay_callback, &compass_callback, &camera_callback, &gps_callback, &gui_callback);
+    ROSInterface ros_interface;
     StateMachine state_machine;
     vehicle_data =  new VehicleData();
 
