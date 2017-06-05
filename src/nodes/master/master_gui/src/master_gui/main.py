@@ -115,7 +115,7 @@ class MainForm(QtWidgets.QMainWindow):
         ticks every CONST_CLOCK_SPEED milliseconds"""
         self.msg.state = currentStation
         self.msg.goToNextState = str(goToStation)
-        rospy.loginfo(self.msg)
+        #rospy.loginfo(self.msg)
         self.pub.publish(self.msg)
 
     def moveGUI(self):
@@ -133,7 +133,7 @@ class MainForm(QtWidgets.QMainWindow):
         the text of the debugging window"""
         global direction 
         direction = str(data.heading)
-        rospy.loginfo("%s" % (data.heading))
+        #rospy.loginfo("%s" % (data.heading))
 
         #this is probably not necessary here
         global debuggingWindowText 
@@ -143,7 +143,7 @@ class MainForm(QtWidgets.QMainWindow):
         """unimplemented method that gets the current turn direction
         of the robot and logs it"""
         global turnDirection
-        rospy.loginfo("%s" % (data))
+        #rospy.loginfo("%s" % (data))
 
     def StateMachineCallBack(self, data):
         """handles a call from the state machine's output
@@ -157,7 +157,7 @@ class MainForm(QtWidgets.QMainWindow):
         currentRobotState.strip()
         self.ui.lbl_StateType.setText(currentRobotState)
 
-        rospy.loginfo("%s" % (data))
+        #rospy.loginfo("%s" % (data))
        
         global debuggingWindowText 
         debuggingWindowText += currentRobotState + "\n"
@@ -167,7 +167,7 @@ class MainForm(QtWidgets.QMainWindow):
         """handles the GPS's data output message, 
         TODO: may need commented out whenever 
         the GPS is not connected  """
-        rospy.loginfo("%s" % (data))
+        #rospy.loginfo("%s" % (data))
         global x
         global y
         x = str(data.longitude) 
