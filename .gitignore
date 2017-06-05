@@ -3,6 +3,6 @@ devel/
 install/
 
 *~
-.swp
+*.swp
 
-.pyc
+*.pyc
