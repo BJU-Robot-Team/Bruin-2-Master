@@ -40,7 +40,7 @@ void DrivePathState::tick(StateMachine* state_machine, VehicleData* vehicle_data
 
 	//load waypoint position
 	//need to make this be loaded from our maps csv file
-       // double x2 = 262.109970163;	//In front of seargent arts
+        // double x2 = 262.109970163;	//In front of seargent arts
 	//double y2 = 640.4382995025;
 	
 	//double x2 = 239.3933226736;	//walkway by FMA towards annex breezway
@@ -49,8 +49,13 @@ void DrivePathState::tick(StateMachine* state_machine, VehicleData* vehicle_data
 	//double x2 = 272.5103629905;	//Below walkway
 	//double y2 = 587.5095144198;
 
-    double x2 = 79.19078054;	//station C middle of greenhouse field
-	double y2 = 45.9902;            //lat: 34.8690710, longitue: -82.3637030
+        //double x2 = 79.19078054;	//station C middle of greenhouse field
+	//double y2 = 45.9902;            //lat: 34.8690710, longitue: -82.3637030
+
+        
+        Waypoint2 target = *vehicle_data->current_waypoint;
+        double x2 = target.x;
+        double y2 = target.y;
 
 	//calculate waypoint angle
 	double theta_w = waypoint_math.calculateThetaW(x1,y1,x2,y2);
@@ -62,26 +67,34 @@ void DrivePathState::tick(StateMachine* state_machine, VehicleData* vehicle_data
 	//calculate distance to waypoint
 	double distance = waypoint_math.computeDistance(x1,y1,x2,y2);
 
-	//send out debug messages
+	
+        int base_speed = 1; // m/s
+	
+	//send results to vehicle_data
+        if (distance > 3) {
+            vehicle_data->speed_cmd=base_speed;
+            ROS_INFO_STREAM("speed (meter/second) " << vehicle_data->speed_cmd);
+    
+        } else {
+            vehicle_data->speed_cmd=0;
+            ROS_INFO_STREAM("speed (meter/second) " << vehicle_data->speed_cmd);
+            vehicle_data->current_waypoint++;
+        }
+
+        vehicle_data->brake_cmd=0;
+	vehicle_data->steer_cmd=theta_s;
+
+        //send out debug messages
 	ROS_DEBUG_STREAM("theta_s" ); 
-	ROS_INFO_STREAM("theta_s " << theta_s);
+	ROS_INFO_STREAM("steer_cmd (theta_s) " << theta_s);
 	ROS_INFO_STREAM("Vehicle Point (x,y)" << x1 << "," << y1);
 	ROS_INFO_STREAM("Waypoint (x,y)" << x2 << ","<< y2);
 	ROS_INFO_STREAM("Distance (meters) " << distance);
 	//ROS_INFO_STREAM("Latitude Constant " << lat_const << ", " << long_const);
-
-        int base_speed = 1; // m/s
-	//send results to vehicle_data
-        if (distance > 3) {
-            vehicle_data->speed_cmd=base_speed;
-        } else {
-            vehicle_data->speed_cmd=0;
-        }
         ROS_INFO_STREAM("speed (meter/second) " << vehicle_data->speed_cmd);
-
-	vehicle_data->brake_cmd=0;
-	vehicle_data->steer_cmd=theta_s;
-	//std::cout<<"steer_cmd"<<vehicle_data->steer_cmd<<std::endl;
+        ROS_INFO_STREAM("waypoint # " << vehicle_data->current_waypoint - vehicle_data->waypoints.begin());
+        std::cout << "Drive state tick" << std::endl;
+	
 
 	//return
 

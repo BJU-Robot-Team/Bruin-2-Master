@@ -23,12 +23,12 @@ struct RelayDeviceStateData {
 };
 
 
-/*struct Waypoint2 {
+struct Waypoint2 {
     double x = 0;
     double y = 0;
 
     Waypoint2(double _x, double _y) : x(_x), y(_y) {}
-};*/
+};
 
 
 struct VehicleData {
@@ -43,8 +43,8 @@ struct VehicleData {
 
     //Waypoint map object storing all possible paths
     WaypointMap* waypoint_map;
-    //std::vector<Waypoint2> waypoints;
-    //std::vector<Waypoint2>::iterator current_waypoint;
+    std::vector<Waypoint2> waypoints;
+    std::vector<Waypoint2>::iterator current_waypoint;
 
     //gps data for current location
     double position_latitude  = 0;

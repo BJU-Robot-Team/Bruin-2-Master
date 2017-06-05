@@ -21,8 +21,6 @@
 VehicleData* vehicle_data; //extern defined in globals
 
 
-
-
 int main(int argc, char **argv) {
 
     VehicleStates last_state;
@@ -40,6 +38,65 @@ int main(int argc, char **argv) {
     state_machine.debug_mode = false;
 
     ROS_INFO_STREAM("Bruin-2 State Machine Running.");
+
+
+//Very bad. debugging waypoint list until we can get waypoint map code working
+//Load from file (see csv, waypoint_map.h/cpp)
+ vehicle_data->waypoints.push_back( Waypoint2(-3.859289358, 138.2808988) );
+ vehicle_data->waypoints.push_back( Waypoint2(-4.54051674, 125.7158721) );
+ vehicle_data->waypoints.push_back( Waypoint2(-4.322523979, 104.625901) );
+ vehicle_data->waypoints.push_back( Waypoint2(-3.505051121, 98.43605011) );
+ vehicle_data->waypoints.push_back( Waypoint2(-3.614047503, 102.3649375) );
+ vehicle_data->waypoints.push_back( Waypoint2(11.89068769, 103.106237) );
+ vehicle_data->waypoints.push_back( Waypoint2(18.48496874, 104.4405762) );
+ vehicle_data->waypoints.push_back( Waypoint2(29.05761769, 104.2923162) );
+ vehicle_data->waypoints.push_back( Waypoint2(31.8642745, 104.8112259) );
+ vehicle_data->waypoints.push_back( Waypoint2(36.60561707, 108.1470737) );
+ vehicle_data->waypoints.push_back( Waypoint2(40.77472865, 110.5933621) );
+ vehicle_data->waypoints.push_back( Waypoint2(46.08830222, 115.1523541) );
+ vehicle_data->waypoints.push_back( Waypoint2(49.6034355, 119.822541) );
+ vehicle_data->waypoints.push_back( Waypoint2(49.19469908, 120.8232953) );
+ vehicle_data->waypoints.push_back( Waypoint2(49.6034355, 125.1598975) );
+ vehicle_data->waypoints.push_back( Waypoint2(48.37722622, 125.4934823) );
+ vehicle_data->waypoints.push_back( Waypoint2(45.51607122, 127.2726011) );
+ vehicle_data->waypoints.push_back( Waypoint2(44.61685108, 128.8293301) );
+ vehicle_data->waypoints.push_back( Waypoint2(41.83744336, 130.9420337) );
+ vehicle_data->waypoints.push_back( Waypoint2(38.89454107, 133.8331018) );
+ vehicle_data->waypoints.push_back( Waypoint2(36.19688065, 135.8346104) );
+ vehicle_data->waypoints.push_back( Waypoint2(31.2920435, 137.3913394) );
+ vehicle_data->waypoints.push_back( Waypoint2(25.48798622, 138.8368735) );
+ vehicle_data->waypoints.push_back( Waypoint2(20.82839093, 139.6152379) );
+ vehicle_data->waypoints.push_back( Waypoint2(18.1307305, 139.0592633) );
+ vehicle_data->waypoints.push_back( Waypoint2(16.00530107, 138.8368735) );
+ vehicle_data->waypoints.push_back( Waypoint2(13.5528825, 138.2808988) );
+ vehicle_data->waypoints.push_back( Waypoint2(10.6917275, 137.8361191) );
+ vehicle_data->waypoints.push_back( Waypoint2(7.994067071, 136.2793901) );
+ vehicle_data->waypoints.push_back( Waypoint2(6.113879499, 134.6114662) );
+ vehicle_data->waypoints.push_back( Waypoint2(3.007482641, 130.497254) );
+ vehicle_data->waypoints.push_back( Waypoint2(3.007482641, 127.9397706) );
+ vehicle_data->waypoints.push_back( Waypoint2(1.69952607, 126.8278214) );
+ vehicle_data->waypoints.push_back( Waypoint2(-0.01716692968, 124.8263127) );
+ vehicle_data->waypoints.push_back( Waypoint2(-1.079881645, 122.2688294) );
+ vehicle_data->waypoints.push_back( Waypoint2(-1.16162893, 121.37927) );
+ vehicle_data->waypoints.push_back( Waypoint2(-0.1806615019, 118.7105917) );
+ vehicle_data->waypoints.push_back( Waypoint2(0.2280749269, 116.1531084) );
+ vehicle_data->waypoints.push_back( Waypoint2(3.252724499, 113.9292099) );
+ vehicle_data->waypoints.push_back( Waypoint2(4.805922927, 111.8165063) );
+ vehicle_data->waypoints.push_back( Waypoint2(6.522615928, 111.2605317) );
+ vehicle_data->waypoints.push_back( Waypoint2(5.70514307, 110.5933621) );
+ vehicle_data->waypoints.push_back( Waypoint2(7.503583357, 108.7030483) );
+ vehicle_data->waypoints.push_back( Waypoint2(12.24492593, 108.7030483) );
+ vehicle_data->waypoints.push_back( Waypoint2(19.76567622, 107.0351244) );
+ vehicle_data->waypoints.push_back( Waypoint2(25.48798622, 104.5888361) );
+ vehicle_data->waypoints.push_back( Waypoint2(32.51825279, 103.2544969) );
+ vehicle_data->waypoints.push_back( Waypoint2(46.00655493, 104.700031) );
+ vehicle_data->waypoints.push_back( Waypoint2(48.94945722, 105.3672005) );
+ vehicle_data->waypoints.push_back( Waypoint2(55.73448193, 105.8119802) );
+ vehicle_data->waypoints.push_back( Waypoint2(62.35601208, 107.702294) );
+ vehicle_data->waypoints.push_back( Waypoint2(61.62028651, 108.9254382) );
+ vehicle_data->waypoints.push_back( Waypoint2(64.07270508, 108.7030483) );
+ vehicle_data->waypoints.push_back( Waypoint2(65.13541979, 106.8497996) );
+ vehicle_data->current_waypoint = vehicle_data->waypoints.begin();
 
 
 #define USE_SDL // uncomment this to open and use the SDL window for keyboard input
@@ -188,12 +245,13 @@ int main(int argc, char **argv) {
             }
         }
 
-        //Run state machine tick
-        state_machine.tick(vehicle_data);
-
 }
 #endif
-        
+
+        //Run state machine tick
+        state_machine.tick(vehicle_data);
+        std::cout << "Main tick" << std::endl;        
+
         //publish the messages we got in the interface
         ros_interface.publishAllMessages(state_machine.getCurrentState());
 
