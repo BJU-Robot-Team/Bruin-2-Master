@@ -9,11 +9,11 @@
 #define pi_num 3.14159265358 // the value of pi to 11 decimal places
 //#define lat_o 34.8686574  //origin latitude
 //#define long_o -82.36457  //origin longitude
-    //gps origin, needs to be loaded from ini file
-#define origin_lat 34.8686574
-#define origin_long -82.36457
+//gps origin, needs to be loaded from ini file
+#define origin_lat 42.67833241
+#define origin_long -83.19551079
 
-#define max_steer 0.523598// pi/6 Update to actual maximum steering amount ~ 30 degrees
+#define max_steer 0.523598*4// pi/6 Update to actual maximum steering amount ~ 30 degrees
 //TODO TRACK down bug in calculating the x - coordinate
 
 class WaypointMath {
@@ -65,7 +65,9 @@ class WaypointMath {
 	double calcSteerAngle(double &theta_c, double &theta_w, double k);
 
 	//Determines the distance between two points.
-	double computeDistance(double x1, double y1, double x2, double y2){ return (std::sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1)));}//end computeDistance
+	double computeDistance(double x1, double y1, double x2, double y2){ 
+            return (std::sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1)));
+        } //end computeDistance
 
 };
 

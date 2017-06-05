@@ -51,6 +51,7 @@ Compass_Data ManipulateData::ParseData(string rawData)
 		{
 		case 'C'://we found the heading
 		// correct for east relativeness (90) and magnetic declination (6 degrees 37 arcminutes)
+                //TODO: subscribe to GPS and calculate Magnetic declination from current GPS latitude
 			//add correction 			
 			//formula to correct for east relative with CCW = 90 - theta
 			newData.heading = PullData(rawData, i);
