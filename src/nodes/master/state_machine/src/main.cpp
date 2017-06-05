@@ -17,41 +17,11 @@
 #include <SDL2/SDL.h>
 
 
-roboteq_msgs::Command steerMessage;
-roboteq_msgs::Command brakeMessage;
-digipot::DigipotDataMsg speedMessage;
-relay_board::RelayCommandMsg relayMessage;
-relay_board::RelayDataMsg relayDataMessage;
-state_machine::MsgsForGUI StateOfRobotMessage;
+
 VehicleData* vehicle_data; //extern defined in globals
 
-//Warning light code
-//TODO: should be able to be invoked by a ROS Timer
-void adjustLight(bool turn_off_light, relay_board::RelayCommandMsg& relayMessage, int light_count){
 
-        //if the turn_off_light is true and the light count is less than ten increment the light count
-        if (turn_off_light) {
-            if (light_count < 10) { //cycles for light to be on
-                light_count = light_count+1;
-            //otherwise, set the command to off, the turn_off_light again to false and count to 0
-            } else {
-                relayMessage.command = "OFF";
-                turn_off_light = false;
-                light_count = 0;
-            }
-        //otherise, if turn_off_light is false
-        } else {
-            //if light count is less than ten, increment the light count
-            if (light_count < 10) { //cycles for light to be off
-                light_count = light_count+1;
-            //otherwise, set the command to on, the turn_off_light again to true and count to 0
-            } else {
-                relayMessage.command = "ON";
-                turn_off_light = true;
-                light_count = 0;
-            }
-        }
-}
+
 
 int main(int argc, char **argv) {
 
@@ -68,10 +38,9 @@ int main(int argc, char **argv) {
 
 
     state_machine.debug_mode = false;
-    bool turn_off_light = false;
-    int light_count = 0;
 
     ROS_INFO_STREAM("Bruin-2 State Machine Running.");
+
 
 #define USE_SDL // uncomment this to open and use the SDL window for keyboard input
 #ifdef USE_SDL
@@ -184,9 +153,8 @@ int main(int argc, char **argv) {
           break;
 
         }
-#endif
-       //call warning light method
-        adjustLight(turn_off_light,relayMessage, light_count);
+
+       
         ROS_DEBUG_STREAM( "follow valid? " << vehicle_data->follow_valid);
 
         // Message on every state change
@@ -219,56 +187,15 @@ int main(int argc, char **argv) {
                 previous_entry = false;
             }
         }
+
         //Run state machine tick
         state_machine.tick(vehicle_data);
 
-        // Publish all the command messages, between every tick of the states
 }
-        relayMessage.device_type = "relay";
-        relayMessage.device_number = 0;
-        relayMessage.command = "writeall";
-        if (vehicle_data->speed_cmd < 0.1) {
-            // Faking pot with relays; this is speed 0
-            relayMessage.mask = 0x0000 | FORWARD_RELAY;
-        } else if (vehicle_data->speed_cmd <= 1) {
-           // second fixed speed, FORWARD
-            relayMessage.mask = 0x0300 | START_RELAY | FORWARD_RELAY;
-        } else if (vehicle_data->speed_cmd <= 2) {
-           // third fixed speed, FORWARD
-            relayMessage.mask = 0x0500 | START_RELAY | FORWARD_RELAY;
-        } else if (vehicle_data->speed_cmd <= 3) {
-           // fourth fixed speed, FORWARD
-            relayMessage.mask = 0x0900 | START_RELAY | FORWARD_RELAY;
-        } else {
-           // fifth fixed speed, FORWARD
-            relayMessage.mask = 0x1100 | START_RELAY | FORWARD_RELAY;
-        }
-        // Add the state of the flashing light
-        if (!turn_off_light) {
-           relayMessage.mask = relayMessage.mask | FLASHING_LIGHT;
-        }
-        ros_interface.relay_pub.publish(relayMessage);
-
-        steerMessage.mode = 1; // 1=MODE_POSITION, 0=MODE_SPEED
-        brakeMessage.mode = 1;
-
-        steerMessage.setpoint = STEER_OFFSET + vehicle_data->steer_cmd*1.5; // deliberately oversteer
-        if (speedMessage.speed < (vehicle_data->speed_cmd - 1)) {
-          // Don't drop speed suddenly from high speed to zero
-          speedMessage.speed = vehicle_data->speed_cmd - 1;
-        } else {
-          speedMessage.speed = vehicle_data->speed_cmd;
-        }
-        brakeMessage.setpoint = vehicle_data->brake_cmd;
-
+#endif
+        
         //publish the messages we got in the interface
-        StateOfRobotMessage.currentState = state_machine.getCurrentState();
-        ros_interface.state_pub.publish(StateOfRobotMessage);
-        ros_interface.steer_pub.publish(steerMessage);
-        ros_interface.brake_pub.publish(brakeMessage);
-        ros_interface.speed_pub.publish(speedMessage);
-
-
+        ros_interface.publishAllMessages(state_machine.getCurrentState());
 
         //check if we are finished
         if ( vehicle_data->shutdown ) endROS();
