@@ -52,6 +52,18 @@ Compass_Data ManipulateData::ParseData(string rawData)
 		case 'C'://we found the heading
 		// correct for east relativeness (90) and magnetic declination (6 degrees 37 arcminutes)
                 //TODO: subscribe to GPS and calculate Magnetic declination from current GPS latitude
+			//rospy.Subscriber("GPSData", NavSatFix, self.GPSCallBack)
+			//not sure what this rawData string is, but possibly need the GPS Data object 
+
+			/*	may need some sort of method like this
+			    def GPSCallBack(self, data):
+		        x = str(data.longitude) 
+		        y = str(data.latitude)
+		       	#calculate the magnetic declination? Or is that done below already... will need to debug
+		   
+		   
+			*/
+
 			//add correction 			
 			//formula to correct for east relative with CCW = 90 - theta
 			newData.heading = PullData(rawData, i);
@@ -195,7 +207,7 @@ int main(int argc, char **argv)
         my_serial->setTimeout(tout);
         my_serial->setPort(port);
         my_serial->setBaudrate(baud);
-	my_serial->open();
+		my_serial->open();
     }
     catch (exception &e) {
         //cout<< "Compass Serial open failed: " << e.what() << endl;
