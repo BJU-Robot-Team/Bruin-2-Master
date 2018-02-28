@@ -1,8 +1,6 @@
 #ifndef COMPASS_DATA_H 
 #define COMPASS_DATA_H
 
-using namespace std;
-
 
 struct Compass_Data
 {
@@ -21,7 +19,7 @@ Compass_Data::Compass_Data(double head)
 {
 	pitch = 0;
 	roll = 0;
-	temperature = 0;
+	temperature = 0
 	checkSum = 0;
 }//end 1 argument constructor
 
