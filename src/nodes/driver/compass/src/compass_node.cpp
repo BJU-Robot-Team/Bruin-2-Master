@@ -7,10 +7,8 @@
 //
 
 #include <iostream>
-#include <string>
 #include <fstream>
 #include <ctype.h>
-#include <string.h>
 #include <chrono>
 #include <thread>
 
@@ -18,23 +16,10 @@
 
 #include "compass/ros_interface.h"
 #include "compass/compass_data.h"
+#include "compass/manipulate_data.h"
 
 const std::string eol("\r");
 const size_t max_line_length(128);
-
-//Class to hold methods that will do work on the imported data
-class ManipulateData
-{
-public:
-	Compass_Data ParseData(string); 
-
-	string LoadData();
-
-	double PullData(string, int);
-
-	void SendData(Compass_Data);
-
-};//end ManipulateData class
 
 Compass_Data ManipulateData::ParseData(string rawData)
 {
@@ -55,13 +40,12 @@ Compass_Data ManipulateData::ParseData(string rawData)
 			//rospy.Subscriber("GPSData", NavSatFix, self.GPSCallBack)
 			//not sure what this rawData string is, but possibly need the GPS Data object 
 
-			/*	may need some sort of method like this
-			    def GPSCallBack(self, data):
-		        x = str(data.longitude) 
-		        y = str(data.latitude)
-		       	#calculate the magnetic declination? Or is that done below already... will need to debug
-		   
-		   
+			/*
+				may need some sort of method like this
+				def GPSCallBack(self, data):
+		       		x = str(data.longitude) 
+		        	y = str(data.latitude)
+		       		#calculate the magnetic declination? Or is that done below already... will need to debug
 			*/
 
 			//add correction 			
@@ -132,6 +116,7 @@ double ManipulateData::PullData(string rawData, int startIndex)
 }//end PullData method
 
 //method to send compass data out to the main program.
+//TODO: Do we need to get rid of this method? Seems unnecessary at this point
 void ManipulateData::SendData(Compass_Data newData)
 {
 	//cout << "The heading is: " << newData.heading << endl;
@@ -153,8 +138,11 @@ void ManipulateData::SendData(Compass_Data newData)
 }//end SendData method.
 
 //method to load data from data source. (A file for now, but serial soon)
+//TODO: change this to serial, if necessary at all
 string ManipulateData::LoadData()
 {
+	//This should be coming from the compass itself I believe, check to see if this sample data file exists on
+	//linux computer
 	ifstream inputFile("sample_data.txt");	//create a new input file object
 	string testData = "";
 	getline(inputFile, testData);	//read a line from the input file.
@@ -172,9 +160,8 @@ string readSerial(serial::Serial *my_serial) {
 	    //read response
 	    string msg = my_serial->readline(max_line_length, eol);
 	    
-	    if (!msg.empty()) {
-	    } else {
-	        ROS_WARN_STREAM("Compass: Serial::readline() returned no data.");
+	    if (msg.empty()) {
+		ROS_WARN_STREAM("Compass: Serial::readline() returned no data.");        
 	    }
 
 	    ROS_DEBUG_STREAM("Compass: got message " << msg << endl);
@@ -198,7 +185,7 @@ int main(int argc, char **argv)
     bool fake_compass = false;
     string rawData;
 
-// catch an invalid port error
+    // catch an invalid port error
     serial::Serial * my_serial;
     try {
 	//my_serial = new serial::Serial(port, baud, serial::Timeout::simpleTimeout(1000));
@@ -207,7 +194,7 @@ int main(int argc, char **argv)
         my_serial->setTimeout(tout);
         my_serial->setPort(port);
         my_serial->setBaudrate(baud);
-		my_serial->open();
+	my_serial->open();
     }
     catch (exception &e) {
         //cout<< "Compass Serial open failed: " << e.what() << endl;
