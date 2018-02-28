@@ -1,3 +1,6 @@
+#ifndef MANIPULATE_DATA_H
+#define MANIPULATE_DATA_H
+
 #include <string>
 #include <ctype.h>
 #include <string.h>
@@ -16,3 +19,5 @@ class ManipulateData {
         void SendData(Compass_Data);
 
 };//end ManipulateData class
+
+#endif
