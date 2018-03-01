@@ -21,8 +21,7 @@
 const std::string eol("\r");
 const size_t max_line_length(128);
 
-Compass_Data ManipulateData::ParseData(string rawData)
-{
+Compass_Data ManipulateData::ParseData(std::string rawData) {
 	Compass_Data newData(0);	//initialize a blank Compass_Data object	
 	int length = rawData.length();
 	bool finished = false;
@@ -90,11 +89,11 @@ Compass_Data ManipulateData::ParseData(string rawData)
 
 
 //Method to pull data out of the passed in string. Iterate over from the start index until the next alphabetic character.
-double ManipulateData::PullData(string rawData, int startIndex)
+double ManipulateData::PullData(std::string rawData, int startIndex)
 {
 	bool stop = false;
 	int i = startIndex +1;
-	string tempStr = "";
+	std::string tempStr = "";
 
 	while(stop != true && i <= int(rawData.length()))
 	{
@@ -112,7 +111,7 @@ double ManipulateData::PullData(string rawData, int startIndex)
 		
 	}//end while loop
 
-	return stod(tempStr);	//return the data pulled from the string as a double.
+	return std::stod(tempStr);	//return the data pulled from the string as a double.
 }//end PullData method
 
 //method to send compass data out to the main program.
@@ -139,12 +138,12 @@ void ManipulateData::SendData(Compass_Data newData)
 
 //method to load data from data source. (A file for now, but serial soon)
 //TODO: change this to serial, if necessary at all
-string ManipulateData::LoadData()
+std::string ManipulateData::LoadData()
 {
 	//This should be coming from the compass itself I believe, check to see if this sample data file exists on
 	//linux computer
-	ifstream inputFile("sample_data.txt");	//create a new input file object
-	string testData = "";
+	std::ifstream inputFile("sample_data.txt");	//create a new input file object
+	std::string testData = "";
 	getline(inputFile, testData);	//read a line from the input file.
 	inputFile.close();
 	
@@ -155,16 +154,16 @@ string ManipulateData::LoadData()
 
 
 //Function that handles a serial read
-string readSerial(serial::Serial *my_serial) {
+std::string readSerial(serial::Serial *my_serial) {
 
 	    //read response
-	    string msg = my_serial->readline(max_line_length, eol);
+	    std::string msg = my_serial->readline(max_line_length, eol);
 	    
 	    if (msg.empty()) {
 		ROS_WARN_STREAM("Compass: Serial::readline() returned no data.");        
 	    }
 
-	    ROS_DEBUG_STREAM("Compass: got message " << msg << endl);
+	    ROS_DEBUG_STREAM("Compass: got message " << msg << std::endl);
 	    return msg;
 
 }
@@ -180,10 +179,10 @@ int main(int argc, char **argv)
     ROSInterface ros_interface;
 
     //setup serial connection
-    string port = "/dev/compass";
+    std::string port = "/dev/compass";
     unsigned long baud = 19200;
     bool fake_compass = false;
-    string rawData;
+    std::string rawData;
 
     // catch an invalid port error
     serial::Serial * my_serial;
@@ -196,7 +195,7 @@ int main(int argc, char **argv)
         my_serial->setBaudrate(baud);
 	my_serial->open();
     }
-    catch (exception &e) {
+    catch (std::exception &e) {
         //cout<< "Compass Serial open failed: " << e.what() << endl;
 	ROS_ERROR_STREAM("Compass serial port open failed." << e.what());
         fake_compass = true;
@@ -211,7 +210,7 @@ int main(int argc, char **argv)
 	
     //load fake data if no compass
     if ( fake_compass) {
-        ROS_ERROR_STREAM("Compass continuing with fake data (21.1 degrees)..." << endl); 
+        ROS_ERROR_STREAM("Compass continuing with fake data (21.1 degrees)..." << std::endl); 
 	rawData = "$C21.1P-45.6R-163.4T20.5*27";
     }
 
