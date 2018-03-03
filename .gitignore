@@ -6,3 +6,6 @@ install/
 *.swp
 
 *.pyc
+
+.project
+
