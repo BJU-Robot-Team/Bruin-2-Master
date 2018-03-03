@@ -2,7 +2,8 @@
     <class name="GUIPlugin" type="master_gui.main.GUIPlugin"
         base_class_type="rqt_gui_py::Plugin">
         <description>
-            The master_gui node that displaies the main user interface for bruin
+            The master_gui node that displaies the main user
+            interface for bruin
             2.0.
         </description>
         <qtgui>
