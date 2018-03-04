@@ -1,7 +1,6 @@
 #ifndef RELAY_BOARD_COMMANDS_H 
 #define RELAY_BOARD_COMMANDS_H
 
-
 #include <serial/serial.h>
 #include <serial/utils/serial_listener.h>
 
@@ -10,23 +9,24 @@
 #include <iostream>
 
 class RelayBoardCommands {
-
-  private:
-
+    
+private:
+    
     serial::Serial* serial_test;
 
-  public:
-
+public:
+    
     bool debug_mode = false;
-
 
     RelayBoardCommands(serial::Serial *my_serial);
 
     //print out debuginfo for a serial transaction
-    void debugPrint(std::string command_str, size_t bytes_wrote, std::string result);
+    void debugPrint(std::string command_str, size_t bytes_wrote,
+            std::string result);
 
     //write the given command to serial then read the next message
-    std::string serialTransaction(serial::Serial *my_serial, std::string command_str);
+    std::string serialTransaction(serial::Serial *my_serial,
+            std::string command_str);
 
     //gets the relay board software version
     std::string version(serial::Serial *my_serial);
@@ -45,8 +45,7 @@ class RelayBoardCommands {
 
     //get the current status of a specified relay on the board
     std::string gpioRead(serial::Serial *my_serial, unsigned int gpio_id);
-
+    
 };
-
 
 #endif

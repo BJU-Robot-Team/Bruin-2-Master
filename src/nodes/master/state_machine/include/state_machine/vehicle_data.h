@@ -7,7 +7,6 @@
 
 #include "state_machine/waypoint_map.h"
 
-
 //state for a single relay board device - obsolete, use relay_mask instead?
 // mask is better because we can switch multiple relays simultaneously
 // it is more complicated because we have to maintain the state of them all to do this
@@ -16,23 +15,23 @@ struct RelayDeviceStateData {
     int device_number;
     std::string device_state;
 
-    RelayDeviceStateData(std::string device_type, int device_number) 
-      : device_type(device_type), device_number(device_number) {
+    RelayDeviceStateData(std::string device_type, int device_number) :
+            device_type(device_type), device_number(device_number) {
         device_state = "unknown";
     }
 };
-
 
 struct Waypoint2 {
     double x = 0;
     double y = 0;
 
-    Waypoint2(double _x, double _y) : x(_x), y(_y) {}
+    Waypoint2(double _x, double _y) :
+            x(_x), y(_y) {
+    }
 };
 
-
 struct VehicleData {
-
+    
     //objects that keep track of relay information
     std::vector<RelayDeviceStateData> relay_states;
     std::vector<RelayDeviceStateData> gpio_states;
@@ -47,7 +46,7 @@ struct VehicleData {
     std::vector<Waypoint2>::iterator current_waypoint;
 
     //gps data for current location
-    double position_latitude  = 0;
+    double position_latitude = 0;
     double position_longitude = 0;
 
     //the station we want to go to is gotten from the GUI messages and stored here, and whether or not we want to go is also stored
@@ -71,22 +70,22 @@ struct VehicleData {
     uint16_t relay_mask = 0;
 
     bool shutdown = false;
-    char char_input = 0;	
+    char char_input = 0;
 
     VehicleData() {
-
+        
         const int number_of_relays = 16;
         for (int i = 0; i < number_of_relays; i++) {
             relay_states.push_back(RelayDeviceStateData("relay", i));
         }
-
+        
         const int number_of_gpios = 6;
         for (int i = 0; i < number_of_gpios; i++) {
             gpio_states.push_back(RelayDeviceStateData("gpio", i));
         }
-
+        
     }
-
+    
 };
 
 #endif

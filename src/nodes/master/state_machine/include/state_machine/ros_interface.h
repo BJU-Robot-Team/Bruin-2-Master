@@ -15,7 +15,7 @@
 #include "digipot/DigipotDataMsg.h"
 #include "state_machine/MsgsForGUI.h"
 #include "master_gui/GUImsg.h"
-#include "/home/bruin2/bruin_2_code/src/libraries/roboteq/roboteq_driver/include/roboteq_driver/controller.h"
+#include "../../../../libraries/roboteq/roboteq_driver/include/roboteq_driver/controller.h"
 
 #include <iostream>
 #include <string>

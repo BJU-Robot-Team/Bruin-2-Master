@@ -6,7 +6,7 @@
 #include "state_machine/state_machine.h"
 #include "state_machine/vehicle_data.h"
 #include "roboteq_msgs/Command.h"
-#include "/home/bruin2/bruin_2_code/src/libraries/roboteq/roboteq_driver/include/roboteq_driver/controller.h"
+#include "../../../../libraries/roboteq/roboteq_driver/include/roboteq_driver/controller.h"
 
 #include <string>
 #include <cmath>

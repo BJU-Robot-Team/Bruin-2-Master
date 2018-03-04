@@ -9,15 +9,16 @@
 
 //Class to hold methods that will do work on the imported data
 class ManipulateData {
-      public:
-        Compass_Data ParseData(string); 
+public:
+    Compass_Data ParseData(std::string);
 
-        string LoadData();
+    std::string LoadData();
 
-        double PullData(string, int);
+    double PullData(std::string, int);
 
-        void SendData(Compass_Data);
-
-};//end ManipulateData class
+    void SendData(Compass_Data);
+    
+};
+//end ManipulateData class
 
 #endif
