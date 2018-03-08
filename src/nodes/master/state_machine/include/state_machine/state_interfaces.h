@@ -12,7 +12,7 @@ public:
     }
     virtual ~AbstractState() {
     }
-
+    
     virtual void tick(StateMachine* state_machine,
             VehicleData* vehicle_data) = 0;
 };
