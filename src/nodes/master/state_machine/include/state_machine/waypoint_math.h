@@ -25,7 +25,6 @@ public:
         lat_const = 2 * pi_num * (6371000 / 360); // latitude constant of operating area
         long_const = lat_const * cos((origin_lat / 360) * 2 * pi_num); // longitude constant of operating area
     }
-    ;
 
     // Computes the x-coordinate equivalent of the longitude of a given point.
     // p_long is the longitude of the given point
