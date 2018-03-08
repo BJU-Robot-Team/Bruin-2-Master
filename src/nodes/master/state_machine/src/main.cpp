@@ -215,7 +215,7 @@ int main(int argc, char **argv) {
             
             // Show or hide joystick window when you enter or leave JOYSTICK/FOLLOW mode
             // Also switch menu bitmaps when switching between JOYSTICK and FOLLOW
-            // In hihdsight, there is probably an easier way...
+            // In hindsight, there is probably an easier way...
             if ((state_machine.current_state == JOYSTICK)
                     || (state_machine.current_state == FOLLOW)) {
                 if (!previous_entry) {
