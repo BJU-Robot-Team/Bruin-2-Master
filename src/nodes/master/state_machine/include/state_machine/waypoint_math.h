@@ -6,7 +6,7 @@
 #include "vehicle_data.h"
 
 //pi needs to be called pi_num or else we get compile errors. I think it conflicts with a macro or something
-#define pi_num 3.14159265358 // the value of pi to 11 decimal places
+#define pi_num 3.14159265358979323846264338327950288419716 // the value of pi to 42 decimal places
 //#define lat_o 34.8686574  //origin latitude
 //#define long_o -82.36457  //origin longitude
 //gps origin, needs to be loaded from ini file
