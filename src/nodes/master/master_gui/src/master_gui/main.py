@@ -121,7 +121,14 @@ class MainForm(QtWidgets.QMainWindow):
         #adapted for the pixels on screen (will this value need to change based
         #on what the screen resolution is? 
         self.bruin2.setGeometry(QtCore.QRect(x, y, 30, 30))
-cmd = ['xrandr'] cmd2 = ['grep', '*'] p = subprocess.Popen(cmd, stdout=subprocess.PIPE) p2 = subprocess.Popen(cmd2, stdin=p.stdout, stdout=subprocess.PIPE) p.stdout.close()   resolution_string, junk = p2.communicate() resolution = resolution_string.split()[0] width, height = resolution.split('x')
+        cmd = ['xrandr'] 
+        cmd2 = ['grep', '*']
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+        p2 = subprocess.Popen(cmd2, stdin=p.stdout, stdout=subprocess.PIPE)
+        p.stdout.close()   
+        resolution_string, junk = p2.communicate() 
+        resolution = resolution_string.split()[0]
+        width, height = resolution.split('x')
 	
         print("unimplemented")
     def CompassCallBack(self, data):
