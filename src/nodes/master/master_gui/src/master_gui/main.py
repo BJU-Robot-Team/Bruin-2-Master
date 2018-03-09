@@ -13,6 +13,8 @@ import os
 import rospy
 import rospkg
 import std_msgs.msg
+import subprocess
+
 #TODO: I think we need to use the screeninfo module to move the robot (since QT's positioning is based on pixels and pixels are relative to the 
 #monitor, I thought moving the robot locally would need to be based on the pixels of each individual screen)
 #from screeninfo import get_monitors
@@ -57,14 +59,7 @@ CONST_CLOCK_SPEED = 100
 
 #class that intializes the GUI and handles events for the Main Window
 class MainForm(QtWidgets.QMainWindow):
-
-       
-    def keyPressEvent(self, event):
-        """simple escape event when the user 
-           presses the escape key, not necessary 
-           to operation"""
-        if event.key() == QtCore.Qt.Key_Escape:
-            self.close()
+           
     def startGUImoving(self):
         global CONST_CLOCK_SPEED
         self.moveRobotTimer.start(CONST_CLOCK_SPEED)
@@ -125,7 +120,9 @@ class MainForm(QtWidgets.QMainWindow):
         #TODO: set the geometry equal to the values the GPS is giving out
         #adapted for the pixels on screen (will this value need to change based
         #on what the screen resolution is? 
-        #self.bruin2.setGeometry(QtCore.QRect(x, y, 30, 30))
+        self.bruin2.setGeometry(QtCore.QRect(x, y, 30, 30))
+cmd = ['xrandr'] cmd2 = ['grep', '*'] p = subprocess.Popen(cmd, stdout=subprocess.PIPE) p2 = subprocess.Popen(cmd2, stdin=p.stdout, stdout=subprocess.PIPE) p.stdout.close()   resolution_string, junk = p2.communicate() resolution = resolution_string.split()[0] width, height = resolution.split('x')
+	
         print("unimplemented")
     def CompassCallBack(self, data):
         """Handles the call back from the compass, 
