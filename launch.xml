@@ -23,7 +23,7 @@
     <node name="master_gui" pkg="master_gui" type="main.py" output="screen" required="true" /> 
 
     <!-- records all messages into a "bag file" that allows playing back the data -->
-    <node pkg="rosbag" type="record" name="robot_bag" args="-a -o /home/bruin2/.ros/log/latest/all_messages" />
+    <node pkg="rosbag" type="record" name="robot_bag" args="-a -o ~/.ros/log/latest/all_messages" />
 
 </launch>
 
