@@ -126,7 +126,6 @@ std::string StateMachine::getCurrentState() {
 
 //called to trigger a transition by a state
 void StateMachine::internalEvent(VehicleEvents event) {
-    
     VehicleStates source = state_transition_table[event].source_state;
     VehicleStates next = state_transition_table[event].next_state;
     
@@ -136,12 +135,6 @@ void StateMachine::internalEvent(VehicleEvents event) {
     } else {
         //send out debug/warning message about an invalid event call
     }
-}
-
-//called to trigger a transition by something other then a state.
-//TODO: Not sure we even need this function
-void StateMachine::externalEvent(VehicleEvents event) {
-    internalEvent(event);
 }
 
 //a tick has passed, the state machine updates the current state

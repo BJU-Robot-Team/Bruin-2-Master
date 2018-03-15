@@ -104,9 +104,6 @@ public:
     //called to trigger a transition by a state
     void internalEvent(VehicleEvents event);
 
-    //called to trigger a transition by something other then a state.
-    void externalEvent(VehicleEvents event);
-
     //a tick has passed, the state machine updates the current state
     void tick(VehicleData * vehicle_data);
     
