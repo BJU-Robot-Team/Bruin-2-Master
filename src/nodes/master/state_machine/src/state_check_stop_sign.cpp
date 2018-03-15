@@ -12,18 +12,16 @@ void CheckStopSignState::tick(StateMachine* state_machine,
         //run the state's debug function if it returns true continue normal code
         if (!debugState(state_machine)) {
             return;
-        } //end running imediatly 
+        } //end running immediately 
     }
     
     //check if we are at a stop sign
     //yes then transition to performing taxi stop
     
     //no then transition to drive path
-    
 }
 
 bool CheckStopSignState::debugState(StateMachine* state_machine) {
-    
     std::vector < std::string > line_desc;
     std::vector<VehicleEvents> event_lines;
     

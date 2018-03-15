@@ -106,10 +106,10 @@ bool WaypointMap::parseCSVData(std::string file_path,
         
         //handle stations.csv file format
         if (file_type_waypoints == false) {
-            //setup csv parser reads 1 column
+            //setup CSV parser reads 1 column
             io::CSVReader<1> csv_reader(file_path, filestream);
             
-            //staion name
+            //station name
             std::string station;
             
             //read each line getting the station name

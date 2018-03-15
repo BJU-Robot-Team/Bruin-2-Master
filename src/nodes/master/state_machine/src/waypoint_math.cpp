@@ -4,7 +4,7 @@
 
 // Calculates the angle to the waypoint relative to east.
 // temptheta_w is the quadrant relative angle to the waypoint
-// x1, y1, are the local position of the car// todo Correct to local coordinate system.
+// x1, y1, are the local position of the car// TODO: Correct to local coordinate system.
 // x2, y2, are the local position of the waypoint.
 //  return theta_w is the angle to the waypoint. Measured CCW from East.
 double WaypointMath::calculateThetaW(double x1, double y1, double x2,

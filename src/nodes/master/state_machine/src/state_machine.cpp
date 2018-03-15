@@ -77,7 +77,7 @@ void StateMachine::buildTableRow(VehicleEvents event, VehicleStates valid_state,
     
     //block adding new tables is the table is locked
     if (lock_transition_table) {
-        //TODO: ouput debug message
+        //TODO: output debug message
         return;
     }
     
@@ -101,7 +101,7 @@ void StateMachine::addState(VehicleStates state, AbstractState* state_obj) {
     
     //block adding new tables is the table is locked
     if (lock_transition_table) {
-        //TODO: ouput debug/warning message
+        //TODO: output debug/warning message
         return;
     }
     

@@ -12,21 +12,20 @@ void DetectStationState::tick(StateMachine* state_machine,
         //run the state's debug function if it returns true continue normal code
         if (!debugState(state_machine)) {
             return;
-        } //end running imediatly 
+        } //end running immediately 
     }
     
     //Compare GPS location to locations on the waypoint map
-    //if locations match up within tolerences, set the vehicle's start station
+    //if locations match up within tolerances, set the vehicle's start station
     //trigger state transition since we have detected the station
     
-    //if no station matchs try again (end this tick)
-    //after x retries send gui message that a station could not be found
+    //if no station matches try again (end this tick)
+    //after x retries send GUI message that a station could not be found
     //    provide instructions to drive to the nearest station
     
 }
 
 bool DetectStationState::debugState(StateMachine* state_machine) {
-    
     std::vector < std::string > line_desc;
     std::vector<VehicleEvents> event_lines;
     

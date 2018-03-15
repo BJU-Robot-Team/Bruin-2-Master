@@ -12,7 +12,7 @@ void PerformingTaxiStopState::tick(StateMachine* state_machine,
         //run the state's debug function if it returns true continue normal code
         if (!debugState(state_machine)) {
             return;
-        } //end running imediatly 
+        } //end running immediately 
     }
     
     //check if timer is setup

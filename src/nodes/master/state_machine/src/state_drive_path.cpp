@@ -21,7 +21,7 @@ void DrivePathState::tick(StateMachine* state_machine,
         //run the state's debug function if it returns true continue normal code
         if (!debugState(state_machine)) {
             return;
-        } //end running immediatly 
+        } //end running immediately 
     }
     
     //Read vehicle state pose
@@ -38,18 +38,18 @@ void DrivePathState::tick(StateMachine* state_machine,
     double theta_c = vehicle_data->position_heading;
     
     //load waypoint position
-    //need to make this be loaded from our maps csv file
+    //need to make this be loaded from our maps CSV file
     // double x2 = 262.109970163;	//In front of seargent arts
     //double y2 = 640.4382995025;
     
-    //double x2 = 239.3933226736;	//walkway by FMA towards annex breezway
+    //double x2 = 239.3933226736;	//walkway by FMA towards annex breezeway
     //double y2 = 622.4247213858;
     
     //double x2 = 272.5103629905;	//Below walkway
     //double y2 = 587.5095144198;
     
     //double x2 = 79.19078054;	//station C middle of greenhouse field
-    //double y2 = 45.9902;            //lat: 34.8690710, longitue: -82.3637030
+    //double y2 = 45.9902;            //lat: 34.8690710, longitude: -82.3637030
     
     Waypoint2 target = *vehicle_data->current_waypoint;
     double x2 = target.x;

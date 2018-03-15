@@ -14,7 +14,7 @@ void InitilizeState::tick(StateMachine* state_machine,
         //run the state's debug function if it returns true continue normal code
         if (!debugState(state_machine)) {
             return;
-        } //end running imediatly
+        } //end running immediately
     }
     
     bool waypoint_map_loaded = true;
