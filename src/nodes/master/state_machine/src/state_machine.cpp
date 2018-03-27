@@ -1,6 +1,5 @@
 #include "state_machine/state_machine.h"
 #include "state_machine/state_interfaces.h"
-#include <cassert>
 
 #include <iostream>
 
@@ -119,7 +118,6 @@ void StateMachine::addState(VehicleStates state, AbstractState* state_obj) {
 }
 
 std::string StateMachine::getCurrentState() {
-    assert(current_state < NUM_VEHICLE_STATES);
     return state_names[current_state];
 }
 
