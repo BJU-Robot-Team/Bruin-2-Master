@@ -12,7 +12,6 @@
 
 //setup constructor
 RelayBoardCommands::RelayBoardCommands(serial::Serial *my_serial) { //std::string port){
-        
     //TODO: for some reason we cannot use operator= with the Serial class so we 
     //  have to pass it to each function instead of having it in a member variable
     //  Fix/"get around" this issue and remove passing Serial class by referance
@@ -23,15 +22,16 @@ RelayBoardCommands::RelayBoardCommands(serial::Serial *my_serial) { //std::strin
     // port, baudrate, timeout in milliseconds
     //my_serial = serial::Serial(port, baud, serial::Timeout::simpleTimeout(1000));
     
-    //send an initial character to start the promt on the relay device
+    serial_test = my_serial;
+
+    //send an initial character to start the prompt on the relay device
     std::string result = serialTransaction(my_serial, "\r");
 }
 
 //some helper functions
 
 //print out debuginfo for a serial transaction
-void RelayBoardCommands::debugPrint(std::string command_str, size_t bytes_wrote,
-        std::string result) {
+void RelayBoardCommands::debugPrint(std::string command_str, size_t bytes_wrote, std::string result) {
     
     if (debug_mode) {
         //report
@@ -43,8 +43,7 @@ void RelayBoardCommands::debugPrint(std::string command_str, size_t bytes_wrote,
 }
 
 //write the given command to serial then read the next message
-std::string RelayBoardCommands::serialTransaction(serial::Serial *my_serial,
-        std::string command_str) {
+std::string RelayBoardCommands::serialTransaction(serial::Serial *my_serial, std::string command_str) {
     //add needed characters to the end
     command_str = command_str + "\n\r";
     
@@ -80,8 +79,7 @@ std::string RelayBoardCommands::version(serial::Serial *my_serial) {
 }
 
 //turn on a specified relay on the board
-std::string RelayBoardCommands::relayOn(serial::Serial *my_serial,
-        unsigned int relay_id) {
+std::string RelayBoardCommands::relayOn(serial::Serial *my_serial, unsigned int relay_id) {
     //send command
     std::string command_str = "relay on " + std::to_string(relay_id);
     
@@ -92,8 +90,7 @@ std::string RelayBoardCommands::relayOn(serial::Serial *my_serial,
 }
 
 //turn on/off all relays
-std::string RelayBoardCommands::writeAll(serial::Serial *my_serial,
-        unsigned int mask) {
+std::string RelayBoardCommands::writeAll(serial::Serial *my_serial, unsigned int mask) {
     std::stringstream sstream;
     sstream << std::hex << std::setw(4) << std::setfill('0') << mask;
     std::string wresult = sstream.str();
@@ -107,8 +104,7 @@ std::string RelayBoardCommands::writeAll(serial::Serial *my_serial,
 }
 
 //turn off a specified relay on the board
-std::string RelayBoardCommands::relayOff(serial::Serial *my_serial,
-        unsigned int relay_id) {
+std::string RelayBoardCommands::relayOff(serial::Serial *my_serial, unsigned int relay_id) {
     //send command
     std::string command_str = "relay off " + std::to_string(relay_id);
     
@@ -119,8 +115,7 @@ std::string RelayBoardCommands::relayOff(serial::Serial *my_serial,
 }
 
 //get the current status of a specified relay on the board
-std::string RelayBoardCommands::relayRead(serial::Serial *my_serial,
-        unsigned int relay_id) {
+std::string RelayBoardCommands::relayRead(serial::Serial *my_serial, unsigned int relay_id) {
     //send command
     std::string command_str = "relay read " + std::to_string(relay_id);
     
@@ -131,8 +126,7 @@ std::string RelayBoardCommands::relayRead(serial::Serial *my_serial,
 }
 
 //get the current status of a specified relay on the board
-std::string RelayBoardCommands::gpioRead(serial::Serial *my_serial,
-        unsigned int gpio_id) {
+std::string RelayBoardCommands::gpioRead(serial::Serial *my_serial, unsigned int gpio_id) {
     //send command
     std::string command_str = "gpio read " + std::to_string(gpio_id);
     
@@ -141,4 +135,3 @@ std::string RelayBoardCommands::gpioRead(serial::Serial *my_serial,
     
     return result;
 }
-

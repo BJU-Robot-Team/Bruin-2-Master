@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
     
     string port = "/dev/relay_board";
     unsigned long baud = 19200;
-    int fake_relay = 0;
+    bool fake_relay = false;
     
     // catch an invalid port error
     try {
@@ -103,7 +103,7 @@ int main(int argc, char **argv) {
                 //device is a relay
                 if (device_type == "relay") {
                     
-                    //TODO: we should probebly read the state to make sure it actually changed
+                    //TODO: we should probably read the state to make sure it actually changed
                     //   since a normal command to the relay board returns nothing
                     ROS_DEBUG_STREAM( "Relay: got relay command: [" << command << "]");
                     if (command == "on") {
@@ -114,8 +114,7 @@ int main(int argc, char **argv) {
                         relay_command_interface.relayOff(my_serial, device_num);
                         state = "off";
                     } else if (command == "read") {
-                        state = relay_command_interface.relayRead(my_serial,
-                                device_num);
+                        state = relay_command_interface.relayRead(my_serial, device_num);
                         state = state.substr(state.find(" ") + 1);
                     } else if (command == "writeall") {
                         relay_command_interface.writeAll(my_serial, mask);
@@ -125,8 +124,7 @@ int main(int argc, char **argv) {
                 } else {
                     
                     if (command == "read") {
-                        state = relay_command_interface.gpioRead(my_serial,
-                                device_num);
+                        state = relay_command_interface.gpioRead(my_serial, device_num);
                         state = state.substr(state.find(" ") + 1);
                         
                     }

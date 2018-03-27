@@ -9,13 +9,10 @@
 #include <iostream>
 
 class RelayBoardCommands {
-    
 private:
-    
     serial::Serial* serial_test;
 
 public:
-    
     bool debug_mode = false;
 
     RelayBoardCommands(serial::Serial *my_serial);
@@ -25,8 +22,7 @@ public:
             std::string result);
 
     //write the given command to serial then read the next message
-    std::string serialTransaction(serial::Serial *my_serial,
-            std::string command_str);
+    std::string serialTransaction(serial::Serial *my_serial, std::string command_str);
 
     //gets the relay board software version
     std::string version(serial::Serial *my_serial);
