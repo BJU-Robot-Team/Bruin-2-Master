@@ -1,5 +1,6 @@
 #include "state_machine/state_machine.h"
 #include "state_machine/state_interfaces.h"
+#include <cassert>
 
 #include <iostream>
 
@@ -78,6 +79,7 @@ void StateMachine::buildTableRow(VehicleEvents event, VehicleStates valid_state,
     //block adding new tables is the table is locked
     if (lock_transition_table) {
         //TODO: output debug message
+        
         return;
     }
     
@@ -93,7 +95,6 @@ void StateMachine::buildTableRow(VehicleEvents event, VehicleStates valid_state,
     StateTableRow new_row(valid_state, next_state);
     
     state_transition_table[event] = new_row;
-    
 }
 
 //adds a state to the correct location
@@ -118,10 +119,8 @@ void StateMachine::addState(VehicleStates state, AbstractState* state_obj) {
 }
 
 std::string StateMachine::getCurrentState() {
-    
-    //if (current_state < NUM_VEHICLE_STATES){
+    assert(current_state < NUM_VEHICLE_STATES);
     return state_names[current_state];
-    //}
 }
 
 //called to trigger a transition by a state
@@ -139,6 +138,5 @@ void StateMachine::internalEvent(VehicleEvents event) {
 
 //a tick has passed, the state machine updates the current state
 void StateMachine::tick(VehicleData * vehicle_data) {
-    
     state_objects[current_state]->tick(this, vehicle_data);
 }
