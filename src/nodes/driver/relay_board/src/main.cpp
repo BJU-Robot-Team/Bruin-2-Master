@@ -18,11 +18,11 @@ int main(int argc, char **argv) {
     
     ROSInterface ros_interface;
     
-    std::string port = "/dev/relay_board";
+    string port = "/dev/relay_board";
     unsigned long baud = 19200;
     int fake_relay = 0;
     
-// catch an invalid port error
+    // catch an invalid port error
     try {
         //my_serial = new serial::Serial(port, baud, serial::Timeout::simpleTimeout(1000));
         my_serial = new serial::Serial();
@@ -39,17 +39,16 @@ int main(int argc, char **argv) {
     
     if (fake_relay) {
         cout << "Bruin-2 Relay Driver running in fake mode." << endl;
-        std::string device_type = "";
+        string device_type = "";
         int device_num = -1;
-        std::string command = "";
-        std::string state = "";
+        string command = "";
+        string state = "";
         unsigned int mask;
         
         while (ros_interface.isNodeRunning()) {
             
             //look for a message to react to. pass values by reference
-            if (ros_interface.pollMessages(device_type, device_num, command,
-                    mask)) {
+            if (ros_interface.pollMessages(device_type, device_num, command, mask)) {
                 
                 //device is a relay
                 if (device_type == "relay") {
@@ -90,27 +89,23 @@ int main(int argc, char **argv) {
     } else {
         
         //setup main loop
-        std::string device_type = "";
+        string device_type = "";
         int device_num = -1;
-        std::string command = "";
-        std::string state = "";
+        string command = "";
+        string state = "";
         unsigned int mask;
         
         while (ros_interface.isNodeRunning()) {
             
             //look for a message to react to. pass values by reference
-            if (ros_interface.pollMessages(device_type, device_num, command,
-                    mask)) {
-                ROS_DEBUG_STREAM(
-                        "Relay: got command: [" << command << "] type "
-                                << device_type);
+            if (ros_interface.pollMessages(device_type, device_num, command, mask)) {
+                ROS_DEBUG_STREAM("Relay: got command: [" << command << "] type " << device_type);
                 //device is a relay
                 if (device_type == "relay") {
                     
                     //TODO: we should probebly read the state to make sure it actually changed
                     //   since a normal command to the relay board returns nothing
-                    ROS_DEBUG_STREAM(
-                            "Relay: got relay command: [" << command << "]");
+                    ROS_DEBUG_STREAM( "Relay: got relay command: [" << command << "]");
                     if (command == "on") {
                         relay_command_interface.relayOn(my_serial, device_num);
                         state = "on";
