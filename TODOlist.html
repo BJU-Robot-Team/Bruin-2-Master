@@ -1,0 +1,108 @@
+<html>
+	<title>TODO list</title>
+	<style>
+	body {
+		font-family: "Courier New", Courier, monospace;
+		background-color: #F4F4F4;
+	}
+	.centerTitle {
+		text-align: center;
+	}
+	.titleText {
+		color:#800000;
+
+	}
+	.list {
+		background-color: white;
+		padding: 10px;
+		margin: 20px;
+	}
+
+	li {
+		margin: 10px;
+	}
+
+	.location {
+		font-style: italic;
+		color:#800000;
+		font-weight: bold;
+
+	}
+
+
+	</style>
+	<body>
+		<div class="centerTitle">
+			<h1 class="titleText"> TODO list </h1>
+		</div>
+		<div class="list">
+			<h2> Current Tasks </h2>
+			<ul>
+				<li> Group: Fix state machine</li>
+				<li> Carter: Fix GUI </li>
+				<li> Nathan: Code Cleanup </li>
+			</ul>
+		</div>
+		<br>
+		<div class="list">
+			<h2> Locations of current TODO statements </h2>
+			<ul>
+					<li> <span class="location"> Drivers/GPS/old_gps_node/gps backup 1-18-17 before parse change/include/gps/ros_interface.h:  </span>           //TODO: handle debug here. ROS has gone down for some reason.</li>
+					<li> <span class="location"> Drivers/GPS/old_gps_node/gps backup 1-18-17 before parse change/package.xml:  </span> license TODO license </li>
+					<li> <span class="location"> Drivers/GPS/old_gps_node/gps backup 1-18-17 before parse change/src/gps_node.cpp: </span> 	//TODO rewrite the Case statement to look for the characters in the GPS message. Also, correct the Case start characters to be the ones used in the actual gps messages. </li>
+					<li> <span class="location"> Drivers/GPS/old_gps_node/include/gps/ros_interface.h:   </span>          //TODO: handle debug here. ROS has gone down for some reason.</li>
+					<li> <span class="location"> Drivers/GPS/old_gps_node/package.xml: </span>  license TODO license </li>
+					<li> <span class="location"> src/libraries/serial_utils/src/serial_listener.cc: </span>  // TODO: Make a more intelligent method based on the length of the things</li>
+					<li> <span class="location"> src/nodes/driver/camera/camera_node/include/camera_node/ros_interface.h:</span> //TODO: Is this #include needed? Possibly auto generated?</li>
+					<li> <span class="location"> src/nodes/driver/camera/camera_node/include/camera_node/ros_interface.h:  </span>           //TODO: handle debug here. ROS has gone down for some reason.</li>
+					<li> <span class="location"> src/nodes/driver/camera/camera_node/package.xml:</span>     license TODO license </li>
+					<li> <span class="location"> src/nodes/driver/camera/camera_node/src/camera_main.cpp:</span> //TODO: Are these auto generated?</li>
+					<li> <span class="location"> src/nodes/driver/compass/include/compass/ros_interface.h:</span>             //TODO: handle debug here. ROS has gone down for some reason.</li>
+					<li> <span class="location"> src/nodes/driver/compass/package.xml: </span>    license TODO license </li>
+					<li> <span class="location"> src/nodes/driver/compass/src/compass_node.cpp:  </span>               //TODO: subscribe to GPS and calculate Magnetic declination from current GPS latitude</li>
+					<li> <span class="location"> src/nodes/driver/compass/src/compass_node.cpp: </span>  //TODO: Do we need to get rid of this method? Seems unnecessary at this point</li>
+					<li> <span class="location"> src/nodes/driver/compass/src/compass_node.cpp: </span>  //TODO: change this to serial, if necessary at all</li>
+					<li> <span class="location"> src/nodes/driver/digipot/include/digipot/ros_interface.h:   </span>          //TODO: handle debug here. ROS has gone down for some reason.</li>
+					<li> <span class="location"> src/nodes/driver/digipot/package.xml: </span>    license TODO license </li>
+					<li> <span class="location"> src/nodes/driver/relay_board/include/relay_board/ros_interface.h:  </span>           //TODO: handle debug here. ROS has gone down for some reason.</li>
+					<li> <span class="location"> src/nodes/driver/relay_board/package.xml:  </span>   license TODO license </li>
+					<li> <span class="location"> src/nodes/driver/relay_board/src/main.cpp:  </span>                   //TODO: we should probebly read the state to make sure it actually changed</li>
+					<li> <span class="location"> src/nodes/driver/relay_board/src/main.cpp:   </span>                  //TODO: we should probebly read the state to make sure it actually changed</li>
+					<li> <span class="location"> src/nodes/driver/relay_board/src/relay_board_commands.cpp:</span>     //TODO: for some reason we cannot use operator= with the Serial class so we </li>
+					<li> <span class="location"> src/nodes/driver/relay_board/src/relay_board_commands.cpp:   </span>      //std::cout << ", Command written: " << command_str; //TODO: only send the string that was actually written</li>
+					<li> <span class="location"> src/nodes/master/master_gui/package.xml: </span>    license TODO license </li>
+					src/nodes/master/master_gui/src/master_gui/main.py:#TODO: I think we need to use the screeninfo module to move the robot (since QT's positioning is based on pixels and pixels are relative  to the </li>
+					<li> <span class="location"> src/nodes/master/master_gui/src/master_gui/main.py:  </span>       #TODO: set the geometry equal to the values the GPS is giving out</li>
+					<li> <span class="location"> src/nodes/master/master_gui/src/master_gui/main.py:  </span>       TODO: may need commented out whenever </li>
+					<li> <span class="location"> src/nodes/master/master_gui/src/master_gui/main.py: </span>        #TODO: stil need the turn info and speed</li>
+					<li> <span class="location"> src/nodes/master/master_gui/src/master_gui/main.py: </span>        #TODO: Renable this after the user closes the window</li>
+					<li> <span class="location"> src/nodes/master/state_machine/include/state_machine/ros_interface.h: </span>  //TODO: make the GUI adjust which waypoint we go to/ which file we open</li>
+					<li> <span class="location"> src/nodes/master/state_machine/include/state_machine/ros_interface.h: </span>    //TODO: should be able to be invoked by a ROS Timer</li>
+					<li> <span class="location"> src/nodes/master/state_machine/include/state_machine/waypoint_math.h: </span>  //TODO TRACK down bug in calculating the x - coordinate</li>
+					<li> <span class="location"> src/nodes/master/state_machine/package.xml:  </span>   license TODO license </li>
+					<li> <span class="location"> src/nodes/master/state_machine/src/state_initalize.cpp:  </span>   bool gps_accurate = true; //TODO set to false once implemented below.</li>
+					<li> <span class="location"> src/nodes/master/state_machine/src/state_initalize.cpp: </span>    bool ros_moduals_active = true; //TODO set to false once implemented below.</li>
+					<li> <span class="location"> src/nodes/master/state_machine/src/state_initalize.cpp: </span>        //TODO need to do some error checking.</li>
+					<li> <span class="location"> src/nodes/master/state_machine/src/state_machine.cpp:  </span>   //TODO: for some reason if I don't expand the two vectors here they will not</li>
+					<li> <span class="location"> src/nodes/master/state_machine/src/state_machine.cpp:  </span>       //TODO: ouput debug message</li>
+					<li> <span class="location"> src/nodes/master/state_machine/src/state_machine.cpp: </span>         //TODO: ouput debug/warning message</li>
+					<li> <span class="location"> src/nodes/master/state_machine/src/state_machine.cpp: </span>  //TODO: Not sure we even need this function</li>
+					<li> <span class="location"> src/nodes/master/state_machine/src/state_wait_for_command.cpp: </span>        //TODO: set the desired destination to the selected_station and get the robot moving - will this code do it?</li>
+					<li> <span class="location"> src/nodes/master/state_machine/src/waypoint_map.cpp: </span>        return parse_success; //TODO handle error.</li>
+					<li> <span class="location"> src/nodes/master/state_machine/src/waypoint_map.cpp: </span>        //TODO: should this be changed to the ROS_DEBUG_STREAM instead of cout?</li>
+					<li> <span class="location"> src/nodes/master/state_machine/src/waypoint_map.cpp: </span> //  TODO: Do we even need to use this code to parse a CSV file? It seems nice but unnecessary.</li>
+					<li> <span class="location"> src/nodes/master/state_machine/src/waypoint_map.cpp: </span> //  TODO CONTINUED: I think the best thing to do would be to run python's csv parse (which is much simpler)</li>
+					<li> <span class="location"> src/nodes/master/state_machine/src/waypoint_map.cpp: </span> //  TODO CONTINUED: then use its output. But that's up to whoever codes this.</li>
+					<li> <span class="location"> src/nodes/master/state_machine/src/waypoint_map.cpp: </span> //  TODO: we need to do a lot of validation</li>
+					<li> <span class="location"> src/nodes/master/state_machine/src/waypoint_map.cpp: </span> //  TODO: we also need debug messages when something fails like file opening.</li>
+					<li> <span class="location"> src/nodes/master/state_machine/src/waypoint_map.cpp:  </span>           //TODO: finish the below if statement (this is just pseudocode at the moment)</li>
+					<li> <span class="location"> src/nodes/master/topic_logger/package.xml: </span>    license TODO license </li>
+					<li> <span class="location"> src/nodes/master/topic_logger/src/main.cpp: </span> //TODO study the callback functions and figure out how to pass the data without globals</li>
+					<li> <span class="location"> src/nodes/master/topic_logger/src/main.cpp:  </span>           //TODO add time here</li>
+					<li> <span class="location"> src/nodes/master/topic_logger/src/main.cpp: </span>   //TODO maybe put it one more directory down like "sensor_data"</li>
+
+
+			</ul>
+		</div>
+	</body>
+</html>
