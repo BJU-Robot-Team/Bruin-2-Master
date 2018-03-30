@@ -69,7 +69,7 @@ inline bool queryUserForTransition(std::string current_state,
         } else {
             state_machine->internalEvent(event_lines.at(answer_int));
             valid_answer = true;
-            return false; //tell calling function to end imediatly
+            return false; //tell calling function to end immediately
         }
         
     } while (!valid_answer);

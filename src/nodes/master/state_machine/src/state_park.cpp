@@ -11,7 +11,7 @@ void ParkState::tick(StateMachine* state_machine, VehicleData* vehicle_data) {
         //run the state's debug function if it returns true continue normal code
         if (!debugState(state_machine)) {
             return;
-        } //end running imediatly 
+        } //end running immediately 
     }
     
     //if break is not engaging send break release command

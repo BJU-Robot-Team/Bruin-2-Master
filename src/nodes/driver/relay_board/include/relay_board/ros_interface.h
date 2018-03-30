@@ -21,8 +21,7 @@ public:
     ROSInterface() {
         
         //for sending data to the state machine
-        state_machine_pub = InterfaceHandle.advertise
-                < relay_board::RelayDataMsg > ("RelayData", 1000);
+        state_machine_pub = InterfaceHandle.advertise < relay_board::RelayDataMsg > ("RelayData", 1000);
         
     }
     
@@ -32,8 +31,7 @@ public:
     }
     
     //poll data from listeners
-    bool pollMessages(std::string& device_type, int& device_num,
-            std::string& command, unsigned int& mask) {
+    bool pollMessages(std::string& device_type, int& device_num, std::string& command, unsigned int& mask) {
         
         auto relay_msg = ros::topic::waitForMessage
                 < relay_board::RelayCommandMsg

@@ -77,7 +77,8 @@ void StateMachine::buildTableRow(VehicleEvents event, VehicleStates valid_state,
     
     //block adding new tables is the table is locked
     if (lock_transition_table) {
-        //TODO: ouput debug message
+        //TODO: output debug message
+        
         return;
     }
     
@@ -93,7 +94,6 @@ void StateMachine::buildTableRow(VehicleEvents event, VehicleStates valid_state,
     StateTableRow new_row(valid_state, next_state);
     
     state_transition_table[event] = new_row;
-    
 }
 
 //adds a state to the correct location
@@ -101,7 +101,7 @@ void StateMachine::addState(VehicleStates state, AbstractState* state_obj) {
     
     //block adding new tables is the table is locked
     if (lock_transition_table) {
-        //TODO: ouput debug/warning message
+        //TODO: output debug/warning message
         return;
     }
     
@@ -118,15 +118,11 @@ void StateMachine::addState(VehicleStates state, AbstractState* state_obj) {
 }
 
 std::string StateMachine::getCurrentState() {
-    
-    //if (current_state < NUM_VEHICLE_STATES){
     return state_names[current_state];
-    //}
 }
 
 //called to trigger a transition by a state
 void StateMachine::internalEvent(VehicleEvents event) {
-    
     VehicleStates source = state_transition_table[event].source_state;
     VehicleStates next = state_transition_table[event].next_state;
     
@@ -138,14 +134,7 @@ void StateMachine::internalEvent(VehicleEvents event) {
     }
 }
 
-//called to trigger a transition by something other then a state.
-//TODO: Not sure we even need this function
-void StateMachine::externalEvent(VehicleEvents event) {
-    internalEvent(event);
-}
-
 //a tick has passed, the state machine updates the current state
 void StateMachine::tick(VehicleData * vehicle_data) {
-    
     state_objects[current_state]->tick(this, vehicle_data);
 }

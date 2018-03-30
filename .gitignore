@@ -9,3 +9,5 @@ install/
 
 .project
 
+.pydevproject
+.settings

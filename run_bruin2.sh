@@ -7,7 +7,7 @@
 #$(catkin_make install)
 
 #we need to export this ROS workspace's environment variables
-source ~/bruin_2_code/devel/setup.bash
+source ./devel/setup.bash
 
 echo "########################"
 echo "Remember when using ros utilities to run the following first:"

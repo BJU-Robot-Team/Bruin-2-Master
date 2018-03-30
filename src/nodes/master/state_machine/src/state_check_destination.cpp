@@ -12,7 +12,7 @@ void CheckDestinationState::tick(StateMachine* state_machine,
         //run the state's debug function if it returns true continue normal code
         if (!debugState(state_machine)) {
             return;
-        } //end running imediatly 
+        } //end running immediately 
     }
     
     //compare current GPS location with end station GPS waypoint and see if 
@@ -20,11 +20,9 @@ void CheckDestinationState::tick(StateMachine* state_machine,
     //if within an acceptable distance from station sent state transition to Park
     
     //if not within an acceptable distance send state transition to check stop sign
-    
 }
 
 bool CheckDestinationState::debugState(StateMachine* state_machine) {
-    
     std::vector < std::string > line_desc;
     std::vector<VehicleEvents> event_lines;
     
