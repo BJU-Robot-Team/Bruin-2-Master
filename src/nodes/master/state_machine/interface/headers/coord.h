@@ -23,8 +23,8 @@ private:
 
 public:
     Coordinate(double _lat, double _long): latitude(_lat), longitude(_long) {}
-    static Coordinate fromLocal(double _x, double _y);
-    Vector operator-(Coordinate other);
+    static Coordinate fromLocal(double, double);
+    Vector operator-(Coordinate);
     double localX();
     double localY();
     double getLatitude();
