@@ -50,7 +50,7 @@ Vector Vector::operator/(double scale) {
 /*
     Construct a Coordinate give local X and Y
  */
-static Coordinate Coordinate::fromLocal(double _x, double _y) {
+Coordinate Coordinate::fromLocal(double _x, double _y) {
     double _lat, _long;
     //TODO
     return Coordinate(_lat, _long);
