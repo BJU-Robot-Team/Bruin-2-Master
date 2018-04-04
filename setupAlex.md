@@ -26,9 +26,21 @@ source ~/.bashrc
 sudo apt-get install -y python-rosinstall
 
 sudo apt-get install libsdl2-dev
+
+
+cd ~ && mkdir bruin_libraries && cd bruin_libraries
+git clone https://github.com/opencv/opencv.git
+cd ~/bruin_libraries/opencv && mkdir release && cd release
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local ..
+sudo make && sudo make install
+
+cd ~/bruin_2_code/src
+catkin_init_workspace
 ```
-### Important Note
-***Edit /usr/lib/x86_64-linux-gnu/cmake/SDL2/sdl2-config.cmake to remove a trailing space from one of the strings***
+### Important Note (If the above does not work)
+***Try deleting CMakeLists.txt in ~/bruin_2_code/src using "sudo rm CMakeLists.txt", then rerunning catkin_init_workspace.***
+***If this doesn't work, edit /usr/lib/x86_64-linux-gnu/cmake/SDL2/sdl2-config.cmake to remove a trailing space from one of the strings***
+
 ## Install the Bruin-2 Repository
 ```bash
 cd ~
