@@ -1,11 +1,14 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-struct Config {
-    static double refLat, refLong;
-    static std::vector<Coordinate> waypoints;
+#include "coord.h"
+#include <vector>
 
-    static void init(); // initialize from ini file
+namespace Config {
+    extern double refLat, refLong;
+    extern std::vector<Coordinate> waypoints;
+
+    void init(); // initialize from ini file
 };
 
 #endif

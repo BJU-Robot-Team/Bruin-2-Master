@@ -1,4 +1,5 @@
 #include "../headers/coord.h"
+#include "../headers/config.h"
 #include <cmath>
 
 /*
@@ -62,7 +63,8 @@ Vector Coordinate::operator-(Coordinate other) {
     Get local X coordinate from latitude / longitude
  */
 double Coordinate::localX() {
-    // TODO
+    double refLat  = Config::refLat;
+    double refLong = Config::refLong;
 }
 
 /* 
