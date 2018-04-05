@@ -1,8 +1,6 @@
 #include "../headers/coord.h"
 #include <cmath>
 
-double pi = 3.14159265358979323846264338327950288419716;
-
 /*
     Returns the length of the vector
  */

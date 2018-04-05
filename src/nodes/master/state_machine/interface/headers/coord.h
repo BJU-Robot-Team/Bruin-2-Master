@@ -1,6 +1,8 @@
 #ifndef COORD_H
 #define COORD_H
 
+#define pi 3.14159265358979323846264338327950288419716
+
 class Vector {
 private:
     double x, y;
