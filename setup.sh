@@ -20,3 +20,6 @@ sudo make && sudo make install
 cd ~/bruin_2_code/src
 sudo rm CMakeLists.txt
 catkin_init_workspace
+
+# fix a bug with SDL 2
+echo 'set(SDL2_LIBRARIES "-L${SDL2_LIBDIR}  -lSDL2")' | sudo tee -a /usr/lib/x86_64-linux-gnu/cmake/SDL2/sdl2-config.cmake
