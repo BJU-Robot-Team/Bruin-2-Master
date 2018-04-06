@@ -5,6 +5,7 @@
 #include <execinfo.h>
 #include <unistd.h>
 #include "../headers/coord.h"
+#include "../headers/config.h"
 
 using namespace std;
 
@@ -84,6 +85,32 @@ void testVector() {
     }
 }
 
+// calculate great circle distance
+// From Competitive Programming 3
+double gcDistance(Coordinate c1, Coordinate c2, double radius) {
+    double pLat = c1.getLatitude();
+    double pLong = c1.getLongitude();
+    double qLat = c2.getLatitude();
+    double qLong = c2.getLongitude();
+    pLat *= pi / 180; pLong *= pi / 180; // convert degree to radian
+    qLat *= pi / 180; qLong *= pi / 180;
+    return radius * acos(cos(pLat)*cos(pLong)*cos(qLat)*cos(qLong) +
+        cos(pLat)*sin(pLong)*cos(qLat)*sin(qLong) +
+        sin(pLat)*sin(qLat));
+}
+
+void testCoordinate() {
+    Config::refLat  = 34.874264;
+    Config::refLong = -82.363416; // Rodeheaver
+    Coordinate c1 = Coordinate::fromLocal(0,0);
+    Coordinate c2(34.875820, -82.361891); // M&G
+
+    double earthR = 6371000; // in meters
+
+    assert(abs((c2 - c1).abs() - gcDistance(c1, c2, earthR)) < 0.01);
+}
+
 int main() {
     testVector();
+    testCoordinate();
 }

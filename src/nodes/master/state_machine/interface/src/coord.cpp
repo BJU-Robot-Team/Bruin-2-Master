@@ -51,7 +51,10 @@ Vector Vector::operator/(double scale) {
  */
 Coordinate Coordinate::fromLocal(double _x, double _y) {
     double _lat, _long;
-    //TODO
+    double lat_const = 2 * pi * (6371000 / 360); // latitude constant of operating area
+    double long_const = lat_const * cos((Config::refLat / 360) * 2 * pi); // longitude constant of operating area
+    _lat  = Config::refLat  + lat_const  * _y;
+    _long = Config::refLong + long_const * _x;
     return Coordinate(_lat, _long);
 }
 
@@ -63,15 +66,17 @@ Vector Coordinate::operator-(Coordinate other) {
     Get local X coordinate from latitude / longitude
  */
 double Coordinate::localX() {
-    double refLat  = Config::refLat;
-    double refLong = Config::refLong;
+    double lat_const = 2 * pi * (6371000 / 360); // latitude constant of operating area
+    double long_const = lat_const * cos((Config::refLat / 360) * 2 * pi); // longitude constant of operating area
+    return (longitude - Config::refLong) * long_const;
 }
 
 /* 
     Get local Y coordinate from latitude / longitude
  */
 double Coordinate::localY() {
-    // TODO
+    double lat_const = 2 * pi * (6371000 / 360); // latitude constant of operating area
+    return (latitude - Config::refLat) * lat_const;
 }
 
 double Coordinate::getLatitude() {

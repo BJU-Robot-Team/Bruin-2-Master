@@ -6,6 +6,6 @@ std::vector<Coordinate> Config::waypoints;
 
 void Config::init() {
     // TODO
-    refLat = 50;
-    refLong = 30;
+    refLat = 42.67833241;
+    refLong = -83.19551079;
 }
