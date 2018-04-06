@@ -40,8 +40,7 @@ from bruin2 import *
 from bruin2state import *
 from gostopscreen import *
 
-#global variables (these should be changed to locals to keep the data's 
-#integrity, but I'm too lazy)
+#global variables 
 debuggingWindowText = ""
 currentStation = "None"
 x = 0
