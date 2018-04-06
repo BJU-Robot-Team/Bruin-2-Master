@@ -10,7 +10,7 @@ The master repository for the Bob Jones University Bruin 2 autonomous vehicle
 
 ## Setup
 - Clone the repo: `cd ~ && git clone https://github.com/BJU-Robot-Team/Bruin-2-Master.git bruin_2_code`
-- Run `~/bruin_2_code/setup.sh` (This will take about an hour)
+- Run `~/bruin_2_code/setup.sh` (This may take up to an hour)
 
 # Architecture
 The Bruin-2 Robot is built on a golf cart frame with several important electronic pieces that help control it
