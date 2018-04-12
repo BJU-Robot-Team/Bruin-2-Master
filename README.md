@@ -1,4 +1,4 @@
-# Bruin-2-Master
+# Bruin-2-Master [![Build Status](https://travis-ci.org/BJU-Robot-Team/Bruin-2-Master.svg?branch=master)](https://travis-ci.org/BJU-Robot-Team/Bruin-2-Master)
 The master repository for the Bob Jones University Bruin 2 autonomous vehicle 
 
 # Getting started
