@@ -1,6 +1,8 @@
 #ifndef COORD_H
 #define COORD_H
 
+#define pi 3.14159265358979323846264338327950288419716
+
 class Vector {
 private:
     double x, y;
@@ -23,8 +25,8 @@ private:
 
 public:
     Coordinate(double _lat, double _long): latitude(_lat), longitude(_long) {}
-    static Coordinate fromLocal(double _x, double _y);
-    Vector operator-(Coordinate other);
+    static Coordinate fromLocal(double, double);
+    Vector operator-(Coordinate);
     double localX();
     double localY();
     double getLatitude();
