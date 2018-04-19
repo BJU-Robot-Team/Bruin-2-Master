@@ -8,6 +8,8 @@
 #include <string>
 #include <assert.h>
 
+#include <ros/ros.h>
+
 #include "state_machine/state_machine.h"
 
 //testing function. takes a list of possible events and lets the user choose one 
@@ -51,7 +53,7 @@ inline bool queryUserForTransition(std::string current_state,
         ROS_DEBUG_STREAM( i << ": continue normal program operations." );
         
         //query for input
-        ROS_DEBUG_STREAM( "Please enter the number of the option above: ";
+        ROS_DEBUG_STREAM( "Please enter the number of the option above: ");
         std::cin >> answer_str;
         
         answer_int = std::stoi(answer_str, &size);
