@@ -15,7 +15,7 @@ WaypointMap::WaypointMap(std::string map_folder_path) {
     
     //if something went wrong, print the error to ROS_DEBUG_STREAM
     if (!loaded) {
-        ROS_DEBUG_STREAM( "The desired CSV file path and files were not loaded" );
+        std::cout << "The desired CSV file path and files were not loaded" ;
     }
 }
 
@@ -30,7 +30,7 @@ bool WaypointMap::loadCSVMapFormat(std::string map_folder_path) {
     
     //if we cannot parse the stations file we cannot go on.
     if (parse_success == false) {
-        ROS_DEBUG_STREAM("not loaded" );
+        std::cout << "not loaded";
         return parse_success; //TODO handle error.
     }
     
@@ -71,8 +71,7 @@ bool WaypointMap::loadCSVMapFormat(std::string map_folder_path) {
             epdf = readdir(dpdf);
         }
     } else {
-        ROS_DEBUG_STREAM(
-                << "The directory name provided to the CSV parser method was invalid");
+        std::cout << "The directory name provided to the CSV parser method was invalid";
     }
     //close the open directory just as you would do with a normal file
     closedir(dpdf);
