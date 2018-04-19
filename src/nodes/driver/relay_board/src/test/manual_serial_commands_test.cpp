@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-
+#include "ros/ros.h"
 #include "relay_board/relay_board_commands.h"
 
 #include <serial/serial.h>
@@ -22,12 +22,12 @@ int main(void) {
     int relay_or_gpio = 0;
     
     do {
-        std::cout << "Please choose an option below:" << std::endl;
-        std::cout << "0: request version" << std::endl;
-        std::cout << "1: read relay" << std::endl;
-        std::cout << "2: turn relay on" << std::endl;
-        std::cout << "3: turn relay off" << std::endl;
-        std::cout << "4: read gpio" << std::endl;
+        ROS_DEBUG_STREAM( "Please choose an option below:" );
+        ROS_DEBUG_STREAM( "0: request version" );
+        ROS_DEBUG_STREAM( "1: read relay" );
+        ROS_DEBUG_STREAM( "2: turn relay on" );
+        ROS_DEBUG_STREAM( "3: turn relay off" );
+        ROS_DEBUG_STREAM( "4: read gpio" );
         
         std::string answer_str;
         std::cin >> answer_str;
@@ -36,16 +36,16 @@ int main(void) {
         
         //no number was given or answer is not one of the options 
         if (size == 0 || answer_int < 0 || (unsigned int) answer_int > 4) {
-            std::cout << "####> Error: Invalid input <####" << std::endl;
+            ROS_ERROR_STREAM(  "####> Error: Invalid input <####" );
             continue;
         }
         
         //get secondary input
         if (answer_int >= 1 && answer_int <= 3) {
-            std::cout << "Enter which relay to effect: " << std::endl;
+            ROS_DEBUG_STREAM( "Enter which relay to effect: " );
             std::cin >> relay_or_gpio;
         } else if (answer_int == 4) {
-            std::cout << "Enter which GPIO to effect: " << std::endl;
+            ROS_DEBUG_STREAM( "Enter which GPIO to effect: " );
             std::cin >> relay_or_gpio;
         } else { //we are doing a command that does not have input
             relay_or_gpio = -1;
@@ -77,7 +77,7 @@ int main(void) {
                 break;
                 
             default:
-                std::cout << "Invalid command." << std::endl;
+                 ROS_DEBUG_STREAM( "Invalid command." );
         }
         
     } while (true);

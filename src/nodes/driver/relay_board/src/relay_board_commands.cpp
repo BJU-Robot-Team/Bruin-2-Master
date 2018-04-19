@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <string>
 #include <unistd.h>
+#include "ros/ros.h"
 
 //setup constructor
 RelayBoardCommands::RelayBoardCommands(serial::Serial *my_serial) { //std::string port){
@@ -35,10 +36,10 @@ void RelayBoardCommands::debugPrint(std::string command_str, size_t bytes_wrote,
     
     if (debug_mode) {
         //report
-        std::cout << "Bytes written: " << bytes_wrote;
-        //std::cout << ", Command written: " << command_str; //TODO: only send the string that was actually written
-        std::cout << ", Bytes read: " << result.length();
-        std::cout << ", String read: " << result << std::endl;
+         ROS_DEBUG_STREAM( "Bytes written: " << bytes_wrote);
+
+         ROS_DEBUG_STREAM( ", Bytes read: " << result.length());
+         ROS_DEBUG_STREAM( ", String read: " << result );
     }
 }
 

@@ -11,7 +11,7 @@ using namespace std;
 serial::Serial * my_serial;
 
 int main(int argc, char **argv) {
-    cout << "Bruin-2 Relay Driver V1.1 Starting" << endl;
+    ROS_DEBUG_STREAM( "Bruin-2 Relay Driver V1.1 Starting" );
     
     //function defined in ros_interface header
     startROS(argc, argv);
@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
     RelayBoardCommands relay_command_interface(my_serial);
     
     if (fake_relay) {
-        cout << "Bruin-2 Relay Driver running in fake mode." << endl;
+        ROS_DEBUG_STREAM( "Bruin-2 Relay Driver running in fake mode." );
         string device_type = "";
         int device_num = -1;
         string command = "";
@@ -57,19 +57,19 @@ int main(int argc, char **argv) {
                     //   since a normal command to the relay board returns nothing
                     
                     if (command == "on") {
-                        cout << "Relay " << device_num << " on";
+                        ROS_DEBUG_STREAM( "Relay " << device_num << " on");
                         
                     } else if (command == "off") {
-                        cout << "Relay " << device_num << " off";
+                        ROS_DEBUG_STREAM( "Relay " << device_num << " off");
                     } else if (command == "read") {
-                        cout << "Relay " << device_num << " read";
+                        ROS_DEBUG_STREAM( "Relay " << device_num << " read");
                         state = "fake";
                     }
                     //device is a gpio command
                 } else {
                     
                     if (command == "read") {
-                        cout << "Relay " << device_num << " gpio read";
+                        ROS_DEBUG_STREAM( "Relay " << device_num << " gpio read");
                         state = "fake";
                     }
                     

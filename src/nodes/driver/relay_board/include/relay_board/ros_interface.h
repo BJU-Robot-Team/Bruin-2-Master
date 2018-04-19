@@ -46,11 +46,10 @@ public:
             device_num = relay_msg->device_number;
             command = relay_msg->command;
             mask = relay_msg->mask;
-            //std::cout << "Relay: " << command << std::endl;
+            
             return true;
             
         } else {
-            //std::cout << "Relay: no message" << std::endl;
             return false;
         }
         

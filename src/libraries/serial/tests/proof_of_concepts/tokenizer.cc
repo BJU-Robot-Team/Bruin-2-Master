@@ -6,6 +6,7 @@
 #include <boost/function.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/foreach.hpp>
+#include "ros/ros.h"
 
 void
 _delimeter_tokenizer (std::string &data, std::vector<std::string> &tokens,
@@ -25,7 +26,7 @@ int main(void) {
   f(data, tokens);
   
   BOOST_FOREACH(std::string token, tokens)
-    std::cout << token << std::endl;
+    ROS_DEBUG_STREAM( token );
   
   return 0;
 }

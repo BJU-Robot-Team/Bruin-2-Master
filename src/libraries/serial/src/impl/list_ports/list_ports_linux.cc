@@ -30,7 +30,6 @@ using std::ifstream;
 using std::getline;
 using std::vector;
 using std::string;
-using std::cout;
 using std::endl;
 
 static vector<string> glob(const vector<string>& patterns);

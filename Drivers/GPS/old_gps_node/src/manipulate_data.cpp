@@ -64,16 +64,16 @@ Gps_Data ManipulateData::ParseData(string rawData)
                             vector<string> data = parseLine(line);
                             if(interp == "$GPRMC" )
                             {
-                                //cout<<interp<<endl;
+                                //ROS_DEBUG_STREAM(<<interp);
                                 storeRMC(data,&gps[i]);
                             }else if(interp == "$GPGGA"){
-                                //cout<<interp<<endl;
+                                //ROS_DEBUG_STREAM(<<interp);
                                 storeGGA(data,&gps[i]);
                             }else if(interp == "$GPGSA"){
-                                //cout<<interp<<endl;
+                                //ROS_DEBUG_STREAM(<<interp);
                                 storeGSA(data,&gps[i]);
                             }else{
-                                //cout<<"NOT USABLE DATA"<<endl;
+                                //ROS_DEBUG_STREAM(<<"NOT USABLE DATA");
                             j--;
                             }
                         }
@@ -81,10 +81,10 @@ Gps_Data ManipulateData::ParseData(string rawData)
            /* GPS out = averageData(gps);
             if(out.IsValid())
             {
-                cout<<"Longitude: "<<out.longitude<<"W"<<endl;
-                cout<<"Latitude: "<<out.latitude<<"N"<<endl;
+                ROS_DEBUG_STREAM(<<"Longitude: "<<out.longitude<<"W");
+                ROS_DEBUG_STREAM(<<"Latitude: "<<out.latitude<<"N");
             } else {
-                cout<<"Invalid read"<<endl;
+                ROS_DEBUG_STREAM(<<"Invalid read");
             } */
 
 		finished = true;
@@ -127,11 +127,11 @@ double ManipulateData::PullData(string rawData, int startIndex)
 //method to send Gps data out to the main program.
 void ManipulateData::SendData(Gps_Data newData)
 {
-	//cout << "The heading is: " << newData.heading << endl;
-	//cout << "The pitch is: " << newData.pitch << endl;
-	//cout << "The roll is: " << newData.roll << endl;
-	//cout << "The temperature is: " << newData.temperature << endl;
-	//cout << "The check sum is: " << newData.checkSum << endl;
+	//ROS_DEBUG_STREAM( << "The heading is: " << newData.heading );
+	//ROS_DEBUG_STREAM( << "The pitch is: " << newData.pitch );
+	//ROS_DEBUG_STREAM( << "The roll is: " << newData.roll );
+	//ROS_DEBUG_STREAM( << "The temperature is: " << newData.temperature );
+	//ROS_DEBUG_STREAM( << "The check sum is: " << newData.checkSum );
 
 	//output data to a test file. (Comment out if no longer needaed)
 	//ofstream outputfile("output_test.txt");

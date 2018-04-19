@@ -47,7 +47,7 @@ int main(int argc, char **argv)
     int no_target_count = 0; // count how many frames since we saw the target
 #define NO_TARGET_LIMIT 3  // after this many frames, start reporting no target
     
-    cout << "Bruin-2 Camera Driver V1.1 Starting" << endl;
+     ROS_DEBUG_STREAM( "Bruin-2 Camera Driver V1.1 Starting" );
     
     //function defined in ros_interface header
     startROS(argc, argv);
@@ -58,7 +58,7 @@ int main(int argc, char **argv)
             
     if (!cap.isOpened())                                 //Check if we succeeded
     {
-        cout << "Camera open failed." << endl;
+        ROS_DEBUG_STREAM( "Camera open failed." );
         ROS_ERROR_STREAM("Camera open failed.");
         return -1;
     }
@@ -73,7 +73,7 @@ int main(int argc, char **argv)
         for (int i = 0; i < 3; i++)
             cap >> image;     //Get a new frame from camera
         cap >> image;                              //Get a new frame from camera
-        //cout << "Got a new image." << endl;
+        
         //imshow("Camera Image", image);                                         
         medianBlur(image, image, 5);                      //Smooth out the image
         flip(image, image, -1); //Flip image upside down because camera is mounted upside down--uncomment for final code

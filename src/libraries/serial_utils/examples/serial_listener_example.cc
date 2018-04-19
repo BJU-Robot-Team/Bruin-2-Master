@@ -3,15 +3,16 @@
 #include <serial/serial.h>
 #include <serial/utils/serial_listener.h>
 
+#include "ros/ros.h"
 using namespace serial;
 using namespace serial::utils;
 
 void default_handler(std::string token) {
-  std::cout << "default_handler got a: " << token << std::endl;
+  ROS_DEBUG_STREAM( "default_handler got a: " << token );
 }
 
 void callback(std::string token) {
-  std::cout << "callback got a: " << token << std::endl;
+  ROS_DEBUG_STREAM( "callback got a: " << token );
 }
 
 int run() {
@@ -42,9 +43,9 @@ int run() {
     for (size_t i = 0; i < 3; i++) {
       std::string token = f2->wait(100); // Wait for 100 ms or a matched token
       if (token != "")
-        std::cout << "Found something ending with 'post'" << std::endl;
+        ROS_DEBUG_STREAM( "Found something ending with 'post'" );
       else
-        std::cout << "Did not find something ending with 'post'" << std::endl;
+        ROS_DEBUG_STREAM( "Did not find something ending with 'post'" );
     }
   }
   // BlockingFilter is scoped and will remove itself, so no removeFilter
@@ -58,8 +59,8 @@ int run() {
     BufferedFilterPtr f3 =
       listener.createBufferedFilter(SerialListener::contains("substr"), 10);
     SerialListener::sleep(75); // Sleep 75ms, should have about 7
-    std::cout << "Caught " << f3->count();
-    std::cout << " tokens containing 'substr'" << std::endl;
+    ROS_DEBUG_STREAM( "Caught " << f3->count());
+    ROS_DEBUG_STREAM( " tokens containing 'substr'" );
     for(size_t i = 0; i < 20; ++i) {
       std::string token = f3->wait(5); // Pull message from the buffer
       if (token == "") // If an empty string is returned, a timeout occured
@@ -67,9 +68,9 @@ int run() {
     }
     f3->clear(); // Empties the buffer
     if (f3->wait(0) == "") // Non-blocking wait
-      std::cout << "We won the race condition!" << std::endl;
+      ROS_DEBUG_STREAM( "We won the race condition!" );
     else
-      std::cout << "We lost the race condition..." << std::endl;
+      ROS_DEBUG_STREAM( "We lost the race condition..." );
     // The buffer is circular, so the oldest matches will be dropped first
   }
   // BufferedFilter is scoped and will remove itself just like BlockingFilter.

@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include <iostream>     // std::ios, std::istream, std::cout
+#include <iostream>     // std::ios, std::istream
 #include <fstream>      // std::filebuf
 #include <dirent.h>     // DIR type, opendir, readdir
 
@@ -13,10 +13,9 @@
 WaypointMap::WaypointMap(std::string map_folder_path) {
     bool loaded = loadCSVMapFormat(map_folder_path);
     
-    //if something went wrong, print the error to cout
+    //if something went wrong, print the error to ROS_DEBUG_STREAM
     if (!loaded) {
-        std::cout << "The desired CSV file path and files were not loaded"
-                << std::endl;
+        ROS_DEBUG_STREAM( "The desired CSV file path and files were not loaded" );
     }
 }
 
@@ -31,7 +30,7 @@ bool WaypointMap::loadCSVMapFormat(std::string map_folder_path) {
     
     //if we cannot parse the stations file we cannot go on.
     if (parse_success == false) {
-        std::cout << "not loaded" << std::endl;
+        ROS_DEBUG_STREAM("not loaded" );
         return parse_success; //TODO handle error.
     }
     
@@ -72,10 +71,8 @@ bool WaypointMap::loadCSVMapFormat(std::string map_folder_path) {
             epdf = readdir(dpdf);
         }
     } else {
-        //TODO: should this be changed to the ROS_DEBUG_STREAM instead of cout?
-        std::cout
-                << "The directory name provided to the CSV parser method was invalid"
-                << std::endl;
+        ROS_DEBUG_STREAM(
+                << "The directory name provided to the CSV parser method was invalid");
     }
     //close the open directory just as you would do with a normal file
     closedir(dpdf);
@@ -132,7 +129,7 @@ bool WaypointMap::parseCSVData(std::string file_path,
             station_reader.read_row(start_station, end_station);
             //TODO: finish the below if statement (this is just pseudocode at the moment)
             /*if (stoi(start_station_coordinates) equals stoi (end_station_coordinates)) {
-             cout << "Start station and end station are in the same place" << endl;
+             
              //handle error
              } */
             //read the rest of the lines which are each waypoints

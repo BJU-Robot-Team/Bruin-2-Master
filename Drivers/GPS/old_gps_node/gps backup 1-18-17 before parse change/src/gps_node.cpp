@@ -129,11 +129,25 @@ double ManipulateData::PullData(string rawData, int startIndex)
 //method to send Gps data out to the main program.
 void ManipulateData::SendData(Gps_Data newData)
 {
-	//cout << "The heading is: " << newData.heading << endl;
-	//cout << "The pitch is: " << newData.pitch << endl;
-	//cout << "The roll is: " << newData.roll << endl;
-	//cout << "The temperature is: " << newData.temperature << endl;
-	//cout << "The check sum is: " << newData.checkSum << endl;
+	//ROS_DEBUG_STREAM( << "The heading is: " << newData.heading );
+	//ROS_DEBUG_STREAM( << "The pitch is: " << newData.pitch );
+	//ROS_DEBUG_STREAM( << "The roll is: " << newData.roll );
+	//ROS_DEBUG_STREAM( << "The temperature is: " << newData.temperature );
+	//ROS_DEBUG_STREAM( << "The check sum is: " << newData.checkSum );
+	//output data to a test file. (Comment out if no longer needaed)
+	//ofstream outputfile("output_test.txt");
+	//outputfile << "The heading is: " << newData.heading << endl;
+	//outputfile << "The pitch is: " << newData.pitch << endl;
+	//outputfile << "The roll is: " << newData.roll << endl;
+	//outputfile << "The temperature is: " << newData.temperature << endl;
+	//outputfile << "The check sum is: " << newData.checkSum << endl;
+	
+	//outputfile.close();
+	//ROS_DEBUG_STREAM( << "The heading is: " << newData.heading );
+	//ROS_DEBUG_STREAM( << "The pitch is: " << newData.pitch );
+	//ROS_DEBUG_STREAM( << "The roll is: " << newData.roll );
+	//ROS_DEBUG_STREAM( << "The temperature is: " << newData.temperature );
+	//ROS_DEBUG_STREAM( << "The check sum is: " << newData.checkSum );
 
 	//output data to a test file. (Comment out if no longer needaed)
 	//ofstream outputfile("output_test.txt");
@@ -181,7 +195,7 @@ int main(int argc, char **argv)
 {
 
     
-    cout << "gps: gps_node built" << endl;
+    ROS_DEBUG_STREAM( "gps: gps_node built" );
     //function defined in ros_interface header
     startROS(argc, argv);
 
@@ -205,7 +219,7 @@ int main(int argc, char **argv)
 	my_serial->open();
     }
     catch (exception &e) {
-        //cout<< "Gps Serial open failed: " << e.what() << endl;
+        //ROS_DEBUG_STREAM(<< "Gps Serial open failed: " << e.what() << endl;
 	ROS_ERROR_STREAM("Gps serial port open failed." << e.what());
         fake_gps = true;
     }
@@ -237,7 +251,7 @@ int main(int argc, char **argv)
 	//send data out to main program for debugging
 	//tester.SendData(gpsData);
         ros_interface.publishMessages(gpsData);
-        cout << "Gps: Gps is publishing data" << endl;
+        ROS_DEBUG_STREAM( "Gps: Gps is publishing data" );
         // Sleep for 1/2 second on fake data
         if (fake_gps) std::this_thread::sleep_for(std::chrono::milliseconds(500));
 

@@ -24,6 +24,8 @@
 
 #include <boost/bind.hpp>
 
+#include "ros/ros.h"
+
 // OMG this is so nasty...
 #define private public
 #define protected public
@@ -37,12 +39,12 @@ static bool matched;
 
 void filter_handler(std::string token) {
   global_listen_count++;
-  std::cout << "filter_handler got: " << token << std::endl;
+  ROS_DEBUG_STREAM( "filter_handler got: " << token );
 }
 
 void default_handler(std::string line) {
   global_count++;
-  std::cout << "default_handler got: " << line << std::endl;
+  ROS_DEBUG_STREAM( "default_handler got: " << line );
 }
 
 namespace {
@@ -77,7 +79,7 @@ TEST_F(SerialListenerTests, handlesPartialMessage) {
   global_count = 0;
   std::string input_str = "?$1E\r$1E=Robo";
 
-  std::cout << "writing: ?$1E<cr>$1E=Robo" << std::endl;
+  ROS_DEBUG_STREAM( "writing: ?$1E<cr>$1E=Robo" );
   port2->write(input_str);
   // Allow time for processing
   my_sleep(50);
@@ -85,7 +87,7 @@ TEST_F(SerialListenerTests, handlesPartialMessage) {
   ASSERT_EQ(1, global_count);
 
   input_str = "?$1E\r$1E=Roboteq\r";
-  std::cout << "writing: ?$1E<cr>$1E=Roboteq<cr>" << std::endl;
+  ROS_DEBUG_STREAM( "writing: ?$1E<cr>$1E=Roboteq<cr>" );
   port2->write(input_str);
   // Allow time for processing
   my_sleep(50);
@@ -102,8 +104,8 @@ TEST_F(SerialListenerTests, normalFilterWorks) {
   FilterPtr filt_1 =
     listener.createFilter(SerialListener::startsWith("V="), filter_handler);
 
-  std::cout << "writing: ?$1E<cr>$1E=Robo<cr>V=1334:1337<cr>T=123";
-  std::cout << std::endl;
+  ROS_DEBUG_STREAM( "writing: ?$1E<cr>$1E=Robo<cr>V=1334:1337<cr>T=123");
+  ROS_DEBUG_STREAM(" ");
   port2->write(input_str);
   // Allow time for processing
   my_sleep(50);
@@ -118,7 +120,7 @@ void run_blocking_filter(BlockingFilterPtr filt_1) {
   if (temp.empty()) {
     return;
   }
-  std::cout << "blocking filter matched: " << temp << std::endl;
+  ROS_DEBUG_STREAM( "blocking filter matched: " << temp );
   global_listen_count++;
   matched = true;
 }
@@ -135,8 +137,8 @@ TEST_F(SerialListenerTests, blockingFilterWorks) {
 
   boost::thread t(boost::bind(run_blocking_filter, filt_1));
 
-  std::cout << "writing: ?$1E<cr>$1E=Robo<cr>V=1334:1337<cr>T=123";
-  std::cout << std::endl;
+  ROS_DEBUG_STREAM( "writing: ?$1E<cr>$1E=Robo<cr>V=1334:1337<cr>T=123");
+  ROS_DEBUG_STREAM(" ");
   port2->write(input_str);
   // Allow time for processing
   my_sleep(50);
@@ -160,8 +162,8 @@ TEST_F(SerialListenerTests, blockingFilterTimesOut) {
 
   boost::thread t(boost::bind(run_blocking_filter, filt_1));
 
-  std::cout << "writing: ?$1E<cr>$1E=Robo<cr>V=1334:1337<cr>T=123";
-  std::cout << std::endl;
+  ROS_DEBUG_STREAM( "writing: ?$1E<cr>$1E=Robo<cr>V=1334:1337<cr>T=123");
+  ROS_DEBUG_STREAM(" ");
   port2->write(input_str);
   // Allow time for processing
   my_sleep(50);

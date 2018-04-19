@@ -19,17 +19,17 @@ inline bool queryUserForTransition(std::string current_state,
         std::vector<VehicleEvents>& event_lines) {
     
     //declare we are in debug mode
-    std::cout << "Debug Mode Active (query user for transition): " << std::endl;
+    ROS_DEBUG_STREAM( "Debug Mode Active (query user for transition): ");
     
     //make sure input is valid
     if (line_desc.size() != event_lines.size()) {
-        std::cout
-                << "Error invalid data given to testing function. Vector sizes mismatched."
-                << std::endl;
+        ROS_DEBUG_STREAM(
+                 "Error invalid data given to testing function. Vector sizes mismatched."
+                );
         assert(false);
     }
     
-    std::cout << "Current state is: " << current_state << std::endl;
+    ROS_DEBUG_STREAM("Current state is: " << current_state );
     
     //input loop. keep asking until we get a valid answer. 
     std::string answer_str;
@@ -38,20 +38,20 @@ inline bool queryUserForTransition(std::string current_state,
     
     bool valid_answer = false;
     do {
-        std::cout << "Please select one of the options below:" << std::endl;
+        ROS_DEBUG_STREAM( "Please select one of the options below:" );
         
         //print options
         unsigned int i;
         for (i = 0; i < line_desc.size(); i++) {
-            std::cout << i << ": " << "Send state transition event - "
-                    << line_desc.at(i) << std::endl;
+            ROS_DEBUG_STREAM( i << ": " << "Send state transition event - "
+                    << line_desc.at(i) );
         }
         
         //print normal operation's option
-        std::cout << i << ": continue normal program operations." << std::endl;
+        ROS_DEBUG_STREAM( i << ": continue normal program operations." );
         
         //query for input
-        std::cout << "Please enter the number of the option above: ";
+        ROS_DEBUG_STREAM( "Please enter the number of the option above: ";
         std::cin >> answer_str;
         
         answer_int = std::stoi(answer_str, &size);

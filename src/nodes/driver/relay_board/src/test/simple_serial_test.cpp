@@ -6,7 +6,7 @@
 #include <string>
 
 #include <iostream>
-
+#include "ros/ros.h"
 #include <unistd.h>
 
 int main(void) {
@@ -36,9 +36,9 @@ int main(void) {
     std::string result = my_serial.read(command_str.length() + 1);
     
     //report
-    std::cout << "Bytes written: ";
-    std::cout << bytes_wrote << ", Bytes read: ";
-    std::cout << result.length() << ", String read: " << result << std::endl;
+    ROS_DEBUG_STREAM( "Bytes written: ");
+    ROS_DEBUG_STREAM( bytes_wrote << ", Bytes read: ");
+    ROS_DEBUG_STREAM( result.length() << ", String read: " );
     
     return 0;
 }
