@@ -7,7 +7,7 @@ before_install:
   - sudo apt update --fix-missing
   - sudo rm /var/lib/dpkg/lock
   - sudo apt install -y cmake ros-kinetic-desktop python-rosinstall libsdl2-dev python screen python-pip python-pyqt5 pyqt5-dev-tools gcc
-  - pip install screeninfo
+  - sudo pip install screeninfo
   - sudo rosdep init
   - rosdep update
   - source /opt/ros/kinetic/setup.bash
