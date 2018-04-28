@@ -6,8 +6,8 @@ before_install:
   - sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 0xB01FA116
   - sudo apt update --fix-missing
   - sudo rm /var/lib/dpkg/lock
-  - sudo apt install -y cmake ros-kinetic-desktop python-rosinstall libsdl2-dev python python3 screen python3-pip python3-pyqt5 pyqt5-dev-tools gcc
-  - pip3 install screeninfo
+  - sudo apt install -y cmake ros-kinetic-desktop python-rosinstall libsdl2-dev python screen python-pip python-pyqt5 pyqt5-dev-tools gcc
+  - pip install screeninfo
   - sudo rosdep init
   - rosdep update
   - source /opt/ros/kinetic/setup.bash
