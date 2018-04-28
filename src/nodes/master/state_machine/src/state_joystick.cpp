@@ -29,7 +29,7 @@ void JoystickState::tick(StateMachine* state_machine, VehicleData* vehicle_data)
 
     c = vehicle_data->char_input;
     vehicle_data->char_input = 0;
-    //std::cout << "Go, Stop, Left, Right, Center, Brake, Unbreak, Follow, Quit (" << c << ")" << std::endl;    
+       
     //Check for a keypress (Can't wait here or state machine will stop)
 
 

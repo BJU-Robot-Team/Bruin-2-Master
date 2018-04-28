@@ -15,7 +15,7 @@ void ShutdownState::tick(StateMachine* state_machine,
         } //end running immediately 
     }
     
-    std::cout << "State Shutdown." << std::endl;
+    ROS_DEBUG_STREAM( "State Shutdown." );
     vehicle_data->shutdown = true;
     
 }

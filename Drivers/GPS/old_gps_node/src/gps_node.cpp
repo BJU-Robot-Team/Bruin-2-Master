@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 {
 
     
-    cout << "gps: gps_node built" << endl;
+    ROS_DEBUG_STREAM( "gps: gps_node built" );
     //function defined in ros_interface header
     startROS(argc, argv);
 
@@ -63,7 +63,6 @@ int main(int argc, char **argv)
 	my_serial->open();
     }
     catch (exception &e) {
-        //cout<< "Gps Serial open failed: " << e.what() << endl;
 	ROS_ERROR_STREAM("Gps serial port open failed." << e.what());
         fake_gps = true;
     }
@@ -104,21 +103,21 @@ int main(int argc, char **argv)
         string interp = rawData.substr(0,index);
 
         if(interp == "$GPRMC" ) {
-            //cout<<interp<<endl;
+            //ROS_DEBUG_STREAM(interp);
             //storeRMC(parsed_gps_string, gpsData);
         } else if(interp == "$GPGGA") {
-            //cout<<interp<<endl;
+            //ROS_DEBUG_STREAM(interp);
             //storeGGA(parsed_gps_string, gpsData);
         } else if(interp == "$GPGSA"){
-            //cout<<interp<<endl;
+            //ROS_DEBUG_STREAM(interp);
             //storeGSA(parsed_gps_string, gpsData);
         } else {
-            cout<<"gps_node: NOT USABLE DATA"<<endl;
+            ROS_DEBUG_STREAM("gps_node: NOT USABLE DATA");
         }
 
 
        // ros_interface.publishMessages(gpsData);
-        //cout << "Gps: Gps is publishing data" << endl;
+        //ROS_DEBUG_STREAM( "Gps: Gps is publishing data" );
         // Sleep for 1/2 second on fake data
         if (fake_gps) std::this_thread::sleep_for(std::chrono::milliseconds(500));
 

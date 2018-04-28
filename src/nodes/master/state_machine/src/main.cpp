@@ -252,7 +252,7 @@ int main(int argc, char **argv) {
 
         //Run state machine tick
         state_machine.tick(vehicle_data);
-        std::cout << "Main tick" << std::endl;
+        ROS_DEBUG_STREAM( "Main tick" );
 
         //publish the messages we got in the interface
         ros_interface.publishAllMessages(state_machine.getCurrentState());

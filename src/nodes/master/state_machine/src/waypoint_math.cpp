@@ -1,5 +1,6 @@
 #include <cmath>
 #include <iostream>
+#include <ros/ros.h>
 #include <state_machine/waypoint_math.h>
 
 // Calculates the angle to the waypoint relative to east.
@@ -37,20 +38,20 @@ double WaypointMath::calcSteerAngle(double &theta_c, double &theta_w,
     //calculate the difference in car heading and waypoint angle
     double theta_d = (theta_c * (pi_num / 180) - theta_w);
     
-    //std::cout << theta_d << std::endl; //debug message 
+    
     int negVar = 1; //variable that controls left and right turns. If negVar=1, we turn right. If negVar=-1, we turn left.
     
     if (theta_d > 0) {
         if (theta_d < pi_num) {
-            std::cout << "Turn Right" << std::endl;
+            ROS_DEBUG_STREAM( "Turn Right"  );
         } else {
-            negVar = -1, std::cout << "Turn Left" << std::endl;
+            negVar = -1; ROS_DEBUG_STREAM( "Turn Left" );
         }
     } else {
         if (std::abs(theta_d) < pi_num) {
-            negVar = -1, std::cout << "Turn Left" << std::endl;
+            negVar = -1; ROS_DEBUG_STREAM( "Turn Left" );
         } else {
-            std::cout << "Turn Right" << std::endl;
+            ROS_DEBUG_STREAM( "Turn Right" );
         }
     }
     

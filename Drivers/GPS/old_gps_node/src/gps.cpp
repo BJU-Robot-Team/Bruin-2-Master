@@ -69,9 +69,7 @@ void storeGSA(vector<string> str, GPS &gps)
 void storeRMC(vector<string> str, GPS &gps)
 {
     //need to parse lat and long before shove
-   //cout<<1;
    if(str.at(1) == "A"){gps.valid = 1;}
-   //cout<<2;
    if(str.at(2) != "")
    {
        string str1 = str.at(2).substr(0,2);
@@ -79,7 +77,6 @@ void storeRMC(vector<string> str, GPS &gps)
 
        gps.latitude = stof(str1) + stof(str2)/60;
    }
-   //cout<<4;
    if(str.at(4) != "")
    {
        string str1 = str.at(4).substr(0,3);
@@ -87,7 +84,7 @@ void storeRMC(vector<string> str, GPS &gps)
 
        gps.longitude = stof(str1) + stof(str2)/60;
    }
-   //cout<<6;
+  
    if(str.at(6) != "") {gps.velocity = stof(str.at(6))*1.150779;}
 }
 

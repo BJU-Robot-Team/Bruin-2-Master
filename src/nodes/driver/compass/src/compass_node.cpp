@@ -109,11 +109,7 @@ double ManipulateData::PullData(std::string rawData, int startIndex) {
 //method to send compass data out to the main program.
 //TODO: Do we need to get rid of this method? Seems unnecessary at this point
 void ManipulateData::SendData(Compass_Data newData) {
-    //cout << "The heading is: " << newData.heading << endl;
-    //cout << "The pitch is: " << newData.pitch << endl;
-    //cout << "The roll is: " << newData.roll << endl;
-    //cout << "The temperature is: " << newData.temperature << endl;
-    //cout << "The check sum is: " << newData.checkSum << endl;
+    
     
     //output data to a test file. (Comment out if no longer needaed)
     //ofstream outputfile("output_test.txt");
@@ -180,7 +176,7 @@ int main(int argc, char **argv) {
         my_serial->setBaudrate(baud);
         my_serial->open();
     } catch (std::exception &e) {
-        //cout<< "Compass Serial open failed: " << e.what() << endl;
+        
         ROS_ERROR_STREAM("Compass serial port open failed." << e.what());
         fake_compass = true;
     }

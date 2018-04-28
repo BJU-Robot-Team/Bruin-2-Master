@@ -25,7 +25,6 @@ void DrivePathState::tick(StateMachine* state_machine,
     }
     
     //Read vehicle state pose
-    //cout<<"pose: " << vehicle_data->position_latitude << vehicle_data->position_longitude << vehicle_data->position_heading;
     
     // load vehicle location, loaded from vehicle pose data
     double x1 = waypoint_math.computeLocalX(vehicle_data->position_longitude);
@@ -60,7 +59,7 @@ void DrivePathState::tick(StateMachine* state_machine,
     
     //calculate steering angle
     double theta_s = waypoint_math.calcSteerAngle(theta_c, theta_w, k);
-    //std::cout<<" theta_s"<<theta_s<<std::endl;
+    
     
     //calculate distance to waypoint
     double distance = waypoint_math.computeDistance(x1, y1, x2, y2);
@@ -93,7 +92,7 @@ void DrivePathState::tick(StateMachine* state_machine,
             "waypoint # "
                     << vehicle_data->current_waypoint
                             - vehicle_data->waypoints.begin());
-    std::cout << "Drive state tick" << std::endl;
+    ROS_DEBUG_STREAM( "Drive state tick" );
     
     //return
     
