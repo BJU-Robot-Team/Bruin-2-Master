@@ -10,7 +10,7 @@
     <node name="gps_driver" pkg="nmea_navsat_driver" type="nmea_serial_driver" output="screen" required="false" 
         args="_port:=/dev/gps _baud:=4800" />
 
-    <node name="relay_board_driver" pkg="relay_board" type="relay_board_node" output="screen" required="true" />
+    <node name="relay_board" pkg="relay_board" type="main.py" output="screen" required="true" />
 
     <node name="roboteq_driver" pkg="roboteq_driver" type="roboteq_node" output="screen" required="false" >
 	<rosparam param="channels">['brake', 'steer']</rosparam>
