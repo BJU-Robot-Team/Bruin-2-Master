@@ -1,7 +1,7 @@
 #include "../headers/actuators.h"
 #include "ros/ros.h"
-#include "relay_board/RelayCommandMsg.h"
-#include "relay_board/RelayDataMsg.h"
+#include "bruin2_msgs/RelayCommandMsg.h"
+#include "bruin2_msgs/RelayDataMsg.h"
 
 // TODO: get correct relay numbers
 #define BRAKE_RELAY_NUM 13 // TBD
@@ -20,7 +20,7 @@ bool setup = false;
 void initRelay() {
     setup = true;
     ros::NodeHandle InterfaceHandle;
-    relay_pub = InterfaceHandle.advertise<relay_board::RelayCommandMsg>("RelayControl", 1);
+    relay_pub = InterfaceHandle.advertise<bruin2_msgs::RelayCommandMsg>("RelayControl", 1);
 }
 
 // Get the state of a specified relay.
@@ -33,7 +33,7 @@ bool getRelayState(int relayNum) {
     
     
     // send the query
-    relay_board::RelayCommandMsg relayMessage;
+    bruin2_msgs::RelayCommandMsg relayMessage;
     relayMessage.device_type = "relay";
     relayMessage.device_number = relayNum;
     relayMessage.command = "read";
@@ -41,14 +41,14 @@ bool getRelayState(int relayNum) {
     
     // receive the results
     ros::NodeHandle InterfaceHandle;
-    auto relay_msg = ros::topic::waitForMessage<relay_board::RelayDataMsg> ("RelayData", ros::Duration(5));
+    auto relay_msg = ros::topic::waitForMessage<bruin2_msgs::RelayDataMsg> ("RelayData", ros::Duration(5));
 
     //updates ROS (if this isn't here ROS doesn't know this node is subcribed)
     ros::spinOnce();
     
     ros::Rate r(10); // 10 Hz
     while (relay_msg == NULL) {
-        relay_msg = ros::topic::waitForMessage<relay_board::RelayDataMsg> ("RelayData", ros::Duration(5));
+        relay_msg = ros::topic::waitForMessage<bruin2_msgs::RelayDataMsg> ("RelayData", ros::Duration(5));
         ros::spinOnce();
         r.sleep();
     }
@@ -60,7 +60,7 @@ bool sendRelayMessage(int relayNum, bool on) {
     if (!setup) {
         initRelay();
     }
-    relay_board::RelayCommandMsg relayMessage;
+    bruin2_msgs::RelayCommandMsg relayMessage;
     relayMessage.device_type = "relay";
     relayMessage.device_number = relayNum;
     relayMessage.command = on ? "on" : "off";

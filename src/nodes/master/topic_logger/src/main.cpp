@@ -30,7 +30,7 @@ void writeData(std::ofstream& file, std::string data) {
 
 //###Define ROS message callbacks so we can log messages as they come in.
 
-void relay_callback(const relay_board::RelayDataMsg& relayStatusMessage) {
+void relay_callback(const bruin2_msgs::RelayDataMsg& relayStatusMessage) {
     std::string data = "";
     
     writeData(relay_file, data);

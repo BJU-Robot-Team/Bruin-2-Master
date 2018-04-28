@@ -45,6 +45,7 @@
     <run_depend>message_runtime</run_depend>
     <build_depend>relay_board</build_depend>
     <run_depend>relay_board</run_depend>
+    <build_depend>bruin2_msgs</build_depend>
 
     <!-- The export tag contains other, unspecified, tags -->
     <export>
