@@ -3,7 +3,7 @@
 #define ROS_INTERFACE_H
 
 #include "ros/ros.h"
-#include "relay_board/RelayDataMsg.h"
+#include "bruin2_msgs/RelayDataMsg.h"
 #include "compass/CompassDataMsg.h"
 #include "sensor_msgs/NavSatFix.h"
 #include "camera_node/CameraDataMsg.h"
@@ -34,7 +34,7 @@ public:
 
 public:
     
-    ROSInterface(void (*relay_cb)(const relay_board::RelayDataMsg&),
+    ROSInterface(void (*relay_cb)(const bruin2_msgs::RelayDataMsg&),
             void (*compass_cb)(const compass::CompassDataMsg&),
             void (*gps_cb)(const sensor_msgs::NavSatFix&),
             void (*camera_cb)(const camera_node::CameraDataMsg&)) {

@@ -6,8 +6,8 @@
 #include "state_machine/globals.h"
 
 #include "ros/ros.h"
-#include "relay_board/RelayCommandMsg.h"
-#include "relay_board/RelayDataMsg.h"
+#include "bruin2_msgs/RelayCommandMsg.h"
+#include "bruin2_msgs/RelayDataMsg.h"
 #include "compass/CompassDataMsg.h"
 #include "camera_node/CameraDataMsg.h"
 #include "sensor_msgs/NavSatFix.h"
@@ -35,7 +35,7 @@ void endROS() {
 
 // Callback methods execute on each message receipt,
 // load data from messages into vehicle_data
-void relay_callback(const relay_board::RelayDataMsg& relayStatusMessage) {
+void relay_callback(const bruin2_msgs::RelayDataMsg& relayStatusMessage) {
 }
 
 void compass_callback(const compass::CompassDataMsg& compassMessage) {
@@ -95,8 +95,8 @@ public:
     roboteq_msgs::Command steerMessage;
     roboteq_msgs::Command brakeMessage;
     digipot::DigipotDataMsg speedMessage;
-    relay_board::RelayCommandMsg relayMessage;
-    relay_board::RelayDataMsg relayDataMessage;
+    bruin2_msgs::RelayCommandMsg relayMessage;
+    bruin2_msgs::RelayDataMsg relayDataMessage;
     state_machine::MsgsForGUI StateOfRobotMessage;
 
 public:
@@ -104,7 +104,7 @@ public:
     ROSInterface() {
         
         // Publishers        
-        relay_pub = InterfaceHandle.advertise < relay_board::RelayCommandMsg
+        relay_pub = InterfaceHandle.advertise < bruin2_msgs::RelayCommandMsg
                 > ("RelayControl", 1000);
         steer_pub = InterfaceHandle.advertise < roboteq_msgs::Command
                 > ("steer/cmd", 1000);

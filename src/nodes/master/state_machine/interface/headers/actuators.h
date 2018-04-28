@@ -8,8 +8,6 @@ public:
     static bool release();
 };
 
-Brake.set();
-
 enum Speed {
     FULL, FIFTH, NONE
 };
@@ -18,10 +16,11 @@ class Motor {
     static bool noSpeed();
     static bool fifthSpeed();
     static bool fullSpeed();
-    static bool speed(double sp); // speed in m/s
-    Speed getSpeed();
+    //static bool speed(double sp); // speed in m/s
+    static Speed getSpeed();
 };
 
+/*
 class Steering {
     // false means it didn't work
     static bool steer(double angle);
@@ -43,5 +42,6 @@ class WarningLight {
     // return false means it failed
     static bool set(bool active);
 };
+*/
 
 #endif
