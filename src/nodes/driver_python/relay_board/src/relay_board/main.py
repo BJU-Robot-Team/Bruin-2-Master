@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
-from relay_board.msg import RelayCommandMsg, RelayDataMsg
+from bruin2_msgs.msg import RelayCommandMsg, RelayDataMsg
 import os
 from relayController import RelayController, FakeRelayController
 
