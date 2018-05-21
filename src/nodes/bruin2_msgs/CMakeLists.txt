@@ -52,6 +52,7 @@ add_message_files(
   FILES
   RelayCommandMsg.msg
   RelayDataMsg.msg
+  GPSDataMsg.msg
 )
 
 ## Generate services in the 'srv' folder
