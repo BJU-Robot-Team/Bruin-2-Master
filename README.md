@@ -7,6 +7,7 @@ The master repository for the Bob Jones University Bruin 2 autonomous vehicle
 2. [Ubuntu](https://www.ubuntu.com/download/desktop) or some other Debian-based Linux
 3. [VS Code](https://code.visualstudio.com/) or some other code editor
 4. git: `sudo apt install git`
+5. Ubuntu 16.04 (xenial)
 
 ## Setup
 - Clone the repo: `cd ~ && git clone https://github.com/BJU-Robot-Team/Bruin-2-Master.git bruin_2_code`
