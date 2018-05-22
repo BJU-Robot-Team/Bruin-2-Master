@@ -102,7 +102,7 @@ int main(int argc, char **argv) {
     }
     vehicle_data->current_waypoint = vehicle_data->waypoints.begin();
 
-#define USE_SDL // uncomment this to open and use the SDL window for keyboard input
+// #define USE_SDL // uncomment this to open and use the SDL window for keyboard input
 #ifdef USE_SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
         throw std::runtime_error("Could not init SDL");
