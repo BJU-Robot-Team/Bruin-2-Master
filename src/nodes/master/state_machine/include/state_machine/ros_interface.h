@@ -9,7 +9,7 @@
 #include "bruin2_msgs/RelayCommandMsg.h"
 #include "bruin2_msgs/RelayDataMsg.h"
 #include "bruin2_msgs/GPSDataMsg.h"
-#include "compass/CompassDataMsg.h"
+#include "bruin2_msgs/CompassDataMsg.h"
 #include "camera_node/CameraDataMsg.h"
 #include "roboteq_msgs/Command.h"
 #include "sensor_msgs/NavSatFix.h"
@@ -39,10 +39,8 @@ void endROS() {
 void relay_callback(const bruin2_msgs::RelayDataMsg& relayStatusMessage) {
 }
 
-void compass_callback(const compass::CompassDataMsg& compassMessage) {
-    ROS_DEBUG_STREAM(
-            "State Machine: Compass heading: " << compassMessage.heading
-                    << std::endl);
+void compass_callback(const bruin2_msgs::CompassDataMsg& compassMessage) {
+    ROS_ERROR_STREAM("State Machine: Compass heading: " << compassMessage.heading << std::endl);
     vehicle_data->position_heading = compassMessage.heading;
 }
 
@@ -105,23 +103,16 @@ public:
     ROSInterface() {
         
         // Publishers        
-        relay_pub = InterfaceHandle.advertise < bruin2_msgs::RelayCommandMsg
-                > ("RelayControl", 1000);
-        steer_pub = InterfaceHandle.advertise < roboteq_msgs::Command
-                > ("steer/cmd", 1000);
-        brake_pub = InterfaceHandle.advertise < roboteq_msgs::Command
-                > ("brake/cmd", 1000);
-        speed_pub = InterfaceHandle.advertise < digipot::DigipotDataMsg
-                > ("/digipot/cmd", 1000);
-        state_pub = InterfaceHandle.advertise < state_machine::MsgsForGUI
-                > ("CurrentState", 1000);
+        relay_pub = InterfaceHandle.advertise < bruin2_msgs::RelayCommandMsg > ("RelayControl", 1000);
+        steer_pub = InterfaceHandle.advertise < roboteq_msgs::Command > ("steer/cmd", 1000);
+        brake_pub = InterfaceHandle.advertise < roboteq_msgs::Command > ("brake/cmd", 1000);
+        speed_pub = InterfaceHandle.advertise < digipot::DigipotDataMsg > ("/digipot/cmd", 1000);
+        state_pub = InterfaceHandle.advertise < state_machine::MsgsForGUI > ("CurrentState", 1000);
         
         // Subscribers, with callbacks
         relay_sub = InterfaceHandle.subscribe("RelayData", 1, relay_callback);
-        compass_sub = InterfaceHandle.subscribe("CompassData", 1,
-                compass_callback);
-        camera_sub = InterfaceHandle.subscribe("CameraData", 1,
-                camera_callback);
+        compass_sub = InterfaceHandle.subscribe("CompassData", 1, compass_callback);
+        camera_sub = InterfaceHandle.subscribe("CameraData", 1, camera_callback);
         gps_sub = InterfaceHandle.subscribe("GpsData", 1, gps_callback);
         gui_sub = InterfaceHandle.subscribe("GUIData", 1, gui_callback);
         
