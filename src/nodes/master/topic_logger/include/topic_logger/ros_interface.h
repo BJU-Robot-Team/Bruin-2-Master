@@ -3,10 +3,11 @@
 #define ROS_INTERFACE_H
 
 #include "ros/ros.h"
-#include "bruin2_msgs/RelayDataMsg.h"
-#include "compass/CompassDataMsg.h"
-#include "sensor_msgs/NavSatFix.h"
-#include "camera_node/CameraDataMsg.h"
+// #include "bruin2_msgs/RelayDataMsg.h"
+// #include "bruin2_msgs/CompassDataMsg.h"
+// #include "bruin2_msgs/GPSDataMsg.h"
+// #include "sensor_msgs/NavSatFix.h"
+// #include "camera_node/CameraDataMsg.h"
 
 #include <iostream>
 #include <string>
@@ -30,20 +31,17 @@ public:
     ros::Subscriber relay_sub;
     ros::Subscriber compass_sub;
     ros::Subscriber gps_sub;
-    ros::Subscriber camera_sub;
+    // ros::Subscriber camera_sub;
 
 public:
     
-    ROSInterface(void (*relay_cb)(const bruin2_msgs::RelayDataMsg&),
-            void (*compass_cb)(const compass::CompassDataMsg&),
-            void (*gps_cb)(const sensor_msgs::NavSatFix&),
-            void (*camera_cb)(const camera_node::CameraDataMsg&)) {
+    ROSInterface() {
         
         // Subscribers, with callbacks
-        relay_sub = InterfaceHandle.subscribe("RelayData", 1, relay_cb);
-        compass_sub = InterfaceHandle.subscribe("CompassData", 1, compass_cb);
-        gps_sub = InterfaceHandle.subscribe("GPSData", 1, gps_cb);
-        camera_sub = InterfaceHandle.subscribe("CameraData", 1, camera_cb);
+        // relay_sub = InterfaceHandle.subscribe("RelayData", 1, relay_cb);
+        // compass_sub = InterfaceHandle.subscribe("CompassData", 1, compass_cb);
+        // gps_sub = InterfaceHandle.subscribe("GPSData", 1, gps_cb);
+        // camera_sub = InterfaceHandle.subscribe("CameraData", 1, camera_cb);
         
     }
     
