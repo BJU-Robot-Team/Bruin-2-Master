@@ -1,8 +1,13 @@
+#!/usr/bin/env python
+
 from bruin2_msgs.msg import GPSDataMsg
 import rospy
 import pynmea2 # gps parser
 import os
 import serial
+
+rospy.init_node('gps')
+rospy.loginfo("Bruin-2 GPS Driver V2.0 Starting")
 
 fakeData = "$GPGGA,193956.000,3452.4626,N,08221.7059,W,0,00,,329.9,M,-32.1,M,,0000*48"
 pub = rospy.Publisher("GpsData", GPSDataMsg, queue_size=10)
@@ -27,9 +32,10 @@ if "ROS_DEBUG" not in os.environ:
         except:
             sendMsg(pynmea2.NMEASentence.parse(fakeData), False)
 else:
-    def sendFakeMsg():
+    def sendFakeMsg(event):
         msg = pynmea2.NMEASentence.parse(fakeData)
         sendMsg(msg)
     
     # publish a message every second
     rospy.Timer(rospy.Duration(1), sendFakeMsg)
+    rospy.spin()
