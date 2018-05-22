@@ -5,12 +5,14 @@
 <launch>
     <!-- <node name="camera_driver" pkg="camera_node" type="camera_node" output="screen" required="false" /> -->
 
-    <node name="compass_driver" pkg="compass" type="compass_node" output="screen" required="false" />      
+    <!--<node name="compass_driver" pkg="compass" type="compass_node" output="screen" required="false" />      -->
     
     <!--<node name="gps_driver" pkg="nmea_navsat_driver" type="nmea_serial_driver" output="screen" required="false" -->
     <!--    args="_port:=/dev/gps _baud:=4800" />-->
     
     <node name="gps" pkg="gps" type="main.py" output="screen" required="true" />
+    
+    <node name="compass" pkg="compass" type="main.py" output="screen" required="true" />
     
     <node name="relay_board" pkg="relay_board" type="main.py" output="screen" required="true" />
 
