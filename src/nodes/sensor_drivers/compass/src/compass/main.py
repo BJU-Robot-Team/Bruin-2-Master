@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 
+# Bruin-2 Compass Node v2.0
+# Created by Nathan Collins
+# Reads and parses the NMEA 0183 data coming from the digital compass
+# The compass (model OS5000-US by DigitalOcean) is assigned to /dev/compass and returns data at up to 40Hz in NMEA 0183 format
+# This node publishes the compass data on the CompassData topic using the CompassDataMsg message
+
 from bruin2_msgs.msg import CompassDataMsg
 import rospy
 import re
@@ -17,7 +23,7 @@ msg_re = re.compile(r'\$C(-?[0-9]*\.[0-9]*)P(-?[0-9]*\.[0-9]*)R(-?[0-9]*\.[0-9]*
 def sendMsg(msg):
     match = msg_re.match(msg)
     if not match:
-        rospy.logerror("Invalid compass string: " + msg)
+        rospy.logerr("Invalid compass string: " + msg)
         return
     
     heading     = float(match.group(1))

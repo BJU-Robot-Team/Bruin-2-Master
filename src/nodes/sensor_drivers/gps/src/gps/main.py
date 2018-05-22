@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 
+# Bruin-2 GPS Node v2.0
+# Created by Nathan Collins
+# Reads and parses the NMEA 0183 data coming from the GPS
+# The GPS (GlobalSat BU-353-S4 USB GPS) is assigned to /dev/gps and returns data at around 1Hz in NMEA 0183 format
+# This node publishes the GPS data on the GpSData topic using the GPSDataMsg message
+
 from bruin2_msgs.msg import GPSDataMsg
 import rospy
 import pynmea2 # gps parser
@@ -30,6 +36,7 @@ if "ROS_DEBUG" not in os.environ:
             for msg in gps:
                 sendMsg(msg)
         except:
+            rospy.logerr("Invalid GPS Message")
             sendMsg(pynmea2.NMEASentence.parse(fakeData), False)
 else:
     def sendFakeMsg(event):

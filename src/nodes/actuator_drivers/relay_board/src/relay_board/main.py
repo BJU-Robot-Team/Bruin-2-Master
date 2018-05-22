@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+# Bruin-2 Relay Board Node v2.0
+# Created by Nathan Collins
+# Recieves control messages on the RelayControl topic using the RelayCommandMsg message
+# For certain messages, such as GPIO result, returns the status on the RelayData topic using the RelayDataMsg message
+
 import rospy
 from bruin2_msgs.msg import RelayCommandMsg, RelayDataMsg
 import os
