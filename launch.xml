@@ -15,7 +15,7 @@
     <node name="relay_board" pkg="relay_board" type="main.py" output="screen" required="true" />
 
     <node name="roboteq_driver" pkg="roboteq_driver" type="roboteq_node" output="screen" required="false" >
-    <rosparam param="channels">['brake', 'steer']</rosparam>
+        <rosparam param="channels">['brake', 'steer']</rosparam>
     </node>
 
     <node name="topic_logger" pkg="topic_logger" type="topic_logger_node" output="screen" required="false" /> 
