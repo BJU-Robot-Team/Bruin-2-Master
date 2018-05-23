@@ -5,7 +5,7 @@
 #include <ctype.h>
 #include <string.h>
 
-#include "compass/compass_data.h"
+#include "compass_old/compass_data.h"
 
 //Class to hold methods that will do work on the imported data
 class ManipulateData {

@@ -14,9 +14,9 @@
 
 #include <serial/serial.h>
 
-#include "compass/ros_interface.h"
-#include "compass/compass_data.h"
-#include "compass/manipulate_data.h"
+#include "compass_old/ros_interface.h"
+#include "compass_old/compass_data.h"
+#include "compass_old/manipulate_data.h"
 
 const std::string eol("\r");
 const size_t max_line_length(128);

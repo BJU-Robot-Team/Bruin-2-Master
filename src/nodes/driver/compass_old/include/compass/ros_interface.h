@@ -2,9 +2,9 @@
 #define ROS_INTERFACE_H
 
 #include "ros/ros.h"
-#include "compass/CompassDataMsg.h"
+#include "compass_old/CompassDataMsg.h"
 
-#include "compass/compass_data.h"
+#include "compass_old/compass_data.h"
 
 void startROS(int argc, char **argv) {
     //initilize ROS and the Node
