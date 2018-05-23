@@ -1,0 +1,12 @@
+<library path="src">
+    <class name="GUIPlugin" type="gui_test.main.GUIPlugin" base_class_type="rqt_gui_py::Plugin">
+        <description>
+            The gui_test node that tests various systems on Bruin-2
+        </description>
+        <qtgui>
+            <label>My first Python Plugin</label>
+            <icon type="theme">system-help</icon>
+            <statustip>Great user interface to provide real value.</statustip>
+        </qtgui>
+    </class>
+</library>
